@@ -3,6 +3,8 @@
 ## Architecture & Code Standards
 - Framework: Flutter with Clean Architecture (Domain, Data, Presentation).
 - State Management: Cubit with Freezed for States.
+- Platform Adaptability: Material 3 on Android/Desktop, Cupertino on iOS/macOS.
+- Responsiveness: ResponsiveLayout supporting Mobile, Tablet (Navigation Rail), and Desktop (Sidebar).
 - Dependency Injection: GetIt + Injectable.
 - Networking: Dio + Retrofit (*_data_source.dart).
 - Testing: TDD with mocktail and bloc_test.

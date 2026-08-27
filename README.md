@@ -7,6 +7,7 @@
 [![Dart](https://img.shields.io/badge/Dart-3.3+-0175C2?logo=dart&logoColor=white)](https://dart.dev)
 [![Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20TDD-brightgreen)](https://github.com)
 [![SOLID](https://img.shields.io/badge/Principles-SOLID%20%26%20High%20Performance-blue)](https://github.com)
+[![Platform](https://img.shields.io/badge/Platforms-Mobile%20%7C%20Web%20%7C%20Desktop-orange)](https://github.com)
 [![UI/UX](https://img.shields.io/badge/Design-UI%2FUX%20Pro%20Max-ff69b4)](https://github.com)
 [![License](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
@@ -20,11 +21,13 @@
 
 **Flutter Enterprise Pro Max** is a production-grade AI Skill and interactive project generator that combines:
 1. **🏛️ Enterprise Clean Architecture & SOLID Principles**: Feature-First organization (`data`, `domain`, `presentation`).
-2. **🧪 Test-Driven Development (TDD)**: Mocktail & BlocTest unit testing suite.
-3. **🎨 UI/UX Pro Max Design Intelligence**: Category-driven design psychology, 8-point grid, Bento Grids, Glassmorphism, and dynamic micro-interactions.
-4. **🌐 Multi-Environment Flavors & FVM**: Out-of-the-box `dev`, `staging`, and `prod` configurations.
-5. **🔥 Firebase Services & Crashlytics Integration**: Flavor-aware Firebase with automatic Crashlytics logging via `BlocObserver`.
-6. **🚀 DevOps & CI/CD**: Android/iOS Fastlane pipelines and GitHub Actions workflows.
+2. **📱 Platform-Adaptive UI**: Native **Material 3** for Android/Desktop/Web + Native **Cupertino (HIG)** for iOS/macOS.
+3. **🖥️ Multi-Device Responsiveness**: Smart layout adaptation for **Phones** (< 600dp), **Tablets** (600dp - 1024dp with Navigation Rail), and **Desktop / Large Screens** (> 1024dp with Sidebar).
+4. **🧪 Test-Driven Development (TDD)**: Mocktail & BlocTest unit testing suite.
+5. **🎨 UI/UX Pro Max Design Intelligence**: Category-driven design psychology, 8-point grid, Bento Grids, Glassmorphism, and dynamic micro-interactions.
+6. **🌐 Multi-Environment Flavors & FVM**: Out-of-the-box `dev`, `staging`, and `prod` configurations.
+7. **🔥 Firebase Services & Crashlytics Integration**: Flavor-aware Firebase with automatic Crashlytics logging via `BlocObserver`.
+8. **🚀 DevOps & CI/CD**: Android/iOS Fastlane pipelines and GitHub Actions workflows.
 
 ---
 
@@ -119,12 +122,14 @@ When initializing a project or designing UI, the skill adapts colors, typography
 ```
 lib/
 ├── core/                                # Shared infrastructure
+│   ├── adaptive/                        # Platform-Adaptive Widgets (Cupertino vs Material 3)
 │   ├── config/                          # AppConfig & EnvironmentType
 │   ├── constants/                       # ApiConstants & Routes
 │   ├── di/                              # Dependency Injection (GetIt)
 │   ├── enums/                           # Rich Enums (displayName, color, icon, json)
 │   ├── errors/                          # Failures, Exceptions & ErrorHandler
 │   ├── network/                         # DioFactory, Interceptors, NetworkInfo
+│   ├── responsive/                      # Breakpoints & ResponsiveLayout (Phone, Tablet, Desktop)
 │   ├── routing/                         # GoRouter configuration
 │   ├── theme/                           # AppTheme, Design Tokens & Typography
 │   ├── usecases/                        # BaseUseCase<Type, Params>
@@ -169,10 +174,6 @@ flutter run -t lib/main_dev.dart --flavor dev --dart-define-from-file=env/dev.js
 ```
 
 ---
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com).
 
 ## 📄 License
 

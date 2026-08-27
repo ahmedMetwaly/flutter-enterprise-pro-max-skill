@@ -1,6 +1,6 @@
 ﻿Write-Host "============================================================" -ForegroundColor Cyan
 Write-Host "🚀 Flutter Enterprise Pro Max - Project Initializer (PowerShell)" -ForegroundColor Green
-Write-Host "Clean Architecture + TDD + UI/UX Pro Max + Flavors + FVM" -ForegroundColor Yellow
+Write-Host "Clean Architecture + TDD + UI/UX Pro Max + Platform Adaptive" -ForegroundColor Yellow
 Write-Host "============================================================`n" -ForegroundColor Cyan
 
 $projectName = Read-Host "📝 Enter Project Name (e.g. smart_pay) [default: my_flutter_app]"
@@ -9,6 +9,21 @@ $projectName = $projectName.ToLower().Replace("-", "_")
 
 $orgDomain = Read-Host "🌐 Enter Organization Domain (e.g. com.company) [default: com.example]"
 if ([string]::IsNullOrWhiteSpace($orgDomain)) { $orgDomain = "com.example" }
+
+Write-Host "`n📱 Select Target Platforms:" -ForegroundColor Cyan
+Write-Host "  1) 📱 Mobile Only (Android & iOS)"
+Write-Host "  2) 🌐 Mobile & Web (Android, iOS, Web)"
+Write-Host "  3) 💻 Mobile & Desktop (Android, iOS, Windows, macOS, Linux)"
+Write-Host "  4) 🚀 All Platforms (Android, iOS, Web, Windows, macOS, Linux)"
+$platforms = Read-Host "👉 Choose [1-4] [default: 1]"
+if ([string]::IsNullOrWhiteSpace($platforms)) { $platforms = "1" }
+
+Write-Host "`n🖥️ Select Supported Device Types & Screen Responsiveness:" -ForegroundColor Cyan
+Write-Host "  1) 📱 Phones Only"
+Write-Host "  2) 📱+📟 Phones & Tablets (Adaptive Navigation Rail)"
+Write-Host "  3) 📱+📟+🖥️ All Form Factors: Phones, Tablets & Desktop / Large Screens"
+$deviceTypes = Read-Host "👉 Choose [1-3] [default: 2]"
+if ([string]::IsNullOrWhiteSpace($deviceTypes)) { $deviceTypes = "2" }
 
 Write-Host "`n🎨 Select App Category / Design Intelligence:" -ForegroundColor Cyan
 Write-Host "  1) 💳 Fintech & Banking (Deep Slate, Emerald Green, High-Trust)"
@@ -30,6 +45,8 @@ if ([string]::IsNullOrWhiteSpace($enableFastlane)) { $enableFastlane = "Y" }
 
 Write-Host "`n⚡ Scaffolding project: $projectName..." -ForegroundColor Yellow
 Write-Host "✅ Architecture: Clean Architecture (Domain, Data, Presentation) + Feature-First" -ForegroundColor Green
+Write-Host "✅ Platform Adaptability: Material 3 (Android/Desktop) + Cupertino HIG (iOS/macOS)" -ForegroundColor Green
+Write-Host "✅ Responsiveness: Mobile, Tablet (Navigation Rail), Desktop (Sidebar)" -ForegroundColor Green
 Write-Host "✅ UI/UX: Design Tokens + 8-point grid + Bento Grid & Micro-interactions" -ForegroundColor Green
 Write-Host "✅ Flavors: dev, staging, prod + FVM (.fvmrc)" -ForegroundColor Green
 Write-Host "✅ State Management: Cubit + Freezed + JsonSerializable" -ForegroundColor Green

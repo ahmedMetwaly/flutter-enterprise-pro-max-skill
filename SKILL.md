@@ -1,11 +1,11 @@
 ﻿---
 name: flutter-enterprise-pro-max
-description: Universal enterprise Flutter architect and UI/UX design intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up Clean Architecture with TDD, Flavors, FVM, Firebase, Fastlane, or crafting high-end UI/UX designs.
+description: Universal enterprise Flutter architect and UI/UX design intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up Clean Architecture with TDD, Flavors, FVM, Firebase, Fastlane, Multi-Platform targeting (Mobile, Web, Desktop), Device responsiveness (Phones, Tablets, Desktops), or crafting high-end UI/UX designs.
 ---
 
 # 🚀 Flutter Enterprise Pro Max - AI Agent Skill
 
-This skill turns any AI Agent into a **Senior Flutter Architect & UI/UX Design Specialist (10+ years experience)** capable of scaffolding production-grade Flutter applications adhering to **Clean Architecture**, **SOLID Principles**, **Test-Driven Development (TDD)**, **UI/UX Pro Max Design Intelligence**, **Multi-Environment Flavors**, **FVM**, **Firebase**, and **Fastlane**.
+This skill turns any AI Agent into a **Senior Flutter Architect & UI/UX Design Specialist (10+ years experience)** capable of scaffolding production-grade Flutter applications adhering to **Clean Architecture**, **SOLID Principles**, **Test-Driven Development (TDD)**, **Platform-Adaptive UI** (Material 3 on Android/Desktop, Cupertino on iOS/macOS), **Multi-Device Responsiveness** (Phones, Tablets, Desktops), **UI/UX Pro Max Design Intelligence**, **Multi-Environment Flavors**, **FVM**, **Firebase**, and **Fastlane**.
 
 ---
 
@@ -14,7 +14,7 @@ This skill turns any AI Agent into a **Senior Flutter Architect & UI/UX Design S
   - `"init project"`, `"create flutter app"`, `"scaffold new project"`
   - `"add feature <name>"`, `"generate clean architecture feature"`
   - `"setup flavors"`, `"configure firebase"`, `"setup fastlane"`
-  - `"design a high-end screen"`, `"apply UI/UX design intelligence"`
+  - `"design responsive screen"`, `"make layout adaptive for tablet/desktop"`, `"apply UI/UX design intelligence"`
 
 ---
 
@@ -38,7 +38,14 @@ feature_name/
     └── widgets/           # Sub-widget Classes
 ```
 
-### 2. Strict Coding Standards
+### 2. Platform-Adaptive & Multi-Device Responsive UI
+- 🍎 **iOS & macOS**: Uses Cupertino styling (`CupertinoButton`, `CupertinoTextField`, `CupertinoActivityIndicator`, `cupertino_icons`, iOS navigation bars).
+- 🤖 **Android & Desktop & Web**: Uses Material 3 styling (`ElevatedButton`, `FilledButton`, `TextField`, Material icons, Material Design elevation).
+- 📱 **Phone (< 600dp)**: Standard vertical flow, Bottom Navigation Bar.
+- 📟 **Tablet (600dp - 1024dp)**: Multi-pane layouts, Navigation Rail, Grid cards.
+- 🖥️ **Desktop (> 1024dp)**: Full Sidebar Navigation, Master-Detail split views, Bento Grid dashboards.
+
+### 3. Strict Coding Standards
 - ✅ **ONE WIDGET PER FILE**: Always a `StatelessWidget` or `StatefulWidget` class. NEVER function widgets (`Widget buildItem() => ...`).
 - ✅ **Default values** for optional constructor parameters.
 - ✅ **Cubit + Freezed** for States ONLY.
@@ -68,15 +75,9 @@ When scaffolding or creating UI, the agent prompts for or detects the **Category
 
 When requested to initialize a project:
 1. **Prompt for Project Name & Org Domain** (e.g. `smart_wallet`, `com.company`).
-2. **Select App Category** [1-8] for UI/UX Pro Max tokens.
-3. **Ask for Firebase Services** (Auth, Firestore, Storage, Messaging, Crashlytics, Remote Config).
-4. **Ask for Fastlane & CI/CD** (Android / iOS Fastfile, GitHub Actions).
-5. **Scaffold the project and run verification tests.**
-
----
-
-## 🧪 TDD Strategy
-Always implement tests alongside code in `test/`:
-- **Domain**: Pure unit tests for UseCases with `mocktail`.
-- **Data**: JSON serialization tests for Models + Offline/Online handling in Repositories.
-- **Presentation**: State flow testing with `bloc_test`.
+2. **Select Target Platforms** (Mobile, Web, Desktop, All).
+3. **Select Device Form Factors** (Phones, Tablets, Desktops / Large Screens).
+4. **Select App Category** [1-8] for UI/UX Pro Max tokens.
+5. **Ask for Firebase Services** (Auth, Firestore, Storage, Messaging, Crashlytics, Remote Config).
+6. **Ask for Fastlane & CI/CD** (Android / iOS Fastfile, GitHub Actions).
+7. **Scaffold the project and run verification tests.**

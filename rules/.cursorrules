@@ -12,15 +12,16 @@ Follow these mandatory architectural, coding, and UI/UX design principles:
 - Dependency Inversion via GetIt (`lib/core/di/injection_container.dart`).
 - All networking via Dio + Retrofit + ErrorHandler + NetworkInfo.
 
-## 2. Widget & UI/UX Standards
+## 2. Platform-Adaptive & Multi-Device Responsive UI
+- 🍎 **iOS & macOS**: Apply Cupertino styling (`CupertinoButton`, `CupertinoTextField`, `CupertinoActivityIndicator`, `cupertino_icons`).
+- 🤖 **Android & Desktop & Web**: Apply Material 3 styling (`ElevatedButton`, `FilledButton`, `TextField`, Material icons).
+- 📱 **Multi-Device Breakpoints**:
+  - Phone (< 600dp): Bottom Navigation Bar, single-column lists.
+  - Tablet (600dp - 1024dp): Navigation Rail, two-column grid.
+  - Desktop (> 1024dp): Sidebar Navigation, master-detail split views.
 - ONE WIDGET PER FILE (Widget Classes ONLY - NEVER function widgets like `Widget myWidget() => ...`).
 - 100% `const` constructors on immutable widgets.
-- Responsive design via `flutter_screenutil` (e.g. `16.w`, `24.h`, `14.sp`, `8.r`).
-- UI/UX Pro Max Design Intelligence:
-  - Use semantic color tokens from `AppColors`.
-  - Consistent 8-point spacing grid (`AppSpacing`).
-  - Micro-interactions on buttons and interactive cards.
-  - Zero generic/bland UI: apply modern cards (Bento grid, subtle borders, gentle shadows, high legibility).
+- Responsive design via `flutter_screenutil` and `ResponsiveLayout`.
 
 ## 3. State Management & Models
 - State management: Cubit + Freezed for States ONLY.

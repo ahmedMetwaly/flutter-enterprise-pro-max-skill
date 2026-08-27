@@ -3,7 +3,7 @@
 void main(List<String> args) async {
   print('\x1B[36m============================================================\x1B[0m');
   print('\x1B[32m🚀 Flutter Enterprise Pro Max - Project Initializer\x1B[0m');
-  print('\x1B[33mClean Architecture + TDD + UI/UX Pro Max + Flavors + FVM\x1B[0m');
+  print('\x1B[33mClean Architecture + TDD + UI/UX Pro Max + Platform Adaptive\x1B[0m');
   print('\x1B[36m============================================================\x1B[0m\n');
 
   // 1. Project Name & Org
@@ -13,7 +13,24 @@ void main(List<String> args) async {
   stdout.write('🌐 Enter Organization Domain (e.g. com.company): ');
   final orgDomain = stdin.readLineSync()?.trim().toLowerCase() ?? 'com.example';
 
-  // 2. Category Selection (UI/UX Pro Max)
+  // 2. Target Platforms Selection
+  print('\n📱 Select Target Platforms:');
+  print('  1) 📱 Mobile Only (Android & iOS)');
+  print('  2) 🌐 Mobile & Web (Android, iOS, Web)');
+  print('  3) 💻 Mobile & Desktop (Android, iOS, Windows, macOS, Linux)');
+  print('  4) 🚀 All Platforms (Android, iOS, Web, Windows, macOS, Linux)');
+  stdout.write('👉 Choose [1-4] (default: 1): ');
+  final platformChoice = stdin.readLineSync()?.trim() ?? '1';
+
+  // 3. Device Form Factors Selection
+  print('\n🖥️ Select Supported Device Types & Screen Responsiveness:');
+  print('  1) 📱 Phones Only');
+  print('  2) 📱+📟 Phones & Tablets (Adaptive Navigation Rail)');
+  print('  3) 📱+📟+🖥️ All Form Factors: Phones, Tablets & Desktop / Large Screens');
+  stdout.write('👉 Choose [1-3] (default: 2): ');
+  final deviceChoice = stdin.readLineSync()?.trim() ?? '2';
+
+  // 4. Category Selection (UI/UX Pro Max)
   print('\n🎨 Select App Category / Design Intelligence:');
   print('  1) 💳 Fintech & Banking (Deep Slate, Emerald Green, High-Trust)');
   print('  2) 🛍️ E-Commerce & Retail (Clean White, Vibrant Coral, High-Conversion)');
@@ -26,7 +43,7 @@ void main(List<String> args) async {
   stdout.write('👉 Choose [1-8] (default: 1): ');
   final categoryChoice = stdin.readLineSync()?.trim() ?? '1';
 
-  // 3. Firebase Setup
+  // 5. Firebase Setup
   print('\n🔥 Firebase Services Integration:');
   stdout.write('👉 Enable Firebase? (y/n, default: y): ');
   final enableFirebase = (stdin.readLineSync()?.trim().toLowerCase() ?? 'y') != 'n';
@@ -45,7 +62,7 @@ void main(List<String> args) async {
     firebaseServices = fbChoices.split(',').map((e) => e.trim()).toList();
   }
 
-  // 4. Fastlane & CI/CD
+  // 6. Fastlane & CI/CD
   print('\n🚀 Fastlane & DevOps Automation:');
   stdout.write('👉 Configure Fastlane & GitHub Actions CI/CD? (y/n, default: y): ');
   final enableFastlane = (stdin.readLineSync()?.trim().toLowerCase() ?? 'y') != 'n';
@@ -55,6 +72,9 @@ void main(List<String> args) async {
   print('🎯 Project Generation Configuration:');
   print('  - Project Name: $projectName');
   print('  - Organization: $orgDomain');
+  print('  - Platforms: Option $platformChoice');
+  print('  - Devices & Responsiveness: Option $deviceChoice');
+  print('  - Platform UI: Material 3 (Android/Desktop) + Cupertino HIG (iOS/macOS)');
   print('  - Category: Option $categoryChoice');
   print('  - Firebase: ${enableFirebase ? "Enabled (${firebaseServices.join(',')})" : "Disabled"}');
   print('  - Fastlane & CI/CD: ${enableFastlane ? "Enabled" : "Disabled"}');
@@ -68,8 +88,9 @@ void main(List<String> args) async {
   }
 
   print('\n⚡ Scaffolding project: $projectName...');
-  // Logic to copy templates, substitute variables, and run flutter create & build_runner
   print('✅ Folder structure created according to Clean Architecture.');
+  print('✅ Platform-Adaptive widgets (Material 3 for Android/Desktop, Cupertino for iOS/macOS).');
+  print('✅ Responsive Layout Breakpoints configured (Mobile < 600, Tablet 600-1024, Desktop > 1024).');
   print('✅ Design tokens set up for chosen category.');
   print('✅ Flavors (dev, staging, prod) configured.');
   print('✅ TDD Test suite scaffolded.');

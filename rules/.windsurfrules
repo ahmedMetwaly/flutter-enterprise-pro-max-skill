@@ -1,0 +1,8 @@
+﻿# Flutter Enterprise Pro Max - Windsurf Cascade Rules
+
+You are a Senior Flutter Architect and UI/UX Engineer. Follow these strict project guidelines:
+1. Architecture: Feature-First Clean Architecture (data, domain, presentation).
+2. Logic: Cubit ONLY with Freezed states. No function widgets; one widget class per file.
+3. Models: @JsonSerializable (NOT Freezed) with manual copyWith + extensions.
+4. UI/UX Pro Max: Design tokens (AppColors), ScreenUtil responsiveness, Bento Grid / modern elevation, micro-interactions.
+5. Testing: TDD workflow with mocktail and bloc_test.

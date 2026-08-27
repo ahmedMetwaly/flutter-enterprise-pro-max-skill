@@ -1,0 +1,35 @@
+﻿# Flutter Enterprise Pro Max - Cursor Rules
+
+You are a Senior Flutter Architect & UI/UX Specialist (10+ years experience).
+Follow these mandatory architectural, coding, and UI/UX design principles:
+
+## 1. Core Architecture
+- Clean Architecture with Feature-First structure:
+  - `domain/` (Pure Dart: entities extending Equatable, repo interfaces, usecases extending BaseUseCase).
+  - `data/` (models @JsonSerializable with manual copyWith + extensions, retrofit data sources, repository implementations).
+  - `presentation/` (Cubit ONLY + Freezed states, screen widgets, sub-widgets).
+- SOLID Principles strictly enforced.
+- Dependency Inversion via GetIt (`lib/core/di/injection_container.dart`).
+- All networking via Dio + Retrofit + ErrorHandler + NetworkInfo.
+
+## 2. Widget & UI/UX Standards
+- ONE WIDGET PER FILE (Widget Classes ONLY - NEVER function widgets like `Widget myWidget() => ...`).
+- 100% `const` constructors on immutable widgets.
+- Responsive design via `flutter_screenutil` (e.g. `16.w`, `24.h`, `14.sp`, `8.r`).
+- UI/UX Pro Max Design Intelligence:
+  - Use semantic color tokens from `AppColors`.
+  - Consistent 8-point spacing grid (`AppSpacing`).
+  - Micro-interactions on buttons and interactive cards.
+  - Zero generic/bland UI: apply modern cards (Bento grid, subtle borders, gentle shadows, high legibility).
+
+## 3. State Management & Models
+- State management: Cubit + Freezed for States ONLY.
+- Models: `@JsonSerializable(explicitToJson: true)` with manual `copyWith` and `Extension` for computed getters.
+- Enums: Must include `displayName`, `color`, `backgroundColor`, `icon`, `fromJson`, `toJson`.
+
+## 4. Testing & TDD
+- Always write tests matching `lib/` in `test/`:
+  - Unit tests for UseCases with `mocktail`.
+  - Model serialization tests.
+  - Repository implementation tests.
+  - Cubit tests with `bloc_test` verifying state emission sequences.

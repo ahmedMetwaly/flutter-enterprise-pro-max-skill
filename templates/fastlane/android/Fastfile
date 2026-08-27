@@ -1,0 +1,43 @@
+﻿default_platform(:android)
+
+platform :android do
+  desc "Deploy Dev flavor to Firebase App Distribution"
+  lane :deploy_dev do
+    gradle(
+      task: "assemble",
+      flavor: "dev",
+      build_type: "Release"
+    )
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID_ANDROID_DEV"],
+      groups: "testers",
+      release_notes: "Dev build from Fastlane CI"
+    )
+  end
+
+  desc "Deploy Staging flavor to Google Play Internal Track"
+  lane :deploy_staging do
+    gradle(
+      task: "bundle",
+      flavor: "staging",
+      build_type: "Release"
+    )
+    upload_to_play_store(
+      track: "internal",
+      aab: "build/app/outputs/bundle/stagingRelease/app-staging-release.aab"
+    )
+  end
+
+  desc "Deploy Prod flavor to Google Play Production"
+  lane :deploy_prod do
+    gradle(
+      task: "bundle",
+      flavor: "prod",
+      build_type: "Release"
+    )
+    upload_to_play_store(
+      track: "production",
+      aab: "build/app/outputs/bundle/prodRelease/app-prod-release.aab"
+    )
+  end
+end

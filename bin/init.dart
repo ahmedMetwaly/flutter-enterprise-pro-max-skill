@@ -89,7 +89,8 @@ void main(List<String> args) async {
   print('  - DI: Injectable + GetIt');
   print('  - Flavors: Mandatory (dev, staging, production) with .env.*');
   print('  - Localization: Mandatory AR & EN (Zero hardcoded strings)');
-  print('  - Network: Dio + Retrofit + AuthInterceptor + ApiErrorHandler (FTLGroup standard)');
+  print('  - Network: Dio + Retrofit + AuthInterceptor + ApiErrorHandler (Production-Grade)');
+
   print('  - Platforms: Option $platformChoice');
   print('  - Devices & Responsiveness: Option $deviceChoice');
   print('  - Platform UI: Material 3 (Android/Desktop) + Cupertino HIG (iOS/macOS)');

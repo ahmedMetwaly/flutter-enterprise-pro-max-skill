@@ -1,11 +1,11 @@
 ---
 name: flutter-enterprise-pro-max
-description: Universal enterprise Flutter architect and UI/UX design intelligence skill. Follows FTLGroup_desktop (dev branch) standards. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up 3-layer Clean Architecture (domain, data, presentation), Injectable + GetIt DI, Mandatory Flavors, Mandatory AR/EN Localization (zero hardcoded strings), FVM, Firebase, Fastlane, Multi-Platform targeting (Mobile, Web, Desktop), Device responsiveness (Phones, Tablets, Desktops), or crafting high-end UI/UX designs.
+description: Universal enterprise Flutter architect and UI/UX design intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up 3-layer Clean Architecture (domain, data, presentation), Injectable + GetIt DI, Mandatory Flavors, Mandatory AR/EN Localization (zero hardcoded strings), FVM, Firebase, Fastlane, Multi-Platform targeting (Mobile, Web, Desktop), Device responsiveness (Phones, Tablets, Desktops), or crafting high-end UI/UX designs.
 ---
 
 # 🚀 Flutter Enterprise Pro Max - AI Agent Skill
 
-This skill turns any AI Agent into a **Senior Enterprise Flutter Architect & UI/UX Design Specialist (10+ years experience)**. It enforces strict enterprise-grade standards modeled after production-proven architecture (Reference: **`FTLGroup_desktop` `dev` branch**).
+This skill turns any AI Agent into a **Senior Enterprise Flutter Architect & UI/UX Design Specialist (10+ years experience)**. It enforces strict enterprise-grade standards modeled after production-proven architecture.
 
 ---
 
@@ -18,9 +18,10 @@ This skill turns any AI Agent into a **Senior Enterprise Flutter Architect & UI/
 
 ---
 
-## 🏛️ Core Architectural Reference (`FTLGroup_desktop` Standard)
+## 🏛️ Core Enterprise Architectural Standards
 
 Every enterprise Flutter project managed by this skill follows the **3-Layer Clean Architecture**, **Injectable DI**, **Network Subsystem**, **Mandatory Flavors**, **Mandatory AR/EN Localization**, and **FVM Configuration**.
+
 
 ---
 
@@ -241,7 +242,8 @@ Every feature must be strictly divided into **Domain**, **Data**, and **Presenta
 
 ## 🌐 Enterprise Network Subsystem (`core/network/`)
 
-Follows the exact pattern from `FTLGroup_desktop`:
+Follows a robust, production-grade network pattern:
+
 
 1. **`ApiErrorHandler`**:
    - Inspects `DioExceptionType` (`connectionTimeout`, `sendTimeout`, `receiveTimeout`, `badResponse`, `cancel`, `connectionError`, `unknown`).
@@ -419,7 +421,8 @@ When scaffolding a project:
 4. **Select App Category** [1-7] for UI/UX Pro Max tokens.
 5. **Generate Mandatory Flavors**: `dev`, `staging`, `production` + `.env.*` files + entry points.
 6. **Generate Mandatory Localization**: `l10n.yaml`, `intl_en.arb`, `intl_ar.arb`.
-7. **Configure Injectable + GetIt + Network Subsystem** matching `FTLGroup_desktop`.
+7. **Configure Injectable + GetIt + Enterprise Network Subsystem**.
 8. **Scaffold Initial Feature with 3 Layers** (`domain`, `data`, `presentation`).
 9. **Run `build_runner` and `flutter analyze`** to ensure 0 errors / 0 warnings.
+
 

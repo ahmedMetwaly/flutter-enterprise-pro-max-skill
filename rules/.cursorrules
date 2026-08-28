@@ -1,4 +1,4 @@
-# Flutter Enterprise Pro Max - Cursor Rules (FTLGroup_desktop dev standard)
+# Flutter Enterprise Pro Max - Cursor Rules (Enterprise Production Standard)
 
 You are a Senior Enterprise Flutter Architect & UI/UX Specialist (10+ years experience).
 Follow these mandatory architectural, coding, and UI/UX design principles:
@@ -11,7 +11,8 @@ Follow these mandatory architectural, coding, and UI/UX design principles:
 - **Dependency Injection**: Injectable + GetIt (`@InjectableInit`, `@singleton`, `@LazySingleton(as: Interface)`, `@lazySingleton`, `@injectable`, `@module`).
 - Never instantiate repositories or use cases manually.
 
-## 2. 🌐 Network Subsystem (FTLGroup Standard)
+## 2. 🌐 Network Subsystem (Production-Grade)
+
 - `DioClient` with `PrettyDioLogger` and 15s timeouts.
 - `AuthInterceptor` with `Completer<String?>` mutex lock for token refresh on 401 and auto-retry of queued requests.
 - `ApiErrorHandler` mapping all `DioException` types into `ApiErrorModel`.

@@ -10,6 +10,7 @@
 - **Platform UI**: Material 3 for Android/Desktop/Web, Cupertino for iOS/macOS.
 - **Responsiveness**: ResponsiveLayout (<600 phone, 600-1024 tablet, >1024 desktop).
 - **Widgets**: Always use Widget classes in separate files. Strictly NO widget helper methods.
-- **Networking**: FTLGroup_desktop pattern (AuthInterceptor, ApiErrorHandler, ApiResponse, PaginatedResponse).
+- **Networking**: Enterprise production pattern (AuthInterceptor, ApiErrorHandler, ApiResponse, PaginatedResponse).
+
 - **ScreenUtil**: Use `flutter_screenutil` for sizes (.w, .h, .sp, .r).
 

@@ -1,6 +1,7 @@
 # Claude Code Project Guidelines - Flutter Enterprise Pro Max
 
-## Architecture & Standards (Reference: FTLGroup_desktop dev branch)
+## Architecture & Standards (Production Enterprise Standard)
+
 - **Architecture**: 3-Layer Clean Architecture (Domain, Data, Presentation) per feature.
 - **Dependency Injection**: Injectable + GetIt (`@InjectableInit`, `@singleton`, `@LazySingleton(as: *Repo)`, `@lazySingleton`, `@injectable`, `@module`).
 - **State Management**: Cubit only with Freezed States (`*_cubit.dart`, `*_state.dart`).

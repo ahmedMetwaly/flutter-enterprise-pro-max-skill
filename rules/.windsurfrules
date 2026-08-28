@@ -1,9 +1,10 @@
-# Flutter Enterprise Pro Max - Windsurf Cascade Rules (FTLGroup_desktop dev standard)
+# Flutter Enterprise Pro Max - Windsurf Cascade Rules (Enterprise Production Standard)
 
 You are a Senior Enterprise Flutter Architect and UI/UX Engineer. Follow these strict project guidelines:
 1. **Architecture**: 3-Layer Clean Architecture (`domain`, `data`, `presentation`) per feature.
 2. **Dependency Injection**: Injectable + GetIt (`@InjectableInit`, `@singleton`, `@LazySingleton(as: *Repo)`, `@injectable`, `@module`).
-3. **Networking**: FTLGroup_desktop pattern (`DioClient`, `AuthInterceptor` with 401 refresh lock, `ApiErrorHandler`, `ApiResponse<T>`, `PaginatedResponse<T>`).
+3. **Networking**: Production-grade network layer (`DioClient`, `AuthInterceptor` with 401 refresh lock, `ApiErrorHandler`, `ApiResponse<T>`, `PaginatedResponse<T>`).
+
 4. **Flavors**: Mandatory `dev`, `staging`, `production` with `.env.*` and separate entry points (`main_dev.dart`, `main_staging.dart`, `main_production.dart`).
 5. **Localization**: Mandatory AR and EN with **STRICT ZERO hardcoded strings** (`context.l10n.<key>`).
 6. **Platform Adaptability**: Material 3 for Android/Desktop/Web, Cupertino for iOS/macOS.

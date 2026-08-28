@@ -2,7 +2,8 @@
 
 # 🚀 Flutter Enterprise Pro Max Skill
 ### Universal AI Agent Skill & Enterprise Architecture Toolkit for Flutter
-*Modeled after Production Architecture Reference: **`FTLGroup_desktop` (`dev` branch)***
+*Modeled after Senior Enterprise Production Architecture*
+
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.19+-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
 [![Dart](https://img.shields.io/badge/Dart-3.3+-0175C2?logo=dart&logoColor=white)](https://dart.dev)
@@ -344,7 +345,8 @@ The wizard will guide you through:
 
 ### 2. Scaffold a New Feature
 Ask your AI Agent:
-> `"Scaffold a Clean Architecture feature named 'auth' with 3 layers following standards."`
+> `"Scaffold a Clean Architecture feature named 'auth' with 3 layers following enterprise standards."`
+
 
 ---
 

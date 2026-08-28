@@ -340,12 +340,10 @@ Ask your AI Agent:
 
 The wizard will guide you through:
 1. 📝 Project Name & Org Domain.
-2. 📦 FVM Setup (Custom version or Machine default).
-3. 📱 Target Platforms (Mobile, Web, Desktop, All).
-4. 🖥️ Device Types (Phones, Tablets, Desktops).
-5. 🎨 UI/UX Pro Max Category (Fintech, E-Commerce, Healthcare, SaaS, etc.).
-6. 🔥 Firebase Services (Auth, Firestore, Storage, Messaging, Crashlytics).
-7. 🚀 Fastlane & CI/CD Pipelines.
+2. 📱 Target Platforms (Mobile, Web, Desktop, All).
+3. 🖥️ Device Types (Phones, Tablets, Desktops).
+4. 🎨 UI/UX Pro Max Category (Fintech, E-Commerce, Healthcare, SaaS, etc.).
+
 
 ### 2. Scaffold a New Feature
 Ask your AI Agent:

@@ -344,7 +344,7 @@ The wizard will guide you through:
 
 ### 2. Scaffold a New Feature
 Ask your AI Agent:
-> `"Scaffold a Clean Architecture feature named 'auth' with 3 layers following FTLGroup_desktop standards."`
+> `"Scaffold a Clean Architecture feature named 'auth' with 3 layers following standards."`
 
 ---
 

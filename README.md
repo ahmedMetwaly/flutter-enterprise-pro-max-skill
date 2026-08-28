@@ -42,7 +42,7 @@
 **Flutter Enterprise Pro Max** is a complete, production-grade AI Agent Skill and scaffolding framework engineered to enforce enterprise engineering standards:
 * **🏛️ 3-Layer Clean Architecture & SOLID Principles**: Pure Dart Domain Layer (`entities`, `repositories`, `usecases`), isolated Data Layer (`datasources`, `models`, `repositories`), and Presentation Layer (`cubits`, `screens`, `widgets`).
 * **💉 Injectable + GetIt Dependency Injection**: Inversion of control using `@singleton`, `@LazySingleton(as: Interface)`, `@injectable`, and `@module`.
-* **🌐 Production Network Subsystem (FTLGroup Standard)**:
+* **🌐 Production Network Subsystem **:
   - `DioClient` with `PrettyDioLogger` and timeout settings.
   - `AuthInterceptor` with thread-safe token refresh mutex (`Completer`), token storage, and automatic retry of queued requests.
   - `ApiErrorHandler` mapping Dio errors to structured `ApiErrorModel`.

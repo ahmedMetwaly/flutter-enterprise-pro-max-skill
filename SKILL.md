@@ -342,18 +342,25 @@ Every project **MUST** have Flavors configured out-of-the-box:
 
 ---
 
-## 📦 FVM (Flutter Version Management) Configuration
+## 📦 FVM (Flutter Version Management) Complete Setup
 
-When initializing or scaffolding a project:
+When initializing or scaffolding a project with a custom Flutter version:
 1. **Interactive Prompt**:
    - Ask the user: *"Do you want to specify a specific Flutter SDK version for FVM (e.g. 3.27.0, 3.29.0, stable) or use the current machine default?"*
-2. **Generate `.fvmrc`**:
+2. **Generate `.fvmrc`** (in project root):
    ```json
    {
      "flutter": "3.27.0"
    }
    ```
-3. **Generate `.vscode/settings.json`**:
+3. **Generate `.fvm/fvm_config.json`** (inside `.fvm/` directory):
+   ```json
+   {
+     "flutterSdkVersion": "3.27.0",
+     "flavors": {}
+   }
+   ```
+4. **Generate `.vscode/settings.json`**:
    ```json
    {
      "dart.flutterSdkPath": ".fvm/flutter_sdk",
@@ -365,9 +372,56 @@ When initializing or scaffolding a project:
      }
    }
    ```
-4. Add `.fvm/flutter_sdk` to `.gitignore`.
+5. **Update `.gitignore`**:
+   Ensure `.fvm/flutter_sdk`, `.fvm/flutter_sdk/`, and `.fvm/cache` are ignored.
+6. **Execute FVM Command**:
+   If the `fvm` CLI is installed on the machine, run `fvm use <version> --force` or `fvm install <version>` to link `.fvm/flutter_sdk`.
 
 ---
+
+## 📦 Dynamic Dependency Matrix & Package Compatibility
+
+The AI Agent **MUST ALWAYS** inspect the target Flutter version (from user's FVM choice or via `flutter --version` on the current machine) and ensure all package versions in `pubspec.yaml` are strictly compatible:
+
+### 1. Modern Flutter (3.27+ / Dart 3.6+):
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_bloc: ^8.1.6
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  injectable: ^2.5.0
+  get_it: ^8.0.0
+  dio: ^5.8.0
+  retrofit: ^4.4.2
+  flutter_dotenv: ^5.2.1
+  flutter_screenutil: ^5.9.3
+  google_fonts: ^6.2.1
+  shared_preferences: ^2.3.5
+  flutter_secure_storage: ^9.2.4
+  equatable: ^2.0.7
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.14
+  freezed: ^2.5.8
+  json_serializable: ^6.9.5
+  injectable_generator: ^2.6.2
+  retrofit_generator: ^9.1.8
+```
+
+### 2. Dependency Conflict Prevention Rule:
+- After writing `pubspec.yaml`, the agent **MUST immediately run `flutter pub get`**.
+- If any dependency solver conflict occurs (e.g. incompatible transitive package), the agent must dynamically adjust constraints (e.g., matching `intl`, `meta`, `analyzer`) before proceeding to code generation.
+
+---
+
 
 ## 🛡️ Coding Standards: Validation, Caching & Errors
 
@@ -491,7 +545,30 @@ FIREBASE_APP_ID_IOS_DEV=1:xxx:ios:xxx
 | 🏋️ **Fitness & Wellness** | High-Energy Dark / Neon | Pitch Dark (`#0A0A0A`) + Lime (`#84CC16`) | Plus Jakarta Sans |
 | 🎓 **EdTech & Learning** | Gamified & Friendly | Soft Indigo (`#4F46E5`) + Gold (`#FBBF24`) | Nunito |
 
+### 📐 Enterprise ThemeData Standards (`core/theme/theme_manager.dart`)
+
+> [!IMPORTANT]
+> **Strict Material 3 ThemeData Rule**:
+> - **ALWAYS USE `CardThemeData`** for `cardTheme`:
+>   ```dart
+>   // ✅ CORRECT:
+>   cardTheme: const CardThemeData(
+>     color: AppColors.lightSurface,
+>     elevation: 0,
+>     shape: RoundedRectangleBorder(
+>       borderRadius: BorderRadius.all(Radius.circular(16)),
+>       side: BorderSide(color: AppColors.lightBorder, width: 1),
+>     ),
+>     margin: EdgeInsets.zero,
+>   ),
+>
+>   // ❌ STRICTLY FORBIDDEN:
+>   cardTheme: CardTheme(...), // WRONG! CardTheme is a widget, NOT ThemeData property.
+>   ```
+> - Always use component data classes: `appBarTheme: const AppBarTheme(...)`, `elevatedButtonTheme: ElevatedButtonThemeData(...)`, `inputDecorationTheme: InputDecorationTheme(...)`, `bottomNavigationBarTheme: BottomNavigationBarThemeData(...)`.
+
 ---
+
 
 ## 🧙‍♂️ Interactive Project Initializer Flow (MANDATORY AGENT INSTRUCTIONS)
 

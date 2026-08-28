@@ -55,8 +55,11 @@
   - **STRICT ZERO HARDCODED STRINGS** in UI and error messages.
   - Arabic (RTL) & English (LTR) ready with `AppLocalizations` and context extensions.
 * **📦 FVM (Flutter Version Management)**:
-  - Interactive prompt to pin a custom SDK version or use machine default.
+  - Full `.fvmrc`, `.fvm/fvm_config.json`, and `.vscode/settings.json` integration with SDK path linking.
+* **📦 Dynamic Package Compatibility Matrix**:
+  - Automatically matches `pubspec.yaml` package versions to target Flutter/Dart SDK with zero solver conflicts.
 * **🛡️ Enterprise Validation, Caching & Error Handling**:
+
   - Composable `Validators` with localized errors.
   - Secure token storage (`FlutterSecureStorage`) & session caching (`SharedPreferences`).
 * **📱 Platform-Adaptive UI**: Native **Material 3** for Android/Desktop/Web & Native **Cupertino (HIG)** for iOS/macOS.

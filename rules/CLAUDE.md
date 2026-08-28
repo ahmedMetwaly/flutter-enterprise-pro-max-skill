@@ -18,6 +18,10 @@
 - **Firebase**: Modular services (Auth, Firestore, Storage, Messaging, Crashlytics hooked into BlocObserver).
 - **Fastlane & CI/CD**: Android/iOS Fastfile with flavor-based lanes (`deploy_dev`, `deploy_staging`, `deploy_prod`), `.env.fastlane`, and `.github/workflows/deploy.yml`.
 - **Interactive Initializer**: When user asks to init project, ALWAYS ask the 6 questions first (Name, FVM, Platforms, Category, Firebase, Fastlane).
+- **FVM Setup**: When custom version is requested, create `.fvmrc`, `.fvm/fvm_config.json`, and `.vscode/settings.json` (`dart.flutterSdkPath: .fvm/flutter_sdk`).
+- **Package Matrix**: Ensure all `pubspec.yaml` dependencies match target Flutter version without conflicts and run `flutter pub get` immediately.
+- **Theme Data**: Always use `CardThemeData` for `cardTheme` in `ThemeData`. Never use `CardTheme(...)`.
 - **Automated Runner**: ALWAYS execute `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` automatically after scaffolding.
+
 
 

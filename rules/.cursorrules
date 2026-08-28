@@ -59,4 +59,15 @@ Follow these mandatory architectural, coding, and UI/UX design principles:
 - ALWAYS ask the user the 6 interactive questions before scaffolding (Name/Org, FVM version, Platforms/Devices, UI Category, Firebase Services, Fastlane/CI-CD).
 - IMMEDIATELY after scaffolding, AUTOMATICALLY execute `flutter pub get`, `dart run build_runner build --delete-conflicting-outputs`, and `flutter analyze`. Never leave build_runner for the user to run manually.
 
+## 10. 📦 Complete FVM Setup (.fvm/ Folder & VS Code)
+- When a custom version is requested, create `.fvmrc`, `.fvm/fvm_config.json`, `.vscode/settings.json` (`dart.flutterSdkPath: .fvm/flutter_sdk`), and add `.fvm/flutter_sdk` to `.gitignore`.
+
+## 11. 📦 Package Version Matrix Compatibility
+- Always inspect the target Flutter version (FVM or local `flutter --version`) and ensure all dependencies in `pubspec.yaml` are compatible with each other and the Flutter/Dart SDK range. Run `flutter pub get` immediately to verify 0 conflicts.
+
+## 12. 📐 Strict ThemeData Rule (CardThemeData ONLY)
+- In `ThemeData`, **ALWAYS use `CardThemeData`** (`cardTheme: CardThemeData(...)` or `const CardThemeData(...)`).
+- **NEVER use `CardTheme(...)`** inside `ThemeData(cardTheme: ...)` as `CardTheme` is a widget class in Flutter.
+
+
 

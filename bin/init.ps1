@@ -67,8 +67,9 @@ Write-Host "✅ Enterprise Network subsystem (AuthInterceptor, ApiErrorHandler, 
 Write-Host "✅ Mandatory Flavors configured (main_dev.dart, main_staging.dart, main_production.dart)" -ForegroundColor Green
 Write-Host "✅ Mandatory AR/EN Localization created (intl_en.arb, intl_ar.arb)" -ForegroundColor Green
 if ($fvmVersion -ne "machine_default") {
-    Write-Host "✅ FVM configured for Flutter $fvmVersion (.fvmrc and .vscode/settings.json)" -ForegroundColor Green
+    Write-Host "✅ FVM configured for Flutter $fvmVersion (.fvmrc, .fvm/fvm_config.json, and .vscode/settings.json)" -ForegroundColor Green
 }
+
 Write-Host "✅ Platform Adaptability: Material 3 (Android/Desktop) + Cupertino HIG (iOS/macOS)" -ForegroundColor Green
 Write-Host "✅ Responsiveness: Mobile, Tablet (Navigation Rail), Desktop (Sidebar)" -ForegroundColor Green
 Write-Host "✅ UI/UX: Design Tokens + 8-point grid + Bento Grid & Micro-interactions" -ForegroundColor Green

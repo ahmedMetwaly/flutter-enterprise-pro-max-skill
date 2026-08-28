@@ -342,18 +342,25 @@ Every project **MUST** have Flavors configured out-of-the-box:
 
 ---
 
-## 📦 FVM (Flutter Version Management) Configuration
+## 📦 FVM (Flutter Version Management) Complete Setup
 
-When initializing or scaffolding a project:
+When initializing or scaffolding a project with a custom Flutter version:
 1. **Interactive Prompt**:
    - Ask the user: *"Do you want to specify a specific Flutter SDK version for FVM (e.g. 3.27.0, 3.29.0, stable) or use the current machine default?"*
-2. **Generate `.fvmrc`**:
+2. **Generate `.fvmrc`** (in project root):
    ```json
    {
      "flutter": "3.27.0"
    }
    ```
-3. **Generate `.vscode/settings.json`**:
+3. **Generate `.fvm/fvm_config.json`** (inside `.fvm/` directory):
+   ```json
+   {
+     "flutterSdkVersion": "3.27.0",
+     "flavors": {}
+   }
+   ```
+4. **Generate `.vscode/settings.json`**:
    ```json
    {
      "dart.flutterSdkPath": ".fvm/flutter_sdk",
@@ -365,9 +372,56 @@ When initializing or scaffolding a project:
      }
    }
    ```
-4. Add `.fvm/flutter_sdk` to `.gitignore`.
+5. **Update `.gitignore`**:
+   Ensure `.fvm/flutter_sdk`, `.fvm/flutter_sdk/`, and `.fvm/cache` are ignored.
+6. **Execute FVM Command**:
+   If the `fvm` CLI is installed on the machine, run `fvm use <version> --force` or `fvm install <version>` to link `.fvm/flutter_sdk`.
 
 ---
+
+## 📦 Dynamic Dependency Matrix & Package Compatibility
+
+The AI Agent **MUST ALWAYS** inspect the target Flutter version (from user's FVM choice or via `flutter --version` on the current machine) and ensure all package versions in `pubspec.yaml` are strictly compatible:
+
+### 1. Modern Flutter (3.27+ / Dart 3.6+):
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_bloc: ^8.1.6
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  injectable: ^2.5.0
+  get_it: ^8.0.0
+  dio: ^5.8.0
+  retrofit: ^4.4.2
+  flutter_dotenv: ^5.2.1
+  flutter_screenutil: ^5.9.3
+  google_fonts: ^6.2.1
+  shared_preferences: ^2.3.5
+  flutter_secure_storage: ^9.2.4
+  equatable: ^2.0.7
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.14
+  freezed: ^2.5.8
+  json_serializable: ^6.9.5
+  injectable_generator: ^2.6.2
+  retrofit_generator: ^9.1.8
+```
+
+### 2. Dependency Conflict Prevention Rule:
+- After writing `pubspec.yaml`, the agent **MUST immediately run `flutter pub get`**.
+- If any dependency solver conflict occurs (e.g. incompatible transitive package), the agent must dynamically adjust constraints (e.g., matching `intl`, `meta`, `analyzer`) before proceeding to code generation.
+
+---
+
 
 ## 🛡️ Coding Standards: Validation, Caching & Errors
 
@@ -398,6 +452,87 @@ When initializing or scaffolding a project:
 
 ---
 
+## 🔥 Flavor-Aware Firebase Architecture
+
+When Firebase is enabled:
+1. **Flavored Firebase Options**:
+   - `core/config/firebase/firebase_options_dev.dart`
+   - `core/config/firebase/firebase_options_staging.dart`
+   - `core/config/firebase/firebase_options_prod.dart`
+2. **Flavor-Aware Initialization**:
+   ```dart
+   Future<void> initializeFirebase(AppFlavor flavor) async {
+     final options = switch (flavor) {
+       AppFlavor.dev => DevFirebaseOptions.currentPlatform,
+       AppFlavor.staging => StagingFirebaseOptions.currentPlatform,
+       AppFlavor.production => ProdFirebaseOptions.currentPlatform,
+     };
+     await Firebase.initializeApp(options: options);
+   }
+   ```
+3. **Crashlytics Hook in `BlocObserver`**:
+   - Log unhandled Bloc errors and transitions directly to `FirebaseCrashlytics.instance.recordError(...)` with state context and stacktrace.
+4. **Supported Modular Services**:
+   - `firebase_auth`, `cloud_firestore`, `firebase_storage`, `firebase_messaging` (FCM), `firebase_crashlytics`, `firebase_remote_config`, `firebase_app_distribution`.
+
+---
+
+## 🚀 Enterprise Fastlane & CI/CD Pipelines
+
+When Fastlane & CI/CD is enabled:
+
+### 1. Android Fastlane (`android/fastlane/Fastfile`):
+- `lane :deploy_dev`:
+  - Builds `dev` release APK / AAB.
+  - Distributes via Firebase App Distribution (`firebase_app_distribution`).
+- `lane :deploy_staging`:
+  - Builds `staging` release AAB (`bundleStagingRelease`).
+  - Uploads to Google Play Internal Track (`upload_to_play_store(track: 'internal')`).
+- `lane :deploy_prod`:
+  - Builds `prod` release AAB (`bundleProdRelease`).
+  - Uploads to Google Play Production (`upload_to_play_store(track: 'production')`).
+
+### 2. iOS Fastlane (`ios/fastlane/Fastfile`):
+- `lane :deploy_dev`:
+  - Builds `dev` IPA and distributes to Firebase App Distribution / Ad-Hoc.
+- `lane :deploy_staging`:
+  - Matches certificates & profiles (`match(type: 'appstore')`).
+  - Builds `staging` IPA scheme.
+  - Uploads to Apple TestFlight (`upload_to_testflight`).
+- `lane :deploy_prod`:
+  - Matches production certificates.
+  - Builds `prod` IPA scheme.
+  - Uploads to App Store (`upload_to_app_store(submit_for_review: false)`).
+
+### 3. Secure Secrets Template (`.env.fastlane`):
+```env
+# Google Play & Android Secrets
+PLAY_STORE_JSON_KEY_DATA={"type": "service_account", ...}
+ANDROID_KEYSTORE_PASSWORD=your_keystore_password
+ANDROID_KEY_ALIAS=your_key_alias
+ANDROID_KEY_PASSWORD=your_key_password
+FIREBASE_APP_ID_ANDROID_DEV=1:xxx:android:xxx
+
+# Apple App Store Secrets
+APP_STORE_CONNECT_API_KEY_ID=your_key_id
+APP_STORE_CONNECT_API_ISSUER_ID=your_issuer_id
+APP_STORE_CONNECT_API_KEY_CONTENT=your_base64_p8_key
+MATCH_PASSWORD=your_match_encryption_password
+MATCH_GIT_URL=git@github.com:your_org/certificates.git
+FIREBASE_APP_ID_IOS_DEV=1:xxx:ios:xxx
+```
+
+### 4. GitHub Actions CI/CD Workflow (`.github/workflows/deploy.yml`):
+- Triggers on push to `dev`, `staging`, or `main` branches.
+- Sets up Java, Flutter SDK (via `.fvmrc`), and Fastlane/Ruby.
+- Runs `flutter test` and `flutter analyze`.
+- Runs appropriate lane based on branch:
+  - Push to `dev` ➔ `bundle exec fastlane android deploy_dev` & `bundle exec fastlane ios deploy_dev`
+  - Push to `staging` ➔ `bundle exec fastlane android deploy_staging` & `bundle exec fastlane ios deploy_staging`
+  - Push to `main` ➔ `bundle exec fastlane android deploy_prod` & `bundle exec fastlane ios deploy_prod`
+
+---
+
 ## 🎨 UI/UX Pro Max: Category-Driven Design Intelligence
 
 | Category | Visual Style & Archetype | Primary / Accent Colors | Font Pairing |
@@ -410,19 +545,78 @@ When initializing or scaffolding a project:
 | 🏋️ **Fitness & Wellness** | High-Energy Dark / Neon | Pitch Dark (`#0A0A0A`) + Lime (`#84CC16`) | Plus Jakarta Sans |
 | 🎓 **EdTech & Learning** | Gamified & Friendly | Soft Indigo (`#4F46E5`) + Gold (`#FBBF24`) | Nunito |
 
+### 📐 Enterprise ThemeData Standards (`core/theme/theme_manager.dart`)
+
+> [!IMPORTANT]
+> **Strict Material 3 ThemeData Rule**:
+> - **ALWAYS USE `CardThemeData`** for `cardTheme`:
+>   ```dart
+>   // ✅ CORRECT:
+>   cardTheme: const CardThemeData(
+>     color: AppColors.lightSurface,
+>     elevation: 0,
+>     shape: RoundedRectangleBorder(
+>       borderRadius: BorderRadius.all(Radius.circular(16)),
+>       side: BorderSide(color: AppColors.lightBorder, width: 1),
+>     ),
+>     margin: EdgeInsets.zero,
+>   ),
+>
+>   // ❌ STRICTLY FORBIDDEN:
+>   cardTheme: CardTheme(...), // WRONG! CardTheme is a widget, NOT ThemeData property.
+>   ```
+> - Always use component data classes: `appBarTheme: const AppBarTheme(...)`, `elevatedButtonTheme: ElevatedButtonThemeData(...)`, `inputDecorationTheme: InputDecorationTheme(...)`, `bottomNavigationBarTheme: BottomNavigationBarThemeData(...)`.
+
 ---
 
-## 🧙‍♂️ Interactive Project Initializer Flow (Agent Execution Checklist)
 
-When scaffolding a project:
-1. **Ask for Project Name & Org Domain** (e.g. `smart_clinic`, `com.company`).
-2. **Prompt for FVM Version**: (Enter specific Flutter version or use machine default).
-3. **Select Target Platforms & Form Factors** (Mobile, Web, Desktop / Phones, Tablets, Large Displays).
-4. **Select App Category** [1-7] for UI/UX Pro Max tokens.
-5. **Generate Mandatory Flavors**: `dev`, `staging`, `production` + `.env.*` files + entry points.
-6. **Generate Mandatory Localization**: `l10n.yaml`, `intl_en.arb`, `intl_ar.arb`.
-7. **Configure Injectable + GetIt + Enterprise Network Subsystem**.
-8. **Scaffold Initial Feature with 3 Layers** (`domain`, `data`, `presentation`).
-9. **Run `build_runner` and `flutter analyze`** to ensure 0 errors / 0 warnings.
+## 🧙‍♂️ Interactive Project Initializer Flow (MANDATORY AGENT INSTRUCTIONS)
+
+> [!CRITICAL]
+> **DO NOT START WRITING CODE OR CREATING FILES IMMEDIATELY!**
+> Whenever the user asks to `"init project"`, `"create flutter app"`, `"scaffold new project"`, or initialize an application, the AI Agent **MUST ALWAYS STOP AND PRESENT** the following questionnaire to the user:
+
+### 📋 Mandatory Questionnaire to Ask the User:
+1. **📝 Project Name & Org Domain**: (e.g. `smart_clinic`, `com.company`).
+2. **📦 FVM (Flutter Version Management)**:
+   - Option A: Use current machine default Flutter SDK.
+   - Option B: Pin a custom Flutter SDK version (e.g. `3.27.0`, `3.29.0`, `stable`).
+3. **📱 Target Platforms & Form Factors**:
+   - Platforms: Mobile (Android/iOS), Web, Desktop (Windows/macOS/Linux), or All Platforms.
+   - Form Factors: Phones (<600dp), Tablets (600-1024dp with Navigation Rail), Desktop (>1024dp with Sidebar).
+4. **🎨 UI/UX Pro Max Design Category [1-7]**:
+   - 💳 1) Fintech & Banking
+   - 🛍️ 2) E-Commerce & Retail
+   - 🏥 3) Healthcare & Medical
+   - 🍔 4) Food Delivery & Dining
+   - 📊 5) SaaS & Productivity
+   - 🏋️ 6) Fitness & Wellness
+   - 🎓 7) EdTech & Gamification
+5. **🔥 Firebase Services Setup**:
+   - Enable Firebase? (Yes / No)
+   - If Yes, select services (comma separated):
+     - [1] Firebase Auth
+     - [2] Cloud Firestore
+     - [3] Firebase Storage
+     - [4] Cloud Messaging (FCM)
+     - [5] Crashlytics & Analytics (auto-integrated into `BlocObserver`)
+     - [6] Remote Config
+     - [7] Firebase App Distribution
+6. **🚀 Fastlane & GitHub Actions CI/CD Setup**:
+   - Configure Fastlane & CI/CD automation? (Yes / No)
+   - (If Yes, automatically generates `android/fastlane/Fastfile`, `ios/fastlane/Fastfile`, `.env.fastlane`, and `.github/workflows/deploy.yml` with flavor-based lanes).
+
+---
+
+### ⚡ Post-Scaffolding Automated Execution (MANDATORY)
+
+> [!IMPORTANT]
+> Immediately after creating all files and folders, the AI Agent **MUST PROACTIVELY AND AUTOMATICALLY EXECUTE**:
+> 1. `flutter pub get`
+> 2. `dart run build_runner build --delete-conflicting-outputs` (to generate Freezed, Injectable, Retrofit, and JsonSerializable code)
+> 3. `flutter analyze` (to ensure 0 errors / 0 warnings)
+>
+> **NEVER ask the user to run `build_runner` or `flutter analyze` manually! Run them automatically in the background/terminal as part of completing the task.**
+
 
 

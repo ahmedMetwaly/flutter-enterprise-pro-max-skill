@@ -41,10 +41,6 @@ Write-Host "  8) ⚙️ Clean Slate Enterprise (Default Minimalist)"
 $category = Read-Host "👉 Choose [1-8] [default: 1]"
 if ([string]::IsNullOrWhiteSpace($category)) { $category = "1" }
 
-# 5. DevOps & Fastlane
-$enableFastlane = Read-Host "`n🚀 Enable Fastlane & GitHub Actions CI/CD? (Y/N) [default: Y]"
-if ([string]::IsNullOrWhiteSpace($enableFastlane)) { $enableFastlane = "Y" }
-
 Write-Host "`n⚡ Scaffolding project: $projectName..." -ForegroundColor Yellow
 Write-Host "✅ 3-Layer Clean Architecture created (domain, data, presentation)" -ForegroundColor Green
 Write-Host "✅ Injectable + GetIt dependency injection configured" -ForegroundColor Green
@@ -58,7 +54,6 @@ Write-Host "✅ Platform Adaptability: Material 3 (Android/Desktop) + Cupertino 
 Write-Host "✅ Responsiveness: Mobile, Tablet (Navigation Rail), Desktop (Sidebar)" -ForegroundColor Green
 Write-Host "✅ UI/UX: Design Tokens + 8-point grid + strict CardThemeData" -ForegroundColor Green
 Write-Host "✅ State Management: Cubit + Freezed + JsonSerializable" -ForegroundColor Green
-if ($enableFastlane -match "^[Yy]") { Write-Host "✅ DevOps: Fastfile & GitHub Actions deployment pipelines ready" -ForegroundColor Green }
 
 Write-Host "`n🎉 Project created successfully!" -ForegroundColor Cyan
 Write-Host "   cd $projectName"
@@ -66,5 +61,6 @@ Write-Host "   flutter pub get"
 Write-Host "   dart run build_runner build --delete-conflicting-outputs"
 Write-Host "   flutter test"
 Write-Host "   flutter run -t lib/main_dev.dart --flavor dev`n"
+
 
 

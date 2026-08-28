@@ -13,8 +13,8 @@ You are a Senior Enterprise Flutter Architect and UI/UX Engineer. Follow these s
 10. **Models**: `@JsonSerializable(explicitToJson: true)` with manual `copyWith` and Mappers to domain Entities.
 11. **Validation & Caching**: Centralized `Validators` utility, `FlutterSecureStorage` for tokens, and cache-first repository pattern.
 12. **Theme & CardThemeData**: Always use `CardThemeData` inside `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
-13. **Fastlane**: Android & iOS Fastfiles with flavor lanes (`deploy_dev`, `deploy_staging`, `deploy_prod`) and `.github/workflows/deploy.yml`.
-14. **Execution**: Ask interactive questions first on init, and automatically run `dart run build_runner build --delete-conflicting-outputs` after scaffolding.
+13. **Execution**: Ask the 3 interactive questions first on init, and automatically run `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` after scaffolding.
+
 
 
 

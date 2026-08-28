@@ -43,11 +43,6 @@ void main(List<String> args) async {
   stdout.write('👉 Choose [1-8] (default: 1): ');
   final categoryChoice = stdin.readLineSync()?.trim() ?? '1';
 
-  // 5. Fastlane & CI/CD
-  print('\n🚀 Fastlane & DevOps Automation:');
-  stdout.write('👉 Configure Fastlane & GitHub Actions CI/CD? (y/n, default: y): ');
-  final enableFastlane = (stdin.readLineSync()?.trim().toLowerCase() ?? 'y') != 'n';
-
   // Summary
   print('\n\x1B[32m============================================================');
   print('🎯 Project Generation Configuration:');
@@ -64,9 +59,7 @@ void main(List<String> args) async {
   print('  - Theme: Material 3 with strict CardThemeData');
   print('  - Platforms: Option $platformChoice');
   print('  - Devices & Responsiveness: Option $deviceChoice');
-  print('  - Fastlane & CI/CD: ${enableFastlane ? "Enabled" : "Disabled"}');
   print('============================================================\x1B[0m\n');
-
 
   stdout.write('Proceed with project scaffolding? (y/n, default: y): ');
   final confirm = stdin.readLineSync()?.trim().toLowerCase() ?? 'y';
@@ -87,7 +80,6 @@ void main(List<String> args) async {
   print('✅ Platform-Adaptive widgets (Material 3 for Android/Desktop, Cupertino for iOS/macOS).');
   print('✅ Responsive Layout Breakpoints configured (Mobile < 600, Tablet 600-1024, Desktop > 1024).');
   print('✅ Design tokens set up for chosen category with strict CardThemeData.');
-  if (enableFastlane) print('✅ Fastfile (Android/iOS) and GitHub Actions workflow generated.');
   print('\n🎉 Done! CD into your project and run:');
   print('   cd $projectName');
   print('   flutter pub get');
@@ -95,5 +87,6 @@ void main(List<String> args) async {
   print('   flutter test');
   print('   flutter run -t lib/main_dev.dart --flavor dev\n');
 }
+
 
 

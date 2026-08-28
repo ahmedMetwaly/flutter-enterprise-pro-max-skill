@@ -1,6 +1,6 @@
 ---
 name: flutter-enterprise-pro-max
-description: Universal enterprise Flutter architect and UI/UX design intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up 3-layer Clean Architecture (domain, data, presentation), Injectable + GetIt DI, dartz Either functional error handling, core/routes routing, Mandatory Flavors (.vscode/launch.json, DevConfig, StagingConfig, ProductionConfig with --dart-define), Mandatory AR/EN Localization (zero hardcoded strings), Fastlane, Multi-Platform targeting (Mobile, Web, Desktop), Device responsiveness (Phones, Tablets, Desktops), or crafting high-end UI/UX designs.
+description: Universal enterprise Flutter architect and UI/UX design intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up 3-layer Clean Architecture (domain, data, presentation), Injectable + GetIt DI, dartz Either functional error handling, core/routes routing, Mandatory Flavors (.vscode/launch.json, DevConfig, StagingConfig, ProductionConfig with --dart-define), Mandatory AR/EN Localization (zero hardcoded strings), Multi-Platform targeting (Mobile, Web, Desktop), Device responsiveness (Phones, Tablets, Desktops), or crafting high-end UI/UX designs.
 ---
 
 # 🚀 Flutter Enterprise Pro Max - AI Agent Skill
@@ -285,8 +285,6 @@ class ProductionConfig implements EnvConfig {
    - Form Factors: Phones, Tablets, Desktop.
 3. **🎨 UI/UX Pro Max Design Category [1-7]**:
    - 💳 Fintech, 🛍️ E-Commerce, 🏥 Healthcare, 🍔 Food, 📊 SaaS, 🏋️ Fitness, 🎓 EdTech.
-4. **🚀 Fastlane & GitHub Actions CI/CD Setup**:
-   - Configure Fastlane & CI/CD automation? (Yes / No)
 
 ---
 
@@ -299,6 +297,7 @@ class ProductionConfig implements EnvConfig {
 > 3. `flutter analyze` (to ensure 0 errors / 0 warnings)
 >
 > **NEVER ask the user to run `build_runner` or `flutter analyze` manually! Run them automatically in the background/terminal as part of completing the task.**
+
 
 
 

@@ -12,10 +12,10 @@
 - **Platform UI**: Material 3 for Android/Desktop/Web, Cupertino for iOS/macOS.
 - **Responsiveness**: ResponsiveLayout (<600 phone, 600-1024 tablet, >1024 desktop).
 - **Widgets**: Always use Widget classes in separate files. Strictly NO widget helper methods.
-- **Fastlane**: Fastfiles with flavor lanes (`deploy_dev`, `deploy_staging`, `deploy_prod`).
 - **ScreenUtil**: Use `flutter_screenutil` for sizes (.w, .h, .sp, .r).
 - **Theme**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
-- **Interactive Initializer & Build Runner**: Ask interactive questions on init, and automatically execute `dart run build_runner build --delete-conflicting-outputs` after generating code.
+- **Interactive Initializer & Build Runner**: Ask 3 interactive questions on init, and automatically execute `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` after generating code.
+
 
 
 

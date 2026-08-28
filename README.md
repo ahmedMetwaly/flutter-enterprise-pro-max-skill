@@ -65,9 +65,9 @@
 * **📱 Platform-Adaptive UI**: Native **Material 3** for Android/Desktop/Web & Native **Cupertino (HIG)** for iOS/macOS.
 * **🖥️ Multi-Device Responsiveness**: Automatic layout adaptation for **Phones** (< 600dp), **Tablets** (600dp - 1024dp with Navigation Rail), and **Desktop / Large Screens** (> 1024dp with Sidebar).
 * **🎨 UI/UX Pro Max Design Intelligence**: 7 pre-built psychological design palettes (Fintech, E-Commerce, Healthcare, Food Delivery, SaaS, Fitness, EdTech).
-* **🚀 Fastlane & DevOps Automation**: Android/iOS Fastfiles supporting flavor lanes (`deploy_dev`, `deploy_staging`, `deploy_prod`) and automated GitHub Actions CI/CD.
 
 ---
+
 
 
 ## 🤖 Universal Installation Matrix

@@ -17,9 +17,9 @@
 - **Responsiveness**: ResponsiveLayout supporting Mobile (<600), Tablet (600-1024), and Desktop (>1024).
 - **Widgets**: Strictly ONE widget class per file. Never use helper functions returning Widgets.
 - **Theme**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
-- **Fastlane & CI/CD**: Android/iOS Fastfile with flavor-based lanes (`deploy_dev`, `deploy_staging`, `deploy_prod`), `.env.fastlane`, and `.github/workflows/deploy.yml`.
-- **Interactive Initializer**: When user asks to init project, ALWAYS ask questions first (Name, Platforms, Category, Fastlane).
+- **Interactive Initializer**: When user asks to init project, ALWAYS ask the 3 questions first (Name, Platforms, Category).
 - **Automated Runner**: ALWAYS execute `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` automatically after scaffolding.
+
 
 
 

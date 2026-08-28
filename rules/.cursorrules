@@ -52,8 +52,13 @@ Follow these mandatory architectural, coding, and UI/UX design principles:
 - **NEVER use `CardTheme(...)`** inside `ThemeData(cardTheme: ...)` as `CardTheme` is a widget class in Flutter.
 
 ## 9. ⚡ Mandatory Interactive Flow & Automated Execution
-- ALWAYS ask the user the interactive questions first (Project Name, Platforms/Devices, UI Category, Fastlane/CI-CD).
-- IMMEDIATELY after scaffolding, AUTOMATICALLY execute `flutter pub get`, `dart run build_runner build --delete-conflicting-outputs`, and `flutter analyze`. Never leave build_runner for the user to run manually.
+- ALWAYS ask the user the 3 interactive questions first (Project Name, Platforms/Devices, UI Category).
+- IMMEDIATELY after scaffolding, AUTOMATICALLY execute:
+  1. `flutter pub get`
+  2. `dart run build_runner build --delete-conflicting-outputs`
+  3. `flutter analyze`
+- Never leave `build_runner` for the user to run manually.
+
 
 
 

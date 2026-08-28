@@ -1,10 +1,15 @@
-﻿# GitHub Copilot Custom Instructions for Flutter Enterprise Pro Max
+# GitHub Copilot Custom Instructions for Flutter Enterprise Pro Max
 
-- Architecture: Clean Architecture + Feature-First.
-- Platform UI: Material 3 for Android/Desktop and Cupertino for iOS/macOS.
-- Responsiveness: ResponsiveLayout (<600 phone, 600-1024 tablet, >1024 desktop).
-- Always use Widget classes in separate files. Do not generate widget helper methods.
-- State Management: Cubit only. States must use `@freezed`.
-- Models: Use `@JsonSerializable(explicitToJson: true)`, manual `copyWith`, and Dart Extensions.
-- Networking: Dio with Retrofit.
-- Use `flutter_screenutil` for sizes and `AppColors` for design tokens.
+- **Architecture**: 3-Layer Clean Architecture (Domain, Data, Presentation).
+- **Dependency Injection**: Injectable with GetIt. Never manually construct repositories or usecases.
+- **State Management**: Cubit only. States must use `@freezed`.
+- **Data Layer**: Retrofit for DataSources, `@JsonSerializable(explicitToJson: true)` with manual `copyWith` and Model-to-Entity mappers.
+- **Domain Layer**: Pure Entities (`Equatable`), abstract Repositories (`ResultFuture<T>`), single-responsibility UseCases.
+- **Flavors**: Mandatory dev, staging, production configuration.
+- **Localization**: Mandatory AR/EN with zero hardcoded strings. Always use `context.l10n.<key>`.
+- **Platform UI**: Material 3 for Android/Desktop/Web, Cupertino for iOS/macOS.
+- **Responsiveness**: ResponsiveLayout (<600 phone, 600-1024 tablet, >1024 desktop).
+- **Widgets**: Always use Widget classes in separate files. Strictly NO widget helper methods.
+- **Networking**: FTLGroup_desktop pattern (AuthInterceptor, ApiErrorHandler, ApiResponse, PaginatedResponse).
+- **ScreenUtil**: Use `flutter_screenutil` for sizes (.w, .h, .sp, .r).
+

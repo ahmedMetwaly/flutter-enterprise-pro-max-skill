@@ -398,6 +398,87 @@ When initializing or scaffolding a project:
 
 ---
 
+## 🔥 Flavor-Aware Firebase Architecture
+
+When Firebase is enabled:
+1. **Flavored Firebase Options**:
+   - `core/config/firebase/firebase_options_dev.dart`
+   - `core/config/firebase/firebase_options_staging.dart`
+   - `core/config/firebase/firebase_options_prod.dart`
+2. **Flavor-Aware Initialization**:
+   ```dart
+   Future<void> initializeFirebase(AppFlavor flavor) async {
+     final options = switch (flavor) {
+       AppFlavor.dev => DevFirebaseOptions.currentPlatform,
+       AppFlavor.staging => StagingFirebaseOptions.currentPlatform,
+       AppFlavor.production => ProdFirebaseOptions.currentPlatform,
+     };
+     await Firebase.initializeApp(options: options);
+   }
+   ```
+3. **Crashlytics Hook in `BlocObserver`**:
+   - Log unhandled Bloc errors and transitions directly to `FirebaseCrashlytics.instance.recordError(...)` with state context and stacktrace.
+4. **Supported Modular Services**:
+   - `firebase_auth`, `cloud_firestore`, `firebase_storage`, `firebase_messaging` (FCM), `firebase_crashlytics`, `firebase_remote_config`, `firebase_app_distribution`.
+
+---
+
+## 🚀 Enterprise Fastlane & CI/CD Pipelines
+
+When Fastlane & CI/CD is enabled:
+
+### 1. Android Fastlane (`android/fastlane/Fastfile`):
+- `lane :deploy_dev`:
+  - Builds `dev` release APK / AAB.
+  - Distributes via Firebase App Distribution (`firebase_app_distribution`).
+- `lane :deploy_staging`:
+  - Builds `staging` release AAB (`bundleStagingRelease`).
+  - Uploads to Google Play Internal Track (`upload_to_play_store(track: 'internal')`).
+- `lane :deploy_prod`:
+  - Builds `prod` release AAB (`bundleProdRelease`).
+  - Uploads to Google Play Production (`upload_to_play_store(track: 'production')`).
+
+### 2. iOS Fastlane (`ios/fastlane/Fastfile`):
+- `lane :deploy_dev`:
+  - Builds `dev` IPA and distributes to Firebase App Distribution / Ad-Hoc.
+- `lane :deploy_staging`:
+  - Matches certificates & profiles (`match(type: 'appstore')`).
+  - Builds `staging` IPA scheme.
+  - Uploads to Apple TestFlight (`upload_to_testflight`).
+- `lane :deploy_prod`:
+  - Matches production certificates.
+  - Builds `prod` IPA scheme.
+  - Uploads to App Store (`upload_to_app_store(submit_for_review: false)`).
+
+### 3. Secure Secrets Template (`.env.fastlane`):
+```env
+# Google Play & Android Secrets
+PLAY_STORE_JSON_KEY_DATA={"type": "service_account", ...}
+ANDROID_KEYSTORE_PASSWORD=your_keystore_password
+ANDROID_KEY_ALIAS=your_key_alias
+ANDROID_KEY_PASSWORD=your_key_password
+FIREBASE_APP_ID_ANDROID_DEV=1:xxx:android:xxx
+
+# Apple App Store Secrets
+APP_STORE_CONNECT_API_KEY_ID=your_key_id
+APP_STORE_CONNECT_API_ISSUER_ID=your_issuer_id
+APP_STORE_CONNECT_API_KEY_CONTENT=your_base64_p8_key
+MATCH_PASSWORD=your_match_encryption_password
+MATCH_GIT_URL=git@github.com:your_org/certificates.git
+FIREBASE_APP_ID_IOS_DEV=1:xxx:ios:xxx
+```
+
+### 4. GitHub Actions CI/CD Workflow (`.github/workflows/deploy.yml`):
+- Triggers on push to `dev`, `staging`, or `main` branches.
+- Sets up Java, Flutter SDK (via `.fvmrc`), and Fastlane/Ruby.
+- Runs `flutter test` and `flutter analyze`.
+- Runs appropriate lane based on branch:
+  - Push to `dev` ➔ `bundle exec fastlane android deploy_dev` & `bundle exec fastlane ios deploy_dev`
+  - Push to `staging` ➔ `bundle exec fastlane android deploy_staging` & `bundle exec fastlane ios deploy_staging`
+  - Push to `main` ➔ `bundle exec fastlane android deploy_prod` & `bundle exec fastlane ios deploy_prod`
+
+---
+
 ## 🎨 UI/UX Pro Max: Category-Driven Design Intelligence
 
 | Category | Visual Style & Archetype | Primary / Accent Colors | Font Pairing |
@@ -412,17 +493,53 @@ When initializing or scaffolding a project:
 
 ---
 
-## 🧙‍♂️ Interactive Project Initializer Flow (Agent Execution Checklist)
+## 🧙‍♂️ Interactive Project Initializer Flow (MANDATORY AGENT INSTRUCTIONS)
 
-When scaffolding a project:
-1. **Ask for Project Name & Org Domain** (e.g. `smart_clinic`, `com.company`).
-2. **Prompt for FVM Version**: (Enter specific Flutter version or use machine default).
-3. **Select Target Platforms & Form Factors** (Mobile, Web, Desktop / Phones, Tablets, Large Displays).
-4. **Select App Category** [1-7] for UI/UX Pro Max tokens.
-5. **Generate Mandatory Flavors**: `dev`, `staging`, `production` + `.env.*` files + entry points.
-6. **Generate Mandatory Localization**: `l10n.yaml`, `intl_en.arb`, `intl_ar.arb`.
-7. **Configure Injectable + GetIt + Enterprise Network Subsystem**.
-8. **Scaffold Initial Feature with 3 Layers** (`domain`, `data`, `presentation`).
-9. **Run `build_runner` and `flutter analyze`** to ensure 0 errors / 0 warnings.
+> [!CRITICAL]
+> **DO NOT START WRITING CODE OR CREATING FILES IMMEDIATELY!**
+> Whenever the user asks to `"init project"`, `"create flutter app"`, `"scaffold new project"`, or initialize an application, the AI Agent **MUST ALWAYS STOP AND PRESENT** the following questionnaire to the user:
+
+### 📋 Mandatory Questionnaire to Ask the User:
+1. **📝 Project Name & Org Domain**: (e.g. `smart_clinic`, `com.company`).
+2. **📦 FVM (Flutter Version Management)**:
+   - Option A: Use current machine default Flutter SDK.
+   - Option B: Pin a custom Flutter SDK version (e.g. `3.27.0`, `3.29.0`, `stable`).
+3. **📱 Target Platforms & Form Factors**:
+   - Platforms: Mobile (Android/iOS), Web, Desktop (Windows/macOS/Linux), or All Platforms.
+   - Form Factors: Phones (<600dp), Tablets (600-1024dp with Navigation Rail), Desktop (>1024dp with Sidebar).
+4. **🎨 UI/UX Pro Max Design Category [1-7]**:
+   - 💳 1) Fintech & Banking
+   - 🛍️ 2) E-Commerce & Retail
+   - 🏥 3) Healthcare & Medical
+   - 🍔 4) Food Delivery & Dining
+   - 📊 5) SaaS & Productivity
+   - 🏋️ 6) Fitness & Wellness
+   - 🎓 7) EdTech & Gamification
+5. **🔥 Firebase Services Setup**:
+   - Enable Firebase? (Yes / No)
+   - If Yes, select services (comma separated):
+     - [1] Firebase Auth
+     - [2] Cloud Firestore
+     - [3] Firebase Storage
+     - [4] Cloud Messaging (FCM)
+     - [5] Crashlytics & Analytics (auto-integrated into `BlocObserver`)
+     - [6] Remote Config
+     - [7] Firebase App Distribution
+6. **🚀 Fastlane & GitHub Actions CI/CD Setup**:
+   - Configure Fastlane & CI/CD automation? (Yes / No)
+   - (If Yes, automatically generates `android/fastlane/Fastfile`, `ios/fastlane/Fastfile`, `.env.fastlane`, and `.github/workflows/deploy.yml` with flavor-based lanes).
+
+---
+
+### ⚡ Post-Scaffolding Automated Execution (MANDATORY)
+
+> [!IMPORTANT]
+> Immediately after creating all files and folders, the AI Agent **MUST PROACTIVELY AND AUTOMATICALLY EXECUTE**:
+> 1. `flutter pub get`
+> 2. `dart run build_runner build --delete-conflicting-outputs` (to generate Freezed, Injectable, Retrofit, and JsonSerializable code)
+> 3. `flutter analyze` (to ensure 0 errors / 0 warnings)
+>
+> **NEVER ask the user to run `build_runner` or `flutter analyze` manually! Run them automatically in the background/terminal as part of completing the task.**
+
 
 

@@ -43,3 +43,20 @@ Follow these mandatory architectural, coding, and UI/UX design principles:
 - STRICT: ONE WIDGET CLASS PER FILE. No function widgets (`Widget myWidget() => ...`).
 - Use `flutter_screenutil` (.w, .h, .sp, .r) and `AppColors` design tokens.
 
+## 7. 🔥 Firebase & Crashlytics
+
+- Flavor-aware Firebase options (`firebase_options_dev.dart`, `firebase_options_staging.dart`, `firebase_options_prod.dart`).
+- Log unhandled Bloc errors directly to `FirebaseCrashlytics` inside `SimpleBlocObserver`.
+
+## 8. 🚀 Fastlane & CI/CD Pipelines
+- Android & iOS Fastfiles configured with flavor lanes:
+  - `lane :deploy_dev` ➔ Firebase App Distribution
+  - `lane :deploy_staging` ➔ Google Play Internal / TestFlight
+  - `lane :deploy_prod` ➔ Google Play Production / App Store
+- Secure `.env.fastlane` template and `.github/workflows/deploy.yml` GitHub Actions pipeline.
+
+## 9. ⚡ Mandatory Interactive Flow & Automated Execution
+- ALWAYS ask the user the 6 interactive questions before scaffolding (Name/Org, FVM version, Platforms/Devices, UI Category, Firebase Services, Fastlane/CI-CD).
+- IMMEDIATELY after scaffolding, AUTOMATICALLY execute `flutter pub get`, `dart run build_runner build --delete-conflicting-outputs`, and `flutter analyze`. Never leave build_runner for the user to run manually.
+
+

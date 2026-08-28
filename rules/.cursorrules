@@ -5,69 +5,56 @@ Follow these mandatory architectural, coding, and UI/UX design principles:
 
 ## 1. 🏛️ 3-Layer Clean Architecture & DI
 - Strict 3 layers per feature:
-  - `domain/`: Pure Dart business logic (Entities extending `Equatable`, Repositories returning `ResultFuture<T>`, discrete UseCases). Zero UI dependencies.
+  - `domain/`: Pure Dart business logic (Entities extending `Equatable`, Repositories returning `ResultFuture<T>` using `dartz` `Either`, discrete UseCases). Zero UI dependencies.
   - `data/`: Retrofit DataSources (`*_datasource.dart`), `@JsonSerializable(explicitToJson: true)` Models with manual `copyWith` and Mappers, Repositories implementations (`@LazySingleton(as: *Repo)`).
   - `presentation/`: Cubit ONLY with Freezed States (`*_cubit.dart`, `*_state.dart`), Screen Widget Classes, Sub-widget Classes (ONE widget class per file).
 - **Dependency Injection**: Injectable + GetIt (`@InjectableInit`, `@singleton`, `@LazySingleton(as: Interface)`, `@lazySingleton`, `@injectable`, `@module`).
 - Never instantiate repositories or use cases manually.
 
-## 2. 🌐 Network Subsystem (Production-Grade)
-
+## 2. 🌐 Network Subsystem with `dartz`
+- `typedef ResultFuture<T> = Future<Either<ApiErrorModel, T>>;` using `package:dartz/dartz.dart`.
 - `DioClient` with `PrettyDioLogger` and 15s timeouts.
 - `AuthInterceptor` with `Completer<String?>` mutex lock for token refresh on 401 and auto-retry of queued requests.
 - `ApiErrorHandler` mapping all `DioException` types into `ApiErrorModel`.
 - Strongly-typed `ApiResponse<T>` and `PaginatedResponse<T>`.
-- Functional error handling via `typedef ResultFuture<T> = Future<Either<ApiErrorModel, T>>;`.
 
-## 3. 🚩 Mandatory Multi-Environment Flavors
-- Every project MUST have `AppFlavor` (`dev`, `staging`, `production`), `EnvConfig`, and separate entry points:
-  - `main_dev.dart` (.env.dev)
-  - `main_staging.dart` (.env.staging)
-  - `main_production.dart` (.env.production)
-  - Shared `main.dart` with `bootstrap(EnvConfig)` and Flavor Ribbon Banner on non-production builds.
+## 3. 🚦 Centralized Routing (`core/routes/`)
+- `core/routes/routes.dart`: `Routes` class with static const route string names.
+- `core/routes/app_router.dart`: `AppRouter` with `generateRoute(RouteSettings settings)` using `PageRouteBuilder` with `FadeTransition` (400ms duration).
 
-## 4. 🌍 Mandatory AR/EN Localization
+## 4. 🚩 Mandatory Multi-Environment Flavors & `.vscode/launch.json`
+- Concrete configurations:
+  - `DevConfig`: Reads from `.env.dev` via `dotenv.env['...']!`.
+  - `StagingConfig`: Reads from `.env.staging` via `dotenv.env['...']!`.
+  - `ProductionConfig`: Injected at build time via `const String.fromEnvironment('...')` (`--dart-define`), zero `.env` file, `enableLogging => false`.
+- **VS Code Launch Profiles**: Always generate `.vscode/launch.json` supporting Dev, Staging, and Production.
+- **Git Ignore**: Add `.env`, `.env.*`, `*.env` to `.gitignore`.
+
+## 5. 🌍 Mandatory AR/EN Localization
 - **STRICT ZERO HARDCODED STRINGS** in UI and error messages.
 - Always use `context.l10n.<key>` or `AppLocalizations.of(context)!.<key>`.
 - RTL (Arabic) & LTR (English) full support.
 
-## 5. 🛡️ Validation & Caching Standards
+## 6. 🛡️ Validation & Caching Standards
 - Centralized `Validators` class returning localized error strings.
 - Secure token storage via `FlutterSecureStorage` (`TokenStorage`).
 - Cache-First repository pattern with offline fallback.
 
-## 6. 📱 Platform-Adaptive & Multi-Device UI
+## 7. 📱 Platform-Adaptive & Multi-Device UI
 - 🍎 **iOS & macOS**: Cupertino styling (`CupertinoButton`, `CupertinoTextField`, `CupertinoActivityIndicator`).
 - 🤖 **Android & Desktop & Web**: Material 3 styling (`ElevatedButton`, `FilledButton`, `TextField`).
 - 📱 Breakpoints: Mobile (<600dp), Tablet (600-1024dp with Navigation Rail), Desktop (>1024dp with Sidebar).
 - STRICT: ONE WIDGET CLASS PER FILE. No function widgets (`Widget myWidget() => ...`).
 - Use `flutter_screenutil` (.w, .h, .sp, .r) and `AppColors` design tokens.
 
-## 7. 🔥 Firebase & Crashlytics
-
-- Flavor-aware Firebase options (`firebase_options_dev.dart`, `firebase_options_staging.dart`, `firebase_options_prod.dart`).
-- Log unhandled Bloc errors directly to `FirebaseCrashlytics` inside `SimpleBlocObserver`.
-
-## 8. 🚀 Fastlane & CI/CD Pipelines
-- Android & iOS Fastfiles configured with flavor lanes:
-  - `lane :deploy_dev` ➔ Firebase App Distribution
-  - `lane :deploy_staging` ➔ Google Play Internal / TestFlight
-  - `lane :deploy_prod` ➔ Google Play Production / App Store
-- Secure `.env.fastlane` template and `.github/workflows/deploy.yml` GitHub Actions pipeline.
+## 8. 📐 Strict ThemeData Rule (CardThemeData ONLY)
+- In `ThemeData`, **ALWAYS use `CardThemeData`** (`cardTheme: const CardThemeData(...)`).
+- **NEVER use `CardTheme(...)`** inside `ThemeData(cardTheme: ...)` as `CardTheme` is a widget class in Flutter.
 
 ## 9. ⚡ Mandatory Interactive Flow & Automated Execution
-- ALWAYS ask the user the 6 interactive questions before scaffolding (Name/Org, FVM version, Platforms/Devices, UI Category, Firebase Services, Fastlane/CI-CD).
+- ALWAYS ask the user the interactive questions first (Project Name, Platforms/Devices, UI Category, Fastlane/CI-CD).
 - IMMEDIATELY after scaffolding, AUTOMATICALLY execute `flutter pub get`, `dart run build_runner build --delete-conflicting-outputs`, and `flutter analyze`. Never leave build_runner for the user to run manually.
 
-## 10. 📦 Complete FVM Setup (.fvm/ Folder & VS Code)
-- When a custom version is requested, create `.fvmrc`, `.fvm/fvm_config.json`, `.vscode/settings.json` (`dart.flutterSdkPath: .fvm/flutter_sdk`), and add `.fvm/flutter_sdk` to `.gitignore`.
-
-## 11. 📦 Package Version Matrix Compatibility
-- Always inspect the target Flutter version (FVM or local `flutter --version`) and ensure all dependencies in `pubspec.yaml` are compatible with each other and the Flutter/Dart SDK range. Run `flutter pub get` immediately to verify 0 conflicts.
-
-## 12. 📐 Strict ThemeData Rule (CardThemeData ONLY)
-- In `ThemeData`, **ALWAYS use `CardThemeData`** (`cardTheme: CardThemeData(...)` or `const CardThemeData(...)`).
-- **NEVER use `CardTheme(...)`** inside `ThemeData(cardTheme: ...)` as `CardTheme` is a widget class in Flutter.
 
 
 

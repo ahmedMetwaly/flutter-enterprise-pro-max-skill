@@ -42,32 +42,33 @@
 
 **Flutter Enterprise Pro Max** is a complete, production-grade AI Agent Skill and scaffolding framework engineered to enforce enterprise engineering standards:
 * **🏛️ 3-Layer Clean Architecture & SOLID Principles**: Pure Dart Domain Layer (`entities`, `repositories`, `usecases`), isolated Data Layer (`datasources`, `models`, `repositories`), and Presentation Layer (`cubits`, `screens`, `widgets`).
-* **💉 Injectable + GetIt Dependency Injection**: Inversion of control using `@singleton`, `@LazySingleton(as: Interface)`, `@injectable`, and `@module`.
-* **🌐 Production Network Subsystem **:
+* **💉 Injectable + GetIt Dependency Injection**: Inversion of control using `@singleton`, `@LazySingleton(as: Interface)`, `@lazySingleton`, `@injectable`, and `@module`.
+* **🌐 Production Network Subsystem with `dartz`**:
   - `DioClient` with `PrettyDioLogger` and timeout settings.
   - `AuthInterceptor` with thread-safe token refresh mutex (`Completer`), token storage, and automatic retry of queued requests.
   - `ApiErrorHandler` mapping Dio errors to structured `ApiErrorModel`.
   - Generic `ApiResponse<T>` and `PaginatedResponse<T>`.
-  - `ResultFuture<T> = Future<Either<ApiErrorModel, T>>` functional error paradigm.
-* **🚩 Mandatory Multi-Environment Flavors**:
-  - `dev`, `staging`, and `production` with `.env.*` support, `AppFlavor`, `EnvConfig`, and visual ribbon banners on non-production builds.
+  - `ResultFuture<T> = Future<Either<ApiErrorModel, T>>` functional error paradigm powered by `package:dartz`.
+* **🚦 Centralized Navigation & Routing**:
+  - `core/routes/routes.dart` (static string constants) and `core/routes/app_router.dart` (`PageRouteBuilder` with 400ms fade transition).
+* **🚩 Mandatory Multi-Environment Flavors & Launch Profiles**:
+  - `dev`, `staging`, and `production` with `DevConfig`, `StagingConfig` (dotenv), and `ProductionConfig` (`--dart-define`).
+  - `.vscode/launch.json` generated for 1-click debugging.
+  - All `.env` files automatically ignored in `.gitignore`.
 * **🌍 Mandatory AR/EN Localization**:
   - **STRICT ZERO HARDCODED STRINGS** in UI and error messages.
   - Arabic (RTL) & English (LTR) ready with `AppLocalizations` and context extensions.
-* **📦 FVM (Flutter Version Management)**:
-  - Full `.fvmrc`, `.fvm/fvm_config.json`, and `.vscode/settings.json` integration with SDK path linking.
-* **📦 Dynamic Package Compatibility Matrix**:
-  - Automatically matches `pubspec.yaml` package versions to target Flutter/Dart SDK with zero solver conflicts.
-* **🛡️ Enterprise Validation, Caching & Error Handling**:
-
+* **🛡️ Enterprise Validation, Caching & Strict ThemeData**:
   - Composable `Validators` with localized errors.
   - Secure token storage (`FlutterSecureStorage`) & session caching (`SharedPreferences`).
+  - Strict Material 3 `ThemeData` enforcing `CardThemeData` (`cardTheme: const CardThemeData(...)`).
 * **📱 Platform-Adaptive UI**: Native **Material 3** for Android/Desktop/Web & Native **Cupertino (HIG)** for iOS/macOS.
 * **🖥️ Multi-Device Responsiveness**: Automatic layout adaptation for **Phones** (< 600dp), **Tablets** (600dp - 1024dp with Navigation Rail), and **Desktop / Large Screens** (> 1024dp with Sidebar).
 * **🎨 UI/UX Pro Max Design Intelligence**: 7 pre-built psychological design palettes (Fintech, E-Commerce, Healthcare, Food Delivery, SaaS, Fitness, EdTech).
-* **🔥 Firebase & Fastlane**: Flavor-aware Firebase setup with Crashlytics plugged into `BlocObserver`, plus Android/iOS Fastlane deployment pipelines.
+* **🚀 Fastlane & DevOps Automation**: Android/iOS Fastfiles supporting flavor lanes (`deploy_dev`, `deploy_staging`, `deploy_prod`) and automated GitHub Actions CI/CD.
 
 ---
+
 
 ## 🤖 Universal Installation Matrix
 

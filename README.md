@@ -61,13 +61,13 @@ Install this skill once, and use it across any AI Assistant, Terminal, or IDE.
 if (!(Test-Path "$env:USERPROFILE\.gemini\antigravity\skills\flutter-enterprise-pro-max")) {
     New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\antigravity\skills\flutter-enterprise-pro-max" | Out-Null
 }
-Copy-Item "SKILL.md" "$env:USERPROFILE\.gemini\antigravity\skills\flutter-enterprise-pro-max\SKILL.md" -Force
+if (!(Test-Path "$env:USERPROFILE\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max")) { New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max" | Out-Null }; Copy-Item "SKILL.md" "$env:USERPROFILE\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max\SKILL.md" -Force
 ```
 
 #### 🔹 Option B: Using Windows Command Prompt (CMD)
 ```cmd
 if not exist "%USERPROFILE%\.gemini\antigravity\skills\flutter-enterprise-pro-max" mkdir "%USERPROFILE%\.gemini\antigravity\skills\flutter-enterprise-pro-max"
-copy "SKILL.md" "%USERPROFILE%\.gemini\antigravity\skills\flutter-enterprise-pro-max\SKILL.md"
+if not exist "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max" mkdir "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max"`r`ncopy "SKILL.md" "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max\SKILL.md"
 ```
 
 #### 🔹 Option C: Using macOS / Linux
@@ -292,7 +292,7 @@ Ask your AI Agent:
 * **Fix**: Use the CMD command syntax:
   ```cmd
   if not exist "%USERPROFILE%\.gemini\antigravity\skills\flutter-enterprise-pro-max" mkdir "%USERPROFILE%\.gemini\antigravity\skills\flutter-enterprise-pro-max"
-  copy "SKILL.md" "%USERPROFILE%\.gemini\antigravity\skills\flutter-enterprise-pro-max\SKILL.md"
+  if not exist "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max" mkdir "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max"`r`ncopy "SKILL.md" "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max\SKILL.md"
   ```
   Or switch to **PowerShell** by typing `powershell` in CMD before running `Copy-Item`.
 
@@ -313,3 +313,4 @@ Ask your AI Agent:
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+

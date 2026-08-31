@@ -41,7 +41,14 @@
 ## 📖 Overview
 
 **Flutter Enterprise Pro Max** is a complete, production-grade AI Agent Skill and scaffolding framework engineered to enforce enterprise engineering standards:
-* **🏛️ 3-Layer Clean Architecture & SOLID Principles**: Pure Dart Domain Layer (`entities`, `repositories`, `usecases`), isolated Data Layer (`datasources`, `models`, `repositories`), and Presentation Layer (`cubits`, `screens`, `widgets`).
+* **🏛️ 3-Layer Clean Architecture & Strict SOLID Principles**:
+  - Pure Dart Domain Layer (`entities` with `const` constructors, `repositories` contracts, single-responsibility `usecases`).
+  - Isolated Data Layer (`datasources`, `@JsonSerializable` `models` with manual `copyWith` + Mappers, `repositories` implementations).
+  - High-Performance Presentation Layer (`cubits`, `screens`, `widgets`).
+* **🔄 Cubit + Pure Equatable States (Unit Test Ready)**:
+  - Clean `abstract class FeatureState extends Equatable` state hierarchy (`FeatureInitial`, `FeatureLoading`, `FeatureSuccess`, `FeatureFailure`).
+  - Zero code-generation for states — instant compile times and effortless testing with `bloc_test` and `emitsInOrder`.
+  - Cubits strictly inject single-responsibility UseCases (`LoginCubit(this.loginUseCase)`).
 * **💉 Injectable + GetIt Dependency Injection**: Inversion of control using `@singleton`, `@LazySingleton(as: Interface)`, `@lazySingleton`, `@injectable`, and `@module`.
 * **🌐 Production Network Subsystem with `dartz`**:
   - `DioClient` with `PrettyDioLogger` and timeout settings.
@@ -58,7 +65,8 @@
 * **🌍 Mandatory AR/EN Localization**:
   - **STRICT ZERO HARDCODED STRINGS** in UI and error messages.
   - Arabic (RTL) & English (LTR) ready with `AppLocalizations` and context extensions.
-* **🛡️ Enterprise Validation, Caching & Strict ThemeData**:
+* **⚡ High-Performance Engineering & Strict ThemeData**:
+  - `const` constructors enforced on all States, Entities, Widgets, and layout tokens to maximize Flutter element reuse.
   - Composable `Validators` with localized errors.
   - Secure token storage (`FlutterSecureStorage`) & session caching (`SharedPreferences`).
   - Strict Material 3 `ThemeData` enforcing `CardThemeData` (`cardTheme: const CardThemeData(...)`).
@@ -67,6 +75,7 @@
 * **🎨 UI/UX Pro Max Design Intelligence**: 7 pre-built psychological design palettes (Fintech, E-Commerce, Healthcare, Food Delivery, SaaS, Fitness, EdTech).
 
 ---
+
 
 
 

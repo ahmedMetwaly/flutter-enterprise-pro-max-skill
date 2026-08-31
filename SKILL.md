@@ -88,7 +88,7 @@ lib/
 │       │
 │       └── presentation/           # Layer 3: Reactive State & Adaptive UI
 │           ├── logic/
-│           │   └── cubits/         # Cubit ONLY with Freezed States (*_cubit.dart, *_state.dart)
+│           │   └── cubits/         # Cubit ONLY with Equatable States (*_cubit.dart, *_state.dart)
 │           ├── screens/            # Screen Widget Classes
 │           └── widgets/            # Sub-widget Classes (Strictly ONE widget class per file)
 │
@@ -116,9 +116,9 @@ lib/
 ## 🏛️ Strict 3-Layer Clean Architecture Rules
 
 ### 1. Domain Layer (`features/<feature>/domain/`)
-- **Entities**: Pure Dart immutable classes extending `Equatable`.
+- **Entities**: Pure Dart immutable classes extending `Equatable` with `const` constructors.
 - **Repositories**: Abstract contracts returning `ResultFuture<T>` (using `dartz` `Either`).
-- **UseCases**: Discrete call classes decorated with `@lazySingleton`.
+- **UseCases**: Single-responsibility discrete call classes decorated with `@lazySingleton`.
 
 ### 2. Data Layer (`features/<feature>/data/`)
 - **DataSources**: Retrofit interface with Dio (`@RestApi()`).
@@ -126,8 +126,98 @@ lib/
 - **Repositories**: Concrete implementations decorated with `@LazySingleton(as: InterfaceRepo)`.
 
 ### 3. Presentation Layer (`features/<feature>/presentation/`)
-- **State Management**: **Cubit ONLY** with **Freezed States** (`@freezed class FeatureState with _$FeatureState`).
+- **State Management**: **Cubit ONLY** with **Equatable States** (Pure Dart, zero code-generation for states, ideal for unit testing).
 - **Screens & Widgets**: Strictly **ONE WIDGET CLASS PER FILE**. No function widgets returning `Widget`.
+
+---
+
+## 🔄 Enterprise State & Cubit Standard (Equatable for Easy Unit Testing)
+
+### 1. States (`features/<feature>/presentation/logic/cubits/<feature>_state.dart`):
+```dart
+import 'package:equatable/equatable.dart';
+
+// States
+abstract class AuthState extends Equatable {
+  const AuthState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class AuthInitial extends AuthState {}
+
+class AuthLoading extends AuthState {}
+
+class AuthSuccess extends AuthState {
+  final String token;
+  const AuthSuccess(this.token);
+
+  @override
+  List<Object?> get props => [token];
+}
+
+class AuthFailure extends AuthState {
+  final String message;
+  const AuthFailure(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+```
+
+### 2. Cubit (`features/<feature>/presentation/logic/cubits/<feature>_cubit.dart`):
+```dart
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+import '../../domain/usecases/login_usecase.dart';
+import 'auth_state.dart';
+
+@injectable
+class LoginCubit extends Cubit<AuthState> {
+  final LoginUseCase loginUseCase;
+
+  LoginCubit(this.loginUseCase) : super(AuthInitial());
+
+  Future<void> login({required String email, required String password}) async {
+    emit(AuthLoading());
+    final result = await loginUseCase(email: email, password: password);
+    result.fold(
+      (failure) => emit(AuthFailure(failure.message ?? 'Login failed')),
+      (token) => emit(AuthSuccess(token)),
+    );
+  }
+}
+```
+
+---
+
+## 💎 Strict SOLID Principles & Best Performance Mandate
+
+Every file, class, and architectural layer created MUST adhere to SOLID principles and performance best practices:
+
+### 1. SOLID Principles:
+- **S - Single Responsibility Principle (SRP)**:
+  - Each file and class has exactly ONE reason to change.
+  - A UseCase handles 1 business action (`LoginUseCase`).
+  - A Repository coordinates data between Remote Data Source and local Cache.
+  - A Cubit manages state transitions for a single presentation flow.
+  - A Widget class renders one cohesive visual element (Strictly ONE widget class per file).
+- **O - Open/Closed Principle (OCP)**:
+  - Architecture is open for extension, closed for modification. Features and repositories are backed by abstract contracts so new implementations (e.g. mock repositories, alternative data sources) can be added without modifying existing consumer code.
+- **L - Liskov Substitution Principle (LSP)**:
+  - Repository and service implementations can seamlessly replace their abstract domain interfaces without altering program correctness.
+- **I - Interface Segregation Principle (ISP)**:
+  - Interfaces are discrete, fine-grained, and client-specific. Never create monolithic interfaces with unused methods.
+- **D - Dependency Inversion Principle (DIP)**:
+  - High-level modules (Domain UseCases, Presentation Cubits) depend on abstractions (`AuthRepo`), never concrete low-level details (`AuthRepoImpl`, `AuthDataSource`).
+  - Inversion of Control is wired via `Injectable` + `GetIt`.
+
+### 2. ⚡ High-Performance Guidelines:
+- **`const` Everywhere**: Always use `const` constructors for States, Widgets, EdgeInsets, BorderRadii, and TextStyles to enable compile-time canonical caching and prevent unnecessary element rebuilds.
+- **Pure `Equatable`**: Fast value comparison for states and entities with zero runtime reflection overhead and seamless `bloc_test` integration.
+- **Granular Widget Rebuilds**: Narrow the scope of `BlocBuilder` / `BlocConsumer` / `BlocSelector` to the exact leaf widgets that change, rather than wrapping entire screen scaffolds.
+- **Zero Memory Leaks**: Ensure all controllers (`TextEditingController`, `ScrollController`, `AnimationController`) and stream subscriptions are properly disposed in `StatefulWidget` `dispose()` methods or managed lifecycles.
 
 ---
 
@@ -141,6 +231,7 @@ lib/
    typedef ResultFuture<T> = Future<Either<ApiErrorModel, T>>;
    typedef ResultVoid = ResultFuture<void>;
    ```
+
 2. **`ApiErrorHandler`**: Maps all `DioException` types into structured `ApiErrorModel`.
 3. **`AuthInterceptor`**: Injects `Bearer <token>`, handles 401 with `Completer<String?>` mutex lock for token refresh on a separate Dio instance, and auto-retries blocked requests.
 4. **`ApiResponse<T>` & `PaginatedResponse<T>`**: Strongly-typed response wrappers.

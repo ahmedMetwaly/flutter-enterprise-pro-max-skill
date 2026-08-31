@@ -2,11 +2,12 @@
 
 ## Architecture & Standards (Production Enterprise Standard)
 
-- **Architecture**: 3-Layer Clean Architecture (Domain, Data, Presentation) per feature.
+- **Architecture**: 3-Layer Clean Architecture (Domain, Data, Presentation) adhering to strict **SOLID principles**.
 - **Dependency Injection**: Injectable + GetIt (`@InjectableInit`, `@singleton`, `@LazySingleton(as: *Repo)`, `@lazySingleton`, `@injectable`, `@module`).
-- **State Management**: Cubit only with Freezed States (`*_cubit.dart`, `*_state.dart`).
+- **State Management**: Cubit only with **Pure Equatable States** (`abstract class AuthState extends Equatable`, `AuthInitial`, `AuthLoading`, `AuthSuccess`, `AuthFailure`). Zero code generation for states, optimal for unit testing.
+- **Cubit Logic**: Always inject discrete single-responsibility UseCases (`LoginCubit(this.loginUseCase)`).
 - **Data Layer**: Retrofit DataSources (`*_datasource.dart`), `@JsonSerializable` Models + manual `copyWith` + Mappers, Repositories returning `ResultFuture<T>`.
-- **Domain Layer**: Pure Entities (`Equatable`), abstract Repositories, discrete UseCases.
+- **Domain Layer**: Pure Entities (`Equatable` with `const` constructors), abstract Repositories, discrete UseCases.
 - **Networking**: Enterprise DioClient, AuthInterceptor (with 401 refresh lock and auto-retry), ApiErrorHandler, ApiResponse<T>, PaginatedResponse<T>, `dartz` `Either`.
 - **Routes**: Centralized `core/routes/routes.dart` and `core/routes/app_router.dart` (`PageRouteBuilder` with `FadeTransition`).
 - **Flavors**: `DevConfig` / `StagingConfig` (via `dotenv`), `ProductionConfig` (via `--dart-define`), with `.vscode/launch.json` and all `.env` in `.gitignore`.
@@ -15,10 +16,11 @@
 - **Caching**: `FlutterSecureStorage` for tokens, `SharedPreferences` for sessions, cache-first repository pattern.
 - **Platform Adaptability**: Material 3 on Android/Desktop/Web, Cupertino on iOS/macOS.
 - **Responsiveness**: ResponsiveLayout supporting Mobile (<600), Tablet (600-1024), and Desktop (>1024).
-- **Widgets**: Strictly ONE widget class per file. Never use helper functions returning Widgets.
+- **Performance & Widgets**: `const` constructors everywhere, strictly ONE widget class per file, zero memory leaks.
 - **Theme**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
 - **Interactive Initializer**: When user asks to init project, ALWAYS ask the 3 questions first (Name, Platforms, Category).
 - **Automated Runner**: ALWAYS execute `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` automatically after scaffolding.
+
 
 
 

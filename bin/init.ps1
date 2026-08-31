@@ -28,7 +28,17 @@ Write-Host "  3) 📱+📟+🖥️ All Form Factors: Phones, Tablets & Desktop /
 $deviceTypes = Read-Host "👉 Choose [1-3] [default: 2]"
 if ([string]::IsNullOrWhiteSpace($deviceTypes)) { $deviceTypes = "2" }
 
-# 4. UI/UX Category
+# 4. Architecture Profile Selection
+Write-Host "`n🏛️ Select Architecture Profile:" -ForegroundColor Cyan
+Write-Host "  1) 🌟 Enterprise Clean Architecture (Feature-First + Cubit + Injectable + Centralized Routes) [RECOMMENDED]"
+Write-Host "  2) ⚡ Riverpod Enterprise (Feature-First + AsyncNotifier + GoRouter)"
+Write-Host "  3) 🔄 Offline-First Enterprise (Clean Arch + Drift DB + Sync Queue Engine)"
+Write-Host "  4) 📦 Minimal Starter (Simplified Feature + Manual DI)"
+Write-Host "  5) 🛠️ Custom Architecture (Configure every dimension step-by-step)"
+$profileChoice = Read-Host "👉 Choose [1-5] [default: 1]"
+if ([string]::IsNullOrWhiteSpace($profileChoice)) { $profileChoice = "1" }
+
+# 5. UI/UX Category
 Write-Host "`n🎨 Select App Category / Design Intelligence:" -ForegroundColor Cyan
 Write-Host "  1) 💳 Fintech & Banking (Deep Slate, Emerald Green, High-Trust)"
 Write-Host "  2) 🛍️ E-Commerce & Retail (Clean White, Vibrant Coral, High-Conversion)"
@@ -40,6 +50,7 @@ Write-Host "  7) 🎓 EdTech & Gamification (Soft Indigo, Sunny Gold, Friendly)"
 Write-Host "  8) ⚙️ Clean Slate Enterprise (Default Minimalist)"
 $category = Read-Host "👉 Choose [1-8] [default: 1]"
 if ([string]::IsNullOrWhiteSpace($category)) { $category = "1" }
+
 
 Write-Host "`n⚡ Scaffolding project: $projectName..." -ForegroundColor Yellow
 Write-Host "✅ 3-Layer Clean Architecture & SOLID principles enforced (domain, data, presentation)" -ForegroundColor Green

@@ -1,0 +1,46 @@
+# Default Configuration
+project:
+  name: my_flutter_enterprise_app
+  organization: com.example
+  platforms:
+    - android
+    - ios
+  device_targets:
+    - phone
+    - tablet
+  ui_category: fintech
+
+architecture:
+  style: feature_first_clean
+
+state_management:
+  solution: bloc_cubit
+
+dependency_injection:
+  solution: get_it_injectable
+
+networking:
+  solution: retrofit_dio
+
+result_handling:
+  solution: dartz_either
+
+routing:
+  solution: navigator
+
+persistence:
+  solution: secure_storage_and_prefs
+
+offline:
+  enabled: true
+  strategy: cache_first
+
+localization:
+  enabled: true
+  locales:
+    - ar
+    - en
+
+observability:
+  enabled: true
+  solution: app_observer

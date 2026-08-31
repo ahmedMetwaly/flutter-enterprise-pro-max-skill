@@ -45,10 +45,11 @@
   - Pure Dart Domain Layer (`entities` with `const` constructors, `repositories` contracts, single-responsibility `usecases`).
   - Isolated Data Layer (`datasources`, `@JsonSerializable` `models` with manual `copyWith` + Mappers, `repositories` implementations).
   - High-Performance Presentation Layer (`cubits`, `screens`, `widgets`).
-* **🔄 Cubit + Pure Equatable States (Unit Test Ready)**:
-  - Clean `abstract class FeatureState extends Equatable` state hierarchy (`FeatureInitial`, `FeatureLoading`, `FeatureSuccess`, `FeatureFailure`).
-  - Zero code-generation for states — instant compile times and effortless testing with `bloc_test` and `emitsInOrder`.
+* **🔄 Cubit + Freezed States (Value Equality & Unit Test Ready)**:
+  - Clean `@freezed class FeatureState with _$FeatureState` union states (`initial`, `loading`, `success`, `failure`).
+  - Immutable value equality out-of-the-box for effortless testing with `bloc_test` and `emitsInOrder`.
   - Cubits strictly inject single-responsibility UseCases (`LoginCubit(this.loginUseCase)`).
+
 * **💉 Injectable + GetIt Dependency Injection**: Inversion of control using `@singleton`, `@LazySingleton(as: Interface)`, `@lazySingleton`, `@injectable`, and `@module`.
 * **🌐 Production Network Subsystem with `dartz`**:
   - `DioClient` with `PrettyDioLogger` and timeout settings.

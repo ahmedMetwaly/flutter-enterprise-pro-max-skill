@@ -4,7 +4,7 @@
 
 - **Architecture**: 3-Layer Clean Architecture (Domain, Data, Presentation) adhering to strict **SOLID principles**.
 - **Dependency Injection**: Injectable + GetIt (`@InjectableInit`, `@singleton`, `@LazySingleton(as: *Repo)`, `@lazySingleton`, `@injectable`, `@module`).
-- **State Management**: Cubit only with **Pure Equatable States** (`abstract class AuthState extends Equatable`, `AuthInitial`, `AuthLoading`, `AuthSuccess`, `AuthFailure`). Zero code generation for states, optimal for unit testing.
+- **State Management**: Cubit only with **Freezed States** (`@freezed class FeatureState with _$FeatureState`). Provides immutable union states and value equality for seamless `bloc_test` unit testing.
 - **Cubit Logic**: Always inject discrete single-responsibility UseCases (`LoginCubit(this.loginUseCase)`).
 - **Data Layer**: Retrofit DataSources (`*_datasource.dart`), `@JsonSerializable` Models + manual `copyWith` + Mappers, Repositories returning `ResultFuture<T>`.
 - **Domain Layer**: Pure Entities (`Equatable` with `const` constructors), abstract Repositories, discrete UseCases.
@@ -20,6 +20,7 @@
 - **Theme**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
 - **Interactive Initializer**: When user asks to init project, ALWAYS ask the 3 questions first (Name, Platforms, Category).
 - **Automated Runner**: ALWAYS execute `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` automatically after scaffolding.
+
 
 
 

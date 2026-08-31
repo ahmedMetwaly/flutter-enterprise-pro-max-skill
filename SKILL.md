@@ -126,43 +126,25 @@ lib/
 - **Repositories**: Concrete implementations decorated with `@LazySingleton(as: InterfaceRepo)`.
 
 ### 3. Presentation Layer (`features/<feature>/presentation/`)
-- **State Management**: **Cubit ONLY** with **Equatable States** (Pure Dart, zero code-generation for states, ideal for unit testing).
+- **State Management**: **Cubit ONLY** with **Freezed States** (`@freezed class FeatureState with _$FeatureState`). Freezed provides immutable union states with deep value equality (operator == and hashCode) for seamless unit testing with `bloc_test` and `emitsInOrder`.
 - **Screens & Widgets**: Strictly **ONE WIDGET CLASS PER FILE**. No function widgets returning `Widget`.
 
 ---
 
-## 🔄 Enterprise State & Cubit Standard (Equatable for Easy Unit Testing)
+## 🔄 Enterprise State & Cubit Standard (Freezed States + UseCase Injection)
 
-### 1. States (`features/<feature>/presentation/logic/cubits/<feature>_state.dart`):
+### 1. Freezed States (`features/<feature>/presentation/logic/cubits/<feature>_state.dart`):
 ```dart
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-// States
-abstract class AuthState extends Equatable {
-  const AuthState();
+part 'auth_state.freezed.dart';
 
-  @override
-  List<Object?> get props => [];
-}
-
-class AuthInitial extends AuthState {}
-
-class AuthLoading extends AuthState {}
-
-class AuthSuccess extends AuthState {
-  final String token;
-  const AuthSuccess(this.token);
-
-  @override
-  List<Object?> get props => [token];
-}
-
-class AuthFailure extends AuthState {
-  final String message;
-  const AuthFailure(this.message);
-
-  @override
-  List<Object?> get props => [message];
+@freezed
+class AuthState with _$AuthState {
+  const factory AuthState.initial() = _Initial;
+  const factory AuthState.loading() = _Loading;
+  const factory AuthState.success(String token) = _Success;
+  const factory AuthState.failure(String message) = _Failure;
 }
 ```
 
@@ -177,22 +159,41 @@ import 'auth_state.dart';
 class LoginCubit extends Cubit<AuthState> {
   final LoginUseCase loginUseCase;
 
-  LoginCubit(this.loginUseCase) : super(AuthInitial());
+  LoginCubit(this.loginUseCase) : super(const AuthState.initial());
 
   Future<void> login({required String email, required String password}) async {
-    emit(AuthLoading());
+    emit(const AuthState.loading());
     final result = await loginUseCase(email: email, password: password);
     result.fold(
-      (failure) => emit(AuthFailure(failure.message ?? 'Login failed')),
-      (token) => emit(AuthSuccess(token)),
+      (failure) => emit(AuthState.failure(failure.message ?? 'Login failed')),
+      (token) => emit(AuthState.success(token)),
     );
   }
 }
 ```
 
+### 3. Effortless Unit Testing with `bloc_test`:
+Because `@freezed` implements immutable value equality out-of-the-box (like `Equatable`), unit testing state sequences in `bloc_test` is clean and direct:
+```dart
+blocTest<LoginCubit, AuthState>(
+  'emits [AuthState.loading, AuthState.success] on successful login',
+  build: () {
+    when(() => mockLoginUseCase(email: 'test@example.com', password: 'password'))
+        .thenAnswer((_) async => const Right('dummy_token'));
+    return LoginCubit(mockLoginUseCase);
+  },
+  act: (cubit) => cubit.login(email: 'test@example.com', password: 'password'),
+  expect: () => [
+    const AuthState.loading(),
+    const AuthState.success('dummy_token'),
+  ],
+);
+```
+
 ---
 
 ## 💎 Strict SOLID Principles & Best Performance Mandate
+
 
 Every file, class, and architectural layer created MUST adhere to SOLID principles and performance best practices:
 

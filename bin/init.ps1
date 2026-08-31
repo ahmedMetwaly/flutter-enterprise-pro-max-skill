@@ -43,7 +43,7 @@ if ([string]::IsNullOrWhiteSpace($category)) { $category = "1" }
 
 Write-Host "`n⚡ Scaffolding project: $projectName..." -ForegroundColor Yellow
 Write-Host "✅ 3-Layer Clean Architecture & SOLID principles enforced (domain, data, presentation)" -ForegroundColor Green
-Write-Host "✅ Cubit + Equatable States configured with UseCase dependency injection" -ForegroundColor Green
+Write-Host "✅ Cubit + Freezed States configured with UseCase dependency injection" -ForegroundColor Green
 Write-Host "✅ Injectable + GetIt dependency injection configured" -ForegroundColor Green
 Write-Host "✅ Enterprise Network subsystem (AuthInterceptor, ApiErrorHandler, DioClient, dartz Either)" -ForegroundColor Green
 Write-Host "✅ Centralized Routes created (core/routes/routes.dart & app_router.dart)" -ForegroundColor Green
@@ -54,7 +54,7 @@ Write-Host "✅ Mandatory AR/EN Localization created (intl_en.arb, intl_ar.arb)"
 Write-Host "✅ Platform Adaptability: Material 3 (Android/Desktop) + Cupertino HIG (iOS/macOS)" -ForegroundColor Green
 Write-Host "✅ Responsiveness: Mobile, Tablet (Navigation Rail), Desktop (Sidebar)" -ForegroundColor Green
 Write-Host "✅ High-Performance standards applied (const constructors everywhere, strict CardThemeData)" -ForegroundColor Green
-Write-Host "✅ State Management: Cubit + Equatable (Unit Test Ready, Zero Code Gen)" -ForegroundColor Green
+Write-Host "✅ State Management: Cubit + Freezed (Value Equality, Unit Test Ready)" -ForegroundColor Green
 
 Write-Host "`n🎉 Project created successfully!" -ForegroundColor Cyan
 Write-Host "   cd $projectName"
@@ -62,6 +62,7 @@ Write-Host "   flutter pub get"
 Write-Host "   dart run build_runner build --delete-conflicting-outputs"
 Write-Host "   flutter test"
 Write-Host "   flutter run -t lib/main_dev.dart --flavor dev`n"
+
 
 
 

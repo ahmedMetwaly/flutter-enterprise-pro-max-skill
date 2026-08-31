@@ -7,46 +7,34 @@ Follow these mandatory architectural, coding, and UI/UX design principles:
 - Strict 3 layers per feature:
   - `domain/`: Pure Dart business logic (Entities extending `Equatable` with `const` constructors, Repositories returning `ResultFuture<T>` using `dartz` `Either`, discrete single-responsibility UseCases). Zero UI dependencies.
   - `data/`: Retrofit DataSources (`*_datasource.dart`), `@JsonSerializable(explicitToJson: true)` Models with manual `copyWith` and Mappers, Repositories implementations (`@LazySingleton(as: *Repo)`).
-  - `presentation/`: Cubit ONLY with Equatable States (`*_cubit.dart`, `*_state.dart`), Screen Widget Classes, Sub-widget Classes (ONE widget class per file).
+  - `presentation/`: Cubit ONLY with Freezed States (`*_cubit.dart`, `*_state.dart`), Screen Widget Classes, Sub-widget Classes (ONE widget class per file).
 - **Dependency Injection**: Injectable + GetIt (`@InjectableInit`, `@singleton`, `@LazySingleton(as: Interface)`, `@lazySingleton`, `@injectable`, `@module`).
 - Never instantiate repositories or use cases manually.
 
-## 2. 🔄 Equatable States & UseCase Injection in Cubits
-- **States**: Pure `Equatable` classes (Zero code-generation for states — fast & simple for unit testing):
+## 2. 🔄 Freezed States & UseCase Injection in Cubits
+- **States**: `@freezed` Union classes (Provides immutable value equality out-of-the-box, ideal for `bloc_test`):
   ```dart
-  abstract class AuthState extends Equatable {
-    const AuthState();
-    @override
-    List<Object?> get props => [];
-  }
-  class AuthInitial extends AuthState {}
-  class AuthLoading extends AuthState {}
-  class AuthSuccess extends AuthState {
-    final String token;
-    const AuthSuccess(this.token);
-    @override
-    List<Object?> get props => [token];
-  }
-  class AuthFailure extends AuthState {
-    final String message;
-    const AuthFailure(this.message);
-    @override
-    List<Object?> get props => [message];
+  @freezed
+  class AuthState with _$AuthState {
+    const factory AuthState.initial() = _Initial;
+    const factory AuthState.loading() = _Loading;
+    const factory AuthState.success(String token) = _Success;
+    const factory AuthState.failure(String message) = _Failure;
   }
   ```
-- **Cubits**: Always inject discrete UseCases:
+- **Cubits**: Always inject discrete single-responsibility UseCases:
   ```dart
   @injectable
   class LoginCubit extends Cubit<AuthState> {
     final LoginUseCase loginUseCase;
-    LoginCubit(this.loginUseCase) : super(AuthInitial());
+    LoginCubit(this.loginUseCase) : super(const AuthState.initial());
 
     Future<void> login({required String email, required String password}) async {
-      emit(AuthLoading());
+      emit(const AuthState.loading());
       final result = await loginUseCase(email: email, password: password);
       result.fold(
-        (failure) => emit(AuthFailure(failure.message ?? 'Login failed')),
-        (token) => emit(AuthSuccess(token)),
+        (failure) => emit(AuthState.failure(failure.message ?? 'Login failed')),
+        (token) => emit(AuthState.success(token)),
       );
     }
   }
@@ -60,9 +48,10 @@ Follow these mandatory architectural, coding, and UI/UX design principles:
 - **D (Dependency Inversion)**: High-level modules depend on domain abstractions (`*Repo`), wired via Injectable/GetIt.
 - **Performance**:
   - `const` constructors on all States, Widgets, and Entities to prevent unnecessary element rebuilds.
-  - Pure `Equatable` value equality with zero reflection.
+  - Value equality out-of-the-box for clean `bloc_test` without boilerplate.
   - Narrow `BlocBuilder` scope to the exact leaf widgets that rebuild.
   - Zero memory leaks: always dispose controllers and subscriptions.
+
 
 ## 4. 🌐 Network Subsystem with `dartz`
 - `typedef ResultFuture<T> = Future<Either<ApiErrorModel, T>>;` using `package:dartz/dartz.dart`.

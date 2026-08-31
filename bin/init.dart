@@ -49,7 +49,7 @@ void main(List<String> args) async {
   print('  - Project Name: $projectName');
   print('  - Organization: $orgDomain');
   print('  - Architecture: 3-Layer Clean Architecture (Domain, Data, Presentation) + SOLID');
-  print('  - State Management: Cubit + Equatable States (Unit Test Ready, Zero Code Gen)');
+  print('  - State Management: Cubit + Freezed States (Value Equality, Unit Test Ready)');
   print('  - DI: Injectable + GetIt (UseCases injected into Cubits)');
   print('  - Network: Dio + Retrofit + AuthInterceptor + ApiErrorHandler + dartz Either');
   print('  - Routes: Centralized (core/routes/routes.dart & app_router.dart)');
@@ -71,7 +71,7 @@ void main(List<String> args) async {
 
   print('\n⚡ Scaffolding project: $projectName...');
   print('✅ 3-Layer Clean Architecture & SOLID principles enforced (domain, data, presentation).');
-  print('✅ Cubit + Equatable States configured with UseCase dependency injection.');
+  print('✅ Cubit + Freezed States configured with UseCase dependency injection.');
   print('✅ Injectable + GetIt dependency injection configured.');
   print('✅ Enterprise Network subsystem (AuthInterceptor, ApiErrorHandler, DioClient, dartz Either).');
   print('✅ Routes configured (core/routes/routes.dart, core/routes/app_router.dart).');
@@ -89,6 +89,7 @@ void main(List<String> args) async {
   print('   flutter test');
   print('   flutter run -t lib/main_dev.dart --flavor dev\n');
 }
+
 
 
 

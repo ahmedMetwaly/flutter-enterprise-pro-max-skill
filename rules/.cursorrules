@@ -119,29 +119,41 @@ Follow these mandatory architectural, coding, and UI/UX design principles:
 - Always use `context.l10n.<key>` or `AppLocalizations.of(context)!.<key>`.
 - RTL (Arabic) & LTR (English) full support.
 
-## 9. 🛡️ Validation & Caching Standards
+## 9. 🛡️ Validation, Hardware Security & Privacy
 - Centralized `Validators` class returning localized error strings.
-- Secure token storage via `FlutterSecureStorage` (`TokenStorage`).
+- Secure token storage via `FlutterSecureStorage` with `AndroidOptions(encryptedSharedPreferences: true)` and `IOSOptions(accessibility: KeychainAccessibility.first_unlock)`.
+- `PrivacyScreenOverlay` protecting sensitive screens in App Switcher.
 - Cache-First repository pattern with offline fallback.
 
-## 10. 📱 Platform-Adaptive & Multi-Device UI
+## 10. 📜 Standardized Infinite Pagination Pattern
+- `PaginatedListState<T>` with Freezed (items, currentPage, hasReachedMax, isLoadingMore).
+- Reusable `PaginationScrollListener` (triggers `onLoadMore` at 80% scroll depth).
+
+## 11. 🌐 Global Observability & Connectivity
+- `AppBlocObserver` logging bloc creation, changes, errors, and closures when `enableLogging` is true.
+- `ConnectivityService` using `connectivity_plus` with broadcast streams.
+- `runZonedGuarded` & `FlutterError.onError` in `main_common.dart`.
+
+## 12. 🎨 Core Atoms Design System (`core/widgets/`)
+- Reusable Atoms: `AppButton` (with built-in loading indicator), `AppTextField` (with validation and obscure toggle), `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` (with retry).
 - 🍎 **iOS & macOS**: Cupertino styling (`CupertinoButton`, `CupertinoTextField`, `CupertinoActivityIndicator`).
 - 🤖 **Android & Desktop & Web**: Material 3 styling (`ElevatedButton`, `FilledButton`, `TextField`).
 - 📱 Breakpoints: Mobile (<600dp), Tablet (600-1024dp with Navigation Rail), Desktop (>1024dp with Sidebar).
 - STRICT: ONE WIDGET CLASS PER FILE. No function widgets (`Widget myWidget() => ...`).
 - Use `flutter_screenutil` (.w, .h, .sp, .r) and `AppColors` design tokens.
 
-## 11. 📐 Strict ThemeData Rule (CardThemeData ONLY)
+## 13. 📐 Strict ThemeData Rule (CardThemeData ONLY)
 - In `ThemeData`, **ALWAYS use `CardThemeData`** (`cardTheme: const CardThemeData(...)`).
 - **NEVER use `CardTheme(...)`** inside `ThemeData(cardTheme: ...)` as `CardTheme` is a widget class in Flutter.
 
-## 12. ⚡ Mandatory Interactive Flow & Automated Execution
+## 14. ⚡ Mandatory Interactive Flow & Automated Execution
 - ALWAYS ask the user the 3 interactive questions first (Project Name, Platforms/Devices, UI Category).
 - IMMEDIATELY after scaffolding, AUTOMATICALLY execute:
   1. `flutter pub get`
   2. `dart run build_runner build --delete-conflicting-outputs`
   3. `flutter analyze`
 - Never leave `build_runner` for the user to run manually.
+
 
 
 

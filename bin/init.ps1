@@ -44,6 +44,12 @@ if ([string]::IsNullOrWhiteSpace($category)) { $category = "1" }
 Write-Host "`n⚡ Scaffolding project: $projectName..." -ForegroundColor Yellow
 Write-Host "✅ 3-Layer Clean Architecture & SOLID principles enforced (domain, data, presentation)" -ForegroundColor Green
 Write-Host "✅ Cubit + Freezed States configured with UseCase dependency injection" -ForegroundColor Green
+Write-Host "✅ Standardized Unit Testing with mocktail & bloc_test configured" -ForegroundColor Green
+Write-Host "✅ Global Observability: AppBlocObserver + runZonedGuarded configured" -ForegroundColor Green
+Write-Host "✅ Standardized Infinite Pagination (PaginatedListState + PaginationScrollListener)" -ForegroundColor Green
+Write-Host "✅ ConnectivityService & Offline Handling integrated" -ForegroundColor Green
+Write-Host "✅ Hardware-level Secure Storage & Privacy Screen Protection added" -ForegroundColor Green
+Write-Host "✅ Core Design System Atoms created (AppButton, AppTextField, AppShimmer, AppEmpty, AppError)" -ForegroundColor Green
 Write-Host "✅ Injectable + GetIt dependency injection configured" -ForegroundColor Green
 Write-Host "✅ Enterprise Network subsystem (AuthInterceptor, ApiErrorHandler, DioClient, dartz Either)" -ForegroundColor Green
 Write-Host "✅ Centralized Routes created (core/routes/routes.dart & app_router.dart)" -ForegroundColor Green
@@ -62,6 +68,7 @@ Write-Host "   flutter pub get"
 Write-Host "   dart run build_runner build --delete-conflicting-outputs"
 Write-Host "   flutter test"
 Write-Host "   flutter run -t lib/main_dev.dart --flavor dev`n"
+
 
 
 

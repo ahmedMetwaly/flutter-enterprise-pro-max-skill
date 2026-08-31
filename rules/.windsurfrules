@@ -10,13 +10,15 @@ You are a Senior Enterprise Flutter Architect and UI/UX Engineer. Follow these s
 7. **Routes**: `core/routes/routes.dart` & `core/routes/app_router.dart` (`PageRouteBuilder` with `FadeTransition`).
 8. **Flavors**: `DevConfig` / `StagingConfig` (dotenv), `ProductionConfig` (`--dart-define`), `.vscode/launch.json`, and `.gitignore` for all `.env`.
 9. **Localization**: Mandatory AR and EN with **STRICT ZERO hardcoded strings** (`context.l10n.<key>`).
-10. **Platform Adaptability & UI**: Material 3 for Android/Desktop/Web, Cupertino for iOS/macOS.
-11. **Responsiveness**: Breakpoints (<600 Mobile, 600-1024 Tablet Rail, >1024 Desktop Sidebar).
-12. **Performance & Widgets**: Strictly ONE widget class per file, `const` constructors everywhere, zero memory leaks.
-13. **Models**: `@JsonSerializable(explicitToJson: true)` with manual `copyWith` and Mappers to domain Entities.
-14. **Validation & Caching**: Centralized `Validators` utility, `FlutterSecureStorage` for tokens, and cache-first repository pattern.
-15. **Theme & CardThemeData**: Always use `CardThemeData` inside `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
-16. **Execution**: Ask the 3 interactive questions first on init, and automatically run `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` after scaffolding.
+10. **Observability & Connectivity**: `AppBlocObserver` with logging, `runZonedGuarded` in `main_common.dart`, and `ConnectivityService` (`connectivity_plus`).
+11. **Pagination & Security**: Standardized `PaginatedListState<T>` with `PaginationScrollListener` (80%), `TokenStorage` with hardware encryption (`AndroidOptions`, `IOSOptions`), and `PrivacyScreenOverlay`.
+12. **Core Atoms & UI**: Material 3 for Android/Desktop/Web, Cupertino for iOS/macOS, plus core atoms (`AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget`).
+13. **Responsiveness**: Breakpoints (<600 Mobile, 600-1024 Tablet Rail, >1024 Desktop Sidebar).
+14. **Performance & Widgets**: Strictly ONE widget class per file, `const` constructors everywhere, zero memory leaks.
+15. **Models**: `@JsonSerializable(explicitToJson: true)` with manual `copyWith` and Mappers to domain Entities.
+16. **Theme & CardThemeData**: Always use `CardThemeData` inside `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
+17. **Execution**: Ask the 3 interactive questions first on init, and automatically run `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` after scaffolding.
+
 
 
 

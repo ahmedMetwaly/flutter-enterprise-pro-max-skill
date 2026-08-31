@@ -72,6 +72,12 @@ void main(List<String> args) async {
   print('\n⚡ Scaffolding project: $projectName...');
   print('✅ 3-Layer Clean Architecture & SOLID principles enforced (domain, data, presentation).');
   print('✅ Cubit + Freezed States configured with UseCase dependency injection.');
+  print('✅ Standardized Unit Testing with mocktail & bloc_test configured.');
+  print('✅ Global Observability: AppBlocObserver + runZonedGuarded configured.');
+  print('✅ Standardized Infinite Pagination (PaginatedListState + PaginationScrollListener).');
+  print('✅ ConnectivityService & Offline Handling integrated.');
+  print('✅ Hardware-level Secure Storage & Privacy Screen Protection added.');
+  print('✅ Core Design System Atoms created (AppButton, AppTextField, AppShimmer, AppEmpty, AppError).');
   print('✅ Injectable + GetIt dependency injection configured.');
   print('✅ Enterprise Network subsystem (AuthInterceptor, ApiErrorHandler, DioClient, dartz Either).');
   print('✅ Routes configured (core/routes/routes.dart, core/routes/app_router.dart).');
@@ -89,6 +95,7 @@ void main(List<String> args) async {
   print('   flutter test');
   print('   flutter run -t lib/main_dev.dart --flavor dev\n');
 }
+
 
 
 

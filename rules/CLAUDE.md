@@ -14,6 +14,11 @@
 - **Routes**: Centralized `core/routes/routes.dart` and `core/routes/app_router.dart` (`PageRouteBuilder` with `FadeTransition`).
 - **Flavors**: `DevConfig` / `StagingConfig` (via `dotenv`), `ProductionConfig` (via `--dart-define`), with `.vscode/launch.json` and all `.env` in `.gitignore`.
 - **Localization**: Mandatory AR and EN with **STRICT ZERO hardcoded strings**. Always use `context.l10n.<key>`.
+- **Observability**: `AppBlocObserver` with logging in Dev/Staging and global `runZonedGuarded` in `main_common.dart`.
+- **Pagination**: Standardized `PaginatedListState<T>` and `PaginationScrollListener` (80% threshold).
+- **Connectivity**: Centralized `ConnectivityService` with `connectivity_plus`.
+- **Hardware Security & Privacy**: `FlutterSecureStorage` with `AndroidOptions(encryptedSharedPreferences: true)` and `IOSOptions(accessibility: KeychainAccessibility.first_unlock)`, plus `PrivacyScreenOverlay` on backgrounding.
+- **Design Atoms**: Reusable `AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` in `core/widgets/`.
 - **Validation**: Centralized `Validators` utility returning localized error strings.
 - **Caching**: `FlutterSecureStorage` for tokens, `SharedPreferences` for sessions, cache-first repository pattern.
 - **Platform Adaptability**: Material 3 on Android/Desktop/Web, Cupertino on iOS/macOS.
@@ -22,6 +27,7 @@
 - **Theme**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
 - **Interactive Initializer**: When user asks to init project, ALWAYS ask the 3 questions first (Name, Platforms, Category).
 - **Automated Runner**: ALWAYS execute `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` automatically after scaffolding.
+
 
 
 

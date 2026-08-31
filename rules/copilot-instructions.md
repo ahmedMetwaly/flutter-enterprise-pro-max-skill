@@ -11,12 +11,16 @@
 - **Routes**: `core/routes/routes.dart` & `core/routes/app_router.dart` (`PageRouteBuilder` with `FadeTransition`).
 - **Flavors**: `DevConfig` / `StagingConfig` (dotenv), `ProductionConfig` (`--dart-define`), `.vscode/launch.json`, and all `.env` in `.gitignore`.
 - **Localization**: Mandatory AR/EN with zero hardcoded strings. Always use `context.l10n.<key>`.
+- **Observability & Connectivity**: `AppBlocObserver` with logging, `runZonedGuarded` in `main_common.dart`, `ConnectivityService` (`connectivity_plus`).
+- **Pagination & Security**: `PaginatedListState<T>` + `PaginationScrollListener` (80%), `TokenStorage` with hardware options (`AndroidOptions`, `IOSOptions`), `PrivacyScreenOverlay`.
+- **Core Atoms**: `AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` in `core/widgets/`.
 - **Platform UI**: Material 3 for Android/Desktop/Web, Cupertino for iOS/macOS.
 - **Responsiveness**: ResponsiveLayout (<600 phone, 600-1024 tablet, >1024 desktop).
 - **Performance & Widgets**: Always use Widget classes in separate files with `const` constructors. Strictly NO widget helper methods.
 - **ScreenUtil**: Use `flutter_screenutil` for sizes (.w, .h, .sp, .r).
 - **Theme**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
 - **Interactive Initializer & Build Runner**: Ask 3 interactive questions on init, and automatically execute `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` after generating code.
+
 
 
 

@@ -404,6 +404,277 @@ class ProductionConfig implements EnvConfig {
 
 ---
 
+---
+
+## 🛰️ Global Observability & AppBlocObserver (`core/bloc_observer.dart`)
+
+Enterprise Flutter applications require structured visibility into state transitions and lifecycle events:
+
+```dart
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/foundation.dart';
+
+class AppBlocObserver extends BlocObserver {
+  final bool enableLogging;
+  AppBlocObserver({this.enableLogging = true});
+
+  @override
+  void onCreate(BlocBase bloc) {
+    super.onCreate(bloc);
+    if (enableLogging) debugPrint('🟢 [Bloc Created] ${bloc.runtimeType}');
+  }
+
+  @override
+  void onChange(BlocBase bloc, Change change) {
+    super.onChange(bloc, change);
+    if (enableLogging) {
+      debugPrint('🔄 [Bloc Change] ${bloc.runtimeType} | Current: ${change.currentState} ➔ Next: ${change.nextState}');
+    }
+  }
+
+  @override
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    super.onError(bloc, error, stackTrace);
+    debugPrint('🔴 [Bloc Error] ${bloc.runtimeType} | $error');
+  }
+
+  @override
+  void onClose(BlocBase bloc) {
+    super.onClose(bloc);
+    if (enableLogging) debugPrint('⚪ [Bloc Closed] ${bloc.runtimeType}');
+  }
+}
+```
+
+### Global Bootstrap with `runZonedGuarded` (`lib/main_common.dart`):
+```dart
+Future<void> bootstrap(Future<Widget> Function() builder, {required EnvConfig config}) async {
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    debugPrint('🚨 [Flutter Error] ${details.exceptionAsString()}');
+  };
+
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await configureDependencies(config.flavor);
+    Bloc.observer = AppBlocObserver(enableLogging: config.enableLogging);
+    final app = await builder();
+    runApp(app);
+  }, (error, stack) {
+    debugPrint('🔥 [Uncaught Zone Error] $error\n$stack');
+  });
+}
+```
+
+---
+
+## 📜 Standardized Infinite Pagination Pattern
+
+Every paginated list in the application follows a standardized state and scroll listener pattern:
+
+### 1. Paginated State with Freezed:
+```dart
+@freezed
+class ProductListState with _$ProductListState {
+  const factory ProductListState.initial() = _Initial;
+  const factory ProductListState.loading() = _Loading;
+  const factory ProductListState.success({
+    required List<ProductEntity> items,
+    required int currentPage,
+    required bool hasReachedMax,
+    @Default(false) bool isLoadingMore,
+  }) = _Success;
+  const factory ProductListState.failure(String message) = _Failure;
+}
+```
+
+### 2. Reusable `PaginationScrollListener` (`core/widgets/pagination_scroll_listener.dart`):
+```dart
+import 'package:flutter/material.dart';
+
+class PaginationScrollListener extends StatelessWidget {
+  const PaginationScrollListener({
+    super.key,
+    required this.child,
+    required this.onLoadMore,
+    this.threshold = 0.8,
+  });
+
+  final Widget child;
+  final VoidCallback onLoadMore;
+  final double threshold;
+
+  @override
+  Widget build(BuildContext context) {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification is ScrollUpdateNotification) {
+          final maxScroll = notification.metrics.maxScrollExtent;
+          final currentScroll = notification.metrics.pixels;
+          if (maxScroll > 0 && currentScroll >= maxScroll * threshold) {
+            onLoadMore();
+          }
+        }
+        return false;
+      },
+      child: child,
+    );
+  }
+}
+```
+
+---
+
+## 🌐 Centralized Connectivity & Offline Handling (`core/services/connectivity_service.dart`)
+
+```dart
+import 'dart:async';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:injectable/injectable.dart';
+
+@singleton
+class ConnectivityService {
+  final Connectivity _connectivity = Connectivity();
+  final StreamController<bool> _controller = StreamController<bool>.broadcast();
+
+  Stream<bool> get onConnectivityChanged => _controller.stream;
+  bool isConnected = true;
+
+  ConnectivityService() {
+    _connectivity.onConnectivityChanged.listen((results) {
+      final connected = results.any((r) => r != ConnectivityResult.none);
+      isConnected = connected;
+      _controller.add(connected);
+    });
+  }
+
+  void dispose() => _controller.close();
+}
+```
+
+---
+
+## 🔒 Enterprise Hardware-Level Storage & Privacy Security
+
+### 1. Hardware-Encrypted Secure Storage (`core/services/token_storage.dart`):
+```dart
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:injectable/injectable.dart';
+
+@singleton
+class TokenStorage {
+  static const _aOptions = AndroidOptions(encryptedSharedPreferences: true);
+  static const _iOptions = IOSOptions(accessibility: KeychainAccessibility.first_unlock);
+
+  final FlutterSecureStorage _storage = const FlutterSecureStorage(
+    aOptions: _aOptions,
+    iOptions: _iOptions,
+  );
+
+  Future<void> saveToken(String token) => _storage.write(key: 'auth_token', value: token);
+  Future<String?> getToken() => _storage.read(key: 'auth_token');
+  Future<void> clearToken() => _storage.delete(key: 'auth_token');
+}
+```
+
+### 2. Privacy Screen Overlay (`core/widgets/privacy_screen_overlay.dart`):
+Protects sensitive screens in the App Switcher when the app is backgrounded:
+```dart
+import 'package:flutter/material.dart';
+
+class PrivacyScreenOverlay extends StatefulWidget {
+  const PrivacyScreenOverlay({super.key, required this.child});
+  final Widget child;
+
+  @override
+  State<PrivacyScreenOverlay> createState() => _PrivacyScreenOverlayState();
+}
+
+class _PrivacyScreenOverlayState extends State<PrivacyScreenOverlay> with WidgetsBindingObserver {
+  bool _isBackgrounded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    setState(() {
+      _isBackgrounded = (state == AppLifecycleState.inactive || state == AppLifecycleState.paused);
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        widget.child,
+        if (_isBackgrounded)
+          Positioned.fill(
+            child: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: const Center(child: Icon(Icons.lock_outline, size: 64)),
+            ),
+          ),
+      ],
+    );
+  }
+}
+```
+
+---
+
+## 🎨 Core Design System Atoms (`core/widgets/`)
+
+Every project scaffolded by this skill includes 5 essential production widgets in `core/widgets/`:
+
+1. **`AppButton`**: Reusable Material 3 button with built-in loading indicator, disabled state, and elevation styling.
+2. **`AppTextField`**: Localized input with focus borders, floating label, error text, and password visibility toggle.
+3. **`AppShimmerLoading`**: Skeleton loader wrapper for cards and list items.
+4. **`AppEmptyState`**: Cohesive empty list representation with SVG/Icon, message, and call-to-action button.
+5. **`AppErrorWidget`**: Standardized error banner with retry callback (`onRetry`).
+
+---
+
+## 📐 Strict `analysis_options.yaml` Standard
+
+```yaml
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    missing_required_param: error
+    missing_return: error
+    todo: ignore
+
+linter:
+  rules:
+    - avoid_print
+    - prefer_const_constructors
+    - prefer_const_declarations
+    - prefer_const_literals_to_create_immutables
+    - unawaited_futures
+    - avoid_unnecessary_containers
+    - sized_box_for_whitespace
+    - prefer_single_quotes
+    - sort_child_properties_last
+    - always_declare_return_types
+```
+
+---
+
 ## 🎨 UI/UX Pro Max & Strict Theme Standards
 
 > [!IMPORTANT]
@@ -449,6 +720,7 @@ class ProductionConfig implements EnvConfig {
 > 3. `flutter analyze` (to ensure 0 errors / 0 warnings)
 >
 > **NEVER ask the user to run `build_runner` or `flutter analyze` manually! Run them automatically in the background/terminal as part of completing the task.**
+
 
 
 

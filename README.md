@@ -99,15 +99,66 @@
 
 ## 🏛️ Configurable Architecture Profiles
 
-The system provides 4 pre-built profiles and a fully customizable workflow:
+Rather than locking your team into a single dogmatic stack, **Flutter Enterprise Pro Max** introduces a configurable Architecture Decision System with 4 pre-configured enterprise profiles and a custom configuration engine:
 
-| Profile | Architecture Style | State Management | DI | Routing | Networking & Result | Persistence |
+| Profile | Architecture Style | State Management | DI Engine | Routing | Networking & Result | Persistence |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **1. Enterprise Clean (Default)** | Feature-First Clean (3-Layer) | Cubit + States | Injectable + GetIt | Centralized AppRouter | Retrofit + Dio + ResultFuture | SecureStorage + SharedPreferences |
 | **2. Riverpod Enterprise** | Feature-First Clean | Riverpod (AsyncNotifier) | Riverpod Providers | GoRouter | Dio + Sealed Result | SecureStorage + SharedPreferences |
 | **3. Offline-First Enterprise** | Clean Architecture | Cubit + States | Injectable + GetIt | Centralized AppRouter | Dio + Sync Queue Engine | Drift (SQLite) + SQLCipher |
 | **4. Minimal Starter** | Simplified Feature | Cubit + States | Manual Factory | Centralized AppRouter | Dio + Sealed Result | SecureStorage + SharedPreferences |
-| **5. Custom Profile** | Configured via `enterprise_flutter.yaml` or step-by-step interactive CLI |
+| **5. Custom Profile** | Configured via `enterprise_flutter.yaml` or step-by-step interactive CLI wizard |
+
+---
+
+### 1️⃣ Profile 1: Enterprise Clean Architecture (Default Recommended)
+Designed for enterprise, banking, fintech, healthcare, and mission-critical applications:
+* **Architecture Style**: Feature-First 3-Layer Clean Architecture (`domain`, `data`, `presentation`).
+* **State Management**: **Cubit + Freezed/Sealed States** with value equality and single-responsibility UseCase injection.
+* **Dependency Injection**: **GetIt + Injectable** with `@singleton`, `@LazySingleton(as: Interface)`, and `@injectable`.
+* **Networking & Error**: **Retrofit + Dio** with thread-safe `AuthInterceptor` 401 refresh mutex and `typedef ResultFuture<T> = Future<Either<Failure, T>>`.
+* **Navigation & Routing**: **Centralized AppRouter** (`PageRouteBuilder` with 400ms fade transition).
+* **Persistence**: Hardware-encrypted **FlutterSecureStorage** + **SharedPreferences**.
+* **Flavors**: Mandatory `DevConfig`, `StagingConfig` (dotenv), and `ProductionConfig` (`--dart-define`).
+* **Localization**: Context-Aware AR/EN with zero hardcoded user-facing UI strings.
+
+---
+
+### 2️⃣ Profile 2: Riverpod Enterprise Architecture
+Designed for modern reactive applications, SaaS dashboards, and multiplatform web/desktop targets:
+* **Architecture Style**: Feature-First Clean Architecture.
+* **State Management**: **Riverpod 2.x (`AsyncNotifier` / `Notifier`)** with `AsyncValue` lifecycle handling.
+* **Dependency Injection**: Compile-time safe **Riverpod Providers** with test override capabilities (`ProviderContainer`).
+* **Navigation & Routing**: **GoRouter** with deep linking, route guards, `ShellRoute`, and web URL synchronization.
+* **Networking & Error**: **Dio** with interceptors and Dart 3 Sealed `Result<T, Failure>`.
+
+---
+
+### 3️⃣ Profile 3: Offline-First Enterprise Architecture
+Designed for logistics, field operations, POS, and healthcare apps requiring 100% offline functionality:
+* **Architecture Style**: Clean Architecture with Local Database & Asynchronous Sync Engine.
+* **Local Database**: **Drift (SQLite ORM)** with SQLCipher hardware encryption support.
+* **Offline Sync Engine**:
+  - Offline mutation queue stored in SQLite.
+  - Idempotent background retries (`X-Idempotency-Key`).
+  - Automatic connectivity listener (`ConnectivityService`).
+  - Conflict resolution strategies (Client-Wins, Server-Wins, Timestamp-Based).
+
+---
+
+### 4️⃣ Profile 4: Minimal Starter Architecture
+Designed for MVPs, rapid prototyping, and lightweight utilities:
+* **Architecture Style**: Simplified Feature-First Architecture.
+* **State Management**: **Cubit + States**.
+* **Dependency Injection**: Manual Factory Injection (Zero code generation).
+* **Networking**: Direct **Dio** client with Sealed `Result<T, Failure>`.
+
+---
+
+### 5️⃣ Profile 5: Custom Architecture Wizard
+Configure any dimension interactively via `dart bin/init.dart` or declaratively via `enterprise_flutter.yaml`:
+* Mix and match State Management (Cubit, Riverpod, Provider, Signals), DI (Injectable, Riverpod, Manual), Routing (AppRouter, GoRouter), and Persistence (SecureStorage, Drift, Isar, Hive).
+
 
 ---
 

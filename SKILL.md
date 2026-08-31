@@ -1,6 +1,6 @@
 ---
 name: flutter-enterprise-pro-max
-description: Universal enterprise Flutter architect, system designer, and UI/UX intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up 3-layer Clean Architecture (domain, data, presentation), configuring state management (Cubit/Bloc, Riverpod, Provider, Signals), Injectable + GetIt or Riverpod DI, sealed Result or dartz Either error handling with pure Domain Failures, routing (AppRouter or GoRouter), Mandatory Flavors (.vscode/launch.json, DevConfig, StagingConfig, ProductionConfig with --dart-define), Hardware Security, Privacy Screen, Core Design Atoms, Mandatory AR/EN Localization, Device responsiveness, or crafting high-end UI/UX designs.
+description: Universal enterprise Flutter architect, system designer, and UI/UX intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up 3-layer Clean Architecture (domain, data, presentation), configuring state management (Cubit/Bloc, Riverpod, Provider, Signals), Injectable + GetIt or Riverpod DI, sealed Result or dartz Either error handling with pure Domain Failures, routing (AppRouter or GoRouter), Mandatory Flavors (.vscode/launch.json, DevConfig, StagingConfig, ProductionConfig with --dart-define), Hardware Security, Privacy Screen, Core Design Atoms, Context-Aware AR/EN Localization, Device responsiveness, or crafting high-end UI/UX designs.
 ---
 
 # 🚀 Flutter Enterprise Pro Max v2 — AI Agent Skill
@@ -18,7 +18,7 @@ P0 — Security & Correctness   (Hardware secure storage, domain isolation, zero
         ↓
 P1 — Architecture & SOLID     (Clean layer separation, single-responsibility UseCases, DI inversion)
         ↓
-P2 — Maintainability & Tests  (3-tier testing pyramid: Unit, Widget, E2E; zero hardcoded UI strings)
+P2 — Maintainability & Tests  (3-tier testing pyramid: Unit, Widget, E2E; Context-Aware Localization)
         ↓
 P3 — Performance              (Bounded rebuild scopes, list virtualization, isolate offloading)
         ↓
@@ -47,11 +47,11 @@ The system provides 4 pre-configured profiles and a fully customizable workflow:
 - **Style**: Feature-First 3-Layer Clean Architecture (`domain`, `data`, `presentation`).
 - **State Management**: **Cubit + Freezed/Sealed States**.
 - **Dependency Injection**: **GetIt + Injectable** (`service_locator.dart`).
-- **Network & Error**: **Retrofit + Dio** with Domain-Isolated `Result<T, Failure>` or `Either<Failure, T>`.
+- **Network & Error**: **Retrofit + Dio** with Domain-Isolated `Result<T, Failure>` or `ResultFuture<T> = Future<Either<Failure, T>>`.
 - **Navigation & Routing**: **Centralized AppRouter** with 400ms fade transition.
 - **Persistence**: **FlutterSecureStorage** (hardware-encrypted) + **SharedPreferences**.
 - **Flavors**: Mandatory `DevConfig`, `StagingConfig` (dotenv), and `ProductionConfig` (`--dart-define`).
-- **Localization**: Mandatory AR/EN with zero hardcoded user-facing strings.
+- **Localization**: Context-Aware AR/EN with zero hardcoded user-facing UI strings.
 - **Theme**: Material 3 with strict `CardThemeData`.
 
 ### ⚡ Profile 2: Riverpod Enterprise Architecture
@@ -96,9 +96,10 @@ lib/
 │   │   └── context_extension.dart  # theme, l10n, mediaQuery shortcuts
 │   │
 │   ├── network/                    # Enterprise Network Layer (Dio + Retrofit + Result)
+│   │   ├── typedef.dart            # typedef ResultFuture<T> = Future<Either<Failure, T>>;
 │   │   ├── result.dart             # Sealed Result<T, E> & Either definitions
 │   │   ├── api_error_handler.dart  # Maps DioException -> ServerFailure
-│   │   ├── api_error_model.dart    # @JsonSerializable error model
+│   │   ├── api_error_model.dart    # @JsonSerializable error DTO (Data layer only)
 │   │   ├── auth_interceptor.dart   # Token injection, 401 refresh mutex & retry
 │   │   └── dio_client.dart         # Configured Dio factory with PrettyDioLogger
 │   │
@@ -131,7 +132,7 @@ lib/
 │   └── <feature_name>/
 │       ├── domain/                 # Layer 1: Pure Dart Business Logic (Zero UI)
 │       │   ├── entities/           # Pure data models extending Equatable
-│       │   ├── repos/              # Abstract Repository contracts returning Result<T, Failure>
+│       │   ├── repos/              # Abstract Repository contracts returning ResultFuture<T>
 │       │   └── usecases/           # Single-responsibility UseCase classes (@lazySingleton)
 │       │
 │       ├── data/                   # Layer 2: Data Retrieval, Serialization & Mapping
@@ -165,24 +166,27 @@ lib/
 
 ---
 
-## 4. 🛡️ Domain Error Isolation & Result Pattern
+## 4. 🛡️ Domain Error Isolation & Result Pipeline
 
 > [!CRITICAL]
-> **Domain Layer MUST NOT depend on HTTP status codes, Dio, or REST models!**
+> **Domain Layer MUST NOT depend on HTTP status codes, Dio, or ApiErrorModel!**
+> `ApiErrorModel` belongs exclusively to the **Data Layer** as a DTO.
 
 ```
-Remote API Response / Exception
-         ↓
-Data Layer: DataSource (Retrofit / Dio)
-         ↓
-Data Layer: Repository Implementation (Maps DioException -> Domain Failure)
-         ↓
-Domain Layer: UseCase returns Result<T, Failure> or Either<Failure, T>
-         ↓
-Presentation Layer: Cubit/Notifier maps Failure -> User-Friendly Localized Message
+DioException (HTTP / Network Error)
+          ↓
+ApiErrorModel (Data Layer DTO)
+          ↓
+Data Layer Repository maps to: ServerFailure / NetworkFailure / UnauthorizedFailure
+          ↓
+Domain Contract / UseCase returns:
+  typedef ResultFuture<T> = Future<Either<Failure, T>>;
+  (or Result<T, Failure>)
+          ↓
+Presentation Layer (Cubit maps Failure -> Localized string via context.l10n)
 ```
 
-### Domain Failure Hierarchy (`core/errors/failure.dart`):
+### Pure Domain Failure Hierarchy (`core/errors/failure.dart`):
 ```dart
 sealed class Failure {
   final String message;
@@ -223,7 +227,7 @@ Whenever the user asks to add or generate a feature:
    - Ask if they have a Figma URL or image mockups.
    - Confirm the project's architecture profile.
 2. **Scaffold 3 Layers**:
-   - `domain/`: Pure Entities (`Equatable`), abstract Repositories, discrete UseCases.
+   - `domain/`: Pure Entities (`Equatable`), abstract Repositories returning `ResultFuture<T>`, discrete UseCases.
    - `data/`: DataSources, `@JsonSerializable` Models + `copyWith` + `toEntity()`, Repository Implementations.
    - `presentation/`: Cubit/Notifier, Screen (`ResponsiveLayout`), cohesive sub-widgets.
 3. **Generate 3-Tier Testing Suite**:
@@ -322,7 +326,27 @@ void main() {
 
 ---
 
-## 8. 🎨 UI/UX Pro Max & Strict Theme Standards
+## 8. 🌍 Context-Aware Localization Standard
+
+To avoid excessive or nonsensical abstractions, the AI Agent MUST distinguish between user-facing text and developer/system text:
+
+### 1. User-Facing UI Strings (MUST Be Localized):
+- Any text displayed to end users in the UI **MUST NOT** be hardcoded. Always use `context.l10n.<key>`.
+- Examples:
+  - `Text(context.l10n.loginTitle)`
+  - Form validation messages shown in UI (`context.l10n.invalidEmailError`)
+  - User-facing dialog titles, body text, and buttons (`context.l10n.retry`, `context.l10n.confirm`)
+  - SnackBar / Toast user notifications
+
+### 2. Infrastructure & Developer Strings (DO NOT Localize):
+- **Internal Logs & Diagnostics**: `debugPrint('Auth token refreshed')`, `logger.d('...')`, `AppBlocObserver`.
+- **Telemetry & Analytics Events**: `analytics.logEvent(name: 'user_signed_up', parameters: {'plan': 'free'})`.
+- **Developer Asserts & System Errors**: `assert(id.isNotEmpty, 'ID must not be empty')`, `ArgumentError('...')`.
+- **Data Layer Exception Codes**: `ServerException(code: 'HTTP_504_TIMEOUT')`.
+
+---
+
+## 9. 🎨 UI/UX Pro Max & Strict Theme Standards
 
 > [!IMPORTANT]
 > **Strict Material 3 ThemeData Rule**:
@@ -342,7 +366,7 @@ void main() {
 
 ---
 
-## 9. 🧙‍♂️ Interactive Initializer Questionnaire (MANDATORY)
+## 10. 🧙‍♂️ Interactive Initializer Questionnaire (MANDATORY)
 
 Whenever the user asks to `"init project"` or initialize an app, the Agent **MUST STOP AND PRESENT** the questionnaire:
 

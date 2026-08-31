@@ -8,7 +8,10 @@
   - **Profile 2 (Riverpod)**: Feature-First, `AsyncNotifier`, Riverpod Providers (DI), GoRouter.
   - **Profile 3 (Offline-First)**: Clean Arch, Drift SQLite, Sync Queue Engine with Idempotent Retries.
   - **Profile 4 (Custom)**: Configured in `enterprise_flutter.yaml`.
-- **Domain Isolation**: Domain Layer NEVER depends on Dio, HTTP status codes, or `ApiErrorModel`. Repositories map data exceptions into pure domain `Failure`s.
+- **Domain Error Isolation**:
+  - Domain Layer NEVER depends on Dio, HTTP status codes, or `ApiErrorModel`.
+  - Domain contracts use `typedef ResultFuture<T> = Future<Either<Failure, T>>;` (or `Result<T, Failure>`).
+  - Data repositories map `DioException` / `ApiErrorModel` into domain `Failure`s (`ServerFailure`, `NetworkFailure`, `UnauthorizedFailure`).
 - **Feature Generation (`add feature <name>`)**:
   - Ask for user stories/documentation and UI/Figma links.
   - Scaffold 3 layers under strict SOLID principles.
@@ -18,5 +21,7 @@
 - **Security & Privacy**: Hardware-encrypted `TokenStorage` (`encryptedSharedPreferences: true`, `first_unlock`), `PrivacyScreenOverlay` on backgrounding.
 - **Core Atoms**: `AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` in `core/widgets/`.
 - **Theme**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
-- **Localization**: Mandatory AR/EN with zero hardcoded user-facing strings (`context.l10n.<key>`).
+- **Context-Aware Localization**:
+  - **User-Facing UI Strings** (`Text(...)`, dialogs, error banners shown to user): MUST be localized via `context.l10n.<key>`.
+  - **Infrastructure & Dev Strings** (Logs `debugPrint`, Telemetry events, Asserts, Data Exception codes): DO NOT localize; keep as plain English string literals.
 - **Automated Runner**: Automatically run `flutter pub get`, `build_runner` (if needed), and `flutter analyze` after scaffolding.

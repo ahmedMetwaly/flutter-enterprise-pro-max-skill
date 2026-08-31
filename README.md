@@ -21,19 +21,21 @@
 1. [What's New in v2](#-whats-new-in-v2)
 2. [Architecture Profiles](#-architecture-profiles)
 3. [Domain Error Isolation Principle](#-domain-error-isolation-principle)
-4. [Feature Generator Engine (`add feature <name>`)](#-feature-generator-engine-add-feature-name)
-5. [Testing Strategy (The 3-Tier Pyramid)](#-testing-strategy-the-3-tier-pyramid)
-6. [Universal Installation Matrix](#-universal-installation-matrix)
-7. [CLI Tools & Commands](#-cli-tools--commands)
-8. [Automated Repository Validation](#-automated-repository-validation)
-9. [License](#-license)
+4. [Context-Aware Localization Standard](#-context-aware-localization-standard)
+5. [Feature Generator Engine (`add feature <name>`)](#-feature-generator-engine-add-feature-name)
+6. [Testing Strategy (The 3-Tier Pyramid)](#-testing-strategy-the-3-tier-pyramid)
+7. [Universal Installation Matrix](#-universal-installation-matrix)
+8. [CLI Tools & Commands](#-cli-tools--commands)
+9. [Automated Repository Validation](#-automated-repository-validation)
+10. [License](#-license)
 
 ---
 
 ## 🌟 What's New in v2
 
-* **🏛️ Architecture Decision Matrix**: No more static, dogmatic rules. Choose from **Enterprise Clean (Cubit + Injectable)**, **Riverpod Enterprise (AsyncNotifier + GoRouter)**, **Offline-First Enterprise (Drift + Sync Queue)**, or a fully custom profile.
-* **🛡️ Domain Error Architecture Isolation**: Pure `Failure` hierarchy (`ServerFailure`, `NetworkFailure`, `UnauthorizedFailure`, `ValidationFailure`). The Domain Layer is 100% isolated from Dio, HTTP status codes, and REST models.
+* **🏛️ Architecture Decision Matrix**: Choose from **Enterprise Clean (Cubit + Injectable)**, **Riverpod Enterprise (AsyncNotifier + GoRouter)**, **Offline-First Enterprise (Drift + Sync Queue)**, or a fully custom profile.
+* **🛡️ Domain Error Architecture Isolation**: Pure `Failure` hierarchy (`ServerFailure`, `NetworkFailure`, `UnauthorizedFailure`, `ValidationFailure`). `ApiErrorModel` belongs exclusively to Data Layer DTOs; the Domain Layer depends only on pure `Failure` abstractions (`typedef ResultFuture<T> = Future<Either<Failure, T>>;`).
+* **🌍 Context-Aware Localization**: Nuanced localization separating user-facing UI strings (`context.l10n.<key>`) from internal logs, telemetry, asserts, and exception codes (plain English string literals).
 * **⚡ Interactive Feature Generator (`add feature <name>`)**: Automatically asks for specifications/documentation, UI/Figma design links, and generates the 3 clean architecture layers with Unit, Widget, and E2E Integration tests under strict SOLID principles.
 * **🔒 Hardware-Level Security & Privacy Screen**: Hardware-encrypted `FlutterSecureStorage` (`AndroidOptions(encryptedSharedPreferences: true)`), and `PrivacyScreenOverlay` on backgrounding.
 * **🎨 Core Design System Atoms**: Standardized `AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, and `AppErrorWidget`.
@@ -49,7 +51,7 @@ lib/
 ├── core/
 │   ├── config/ (app_config, app_flavor, dev_config, staging_config, production_config)
 │   ├── errors/ (failure.dart, exceptions.dart)
-│   ├── network/ (dio_client, auth_interceptor, api_error_handler, result.dart)
+│   ├── network/ (dio_client, auth_interceptor, api_error_handler, typedef.dart, result.dart)
 │   ├── routes/ (app_router, routes.dart with 400ms fade transition)
 │   ├── services/ (token_storage, connectivity_service)
 │   ├── theme/ (theme_manager, app_colors, strict CardThemeData)
@@ -76,16 +78,32 @@ lib/
 ## 🛡️ Domain Error Isolation Principle
 
 ```
-Remote API Exception (DioException / Server 500)
+DioException (HTTP / Network Error)
                     ↓
-Data Layer: DataSource (Retrofit / Dio)
+ApiErrorModel (Data Layer DTO)
                     ↓
-Data Layer: Repository Implementation (Maps DioException -> ServerFailure)
+Data Layer: Repository Implementation (Maps DioException / ApiErrorModel -> Domain Failure)
                     ↓
-Domain Layer: UseCase returns Result<T, Failure> (Pure Dart)
+Domain Contract / UseCase returns:
+typedef ResultFuture<T> = Future<Either<Failure, T>>;
+(or Result<T, Failure>)
                     ↓
-Presentation Layer: Cubit / Notifier maps Failure -> Localized UI Message
+Presentation Layer (Cubit maps Failure -> Localized UI string via context.l10n)
 ```
+
+---
+
+## 🌍 Context-Aware Localization Standard
+
+To avoid over-abstracting infrastructure string literals, the skill strictly separates string types:
+
+| Category | Localization Required? | Examples |
+| :--- | :--- | :--- |
+| **User-Facing UI Strings** | ✅ **YES (`context.l10n.<key>`)** | `Text(context.l10n.submit)`, Dialog body, Form validators, SnackBar alerts |
+| **Internal Logging** | ❌ **NO (English literal)** | `debugPrint('User logged in')`, `logger.e('...')`, `AppBlocObserver` |
+| **Telemetry & Analytics** | ❌ **NO (English literal)** | `analytics.logEvent(name: 'checkout_step_1')` |
+| **Developer Asserts** | ❌ **NO (English literal)** | `assert(token.isNotEmpty, 'Token required')` |
+| **Data Error Codes** | ❌ **NO (English literal)** | `ServerException(code: 'HTTP_504_TIMEOUT')` |
 
 ---
 
@@ -97,7 +115,7 @@ When you ask the AI Agent to `add feature <name>` or run `dart bin/generate.dart
    - Asks for user stories, requirements, or API documentation.
    - Asks for UI mockups or Figma links.
 2. **Generates 3 Layers**:
-   - `domain/`: Entities (`Equatable`), abstract Repositories, discrete UseCases.
+   - `domain/`: Entities (`Equatable`), abstract Repositories returning `ResultFuture<T>`, discrete UseCases.
    - `data/`: Remote Data Sources, `@JsonSerializable` Models + Mappers, Repository Implementations.
    - `presentation/`: Cubit/Notifier, Screen Widget, Sub-widgets.
 3. **Generates 3-Tier Tests**:
@@ -116,7 +134,7 @@ blocTest<LoginCubit, AuthState>(
   build: () => LoginCubit(mockLoginUseCase),
   setUp: () {
     when(() => mockLoginUseCase(email: 'test@example.com', password: '123'))
-        .thenAnswer((_) async => const Success('dummy_token'));
+        .thenAnswer((_) async => const Right('dummy_token'));
   },
   act: (cubit) => cubit.login(email: 'test@example.com', password: '123'),
   expect: () => [
@@ -175,8 +193,6 @@ dart bin/validate.dart
 ---
 
 ## 🔍 Automated Repository Validation
-
-To verify that all templates, schema definitions, profiles, rules, and CLI tools are 100% consistent:
 
 ```bash
 dart bin/validate.dart

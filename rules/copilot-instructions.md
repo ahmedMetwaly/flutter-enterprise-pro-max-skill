@@ -5,7 +5,10 @@
   - Default: Feature-First Clean Architecture (`domain`, `data`, `presentation`), Cubit + States, Injectable + GetIt, Centralized Routes.
   - Riverpod: Feature-First, `AsyncNotifier`, GoRouter.
   - Offline-First: Drift SQLite Database, Sync Queue Engine, Idempotency & Conflict Resolution.
-- **Domain Error Isolation**: Domain Layer NEVER depends on Dio, HTTP status codes, or `ApiErrorModel`. Repositories map data exceptions into pure domain `Failure`s (`ServerFailure`, `NetworkFailure`, `UnauthorizedFailure`).
+- **Domain Error Isolation**:
+  - Domain Layer NEVER depends on Dio, HTTP status codes, or `ApiErrorModel`.
+  - Domain contracts return `ResultFuture<T> = Future<Either<Failure, T>>` or `Result<T, Failure>`.
+  - Repositories map data exceptions (`DioException`, `ApiErrorModel`) into pure domain `Failure`s (`ServerFailure`, `NetworkFailure`, `UnauthorizedFailure`).
 - **Feature Generation (`add feature <name>`)**:
   - Collect documentation / requirements & UI / Figma inputs.
   - Build 3 layers adhering strictly to SOLID and performance standards.
@@ -14,5 +17,7 @@
 - **Hardware Security & Privacy**: `TokenStorage` with hardware options (`encryptedSharedPreferences: true`, `first_unlock`), `PrivacyScreenOverlay` on backgrounding.
 - **Core Atoms**: Standardize on `AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` in `core/widgets/`.
 - **Theme**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
-- **Localization**: Mandatory AR/EN with zero hardcoded user-facing strings (`context.l10n.<key>`).
+- **Context-Aware Localization**:
+  - User-facing UI strings (`Text(...)`, dialogs, user-visible error messages): MUST be localized via `context.l10n.<key>`.
+  - Infrastructure & Dev strings (Logs `debugPrint`, Telemetry events, Asserts, Exception codes): Keep as plain English literals without localization.
 - **Automated Execution**: Ask interactive questions first on init, and automatically run `flutter pub get`, `build_runner` (if needed), and `flutter analyze` after generating code.

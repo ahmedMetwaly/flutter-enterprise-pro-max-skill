@@ -8,7 +8,7 @@ Follow these architectural, coding, and UI/UX design principles:
 ## 0. ⚖️ Rule Priority Hierarchy
 - **P0 — Security & Correctness**: Hardware secure storage, domain isolation, zero memory leaks.
 - **P1 — Architecture & SOLID**: Strict layer boundaries, single-responsibility UseCases, DI inversion.
-- **P2 — Maintainability & Testing**: 3-tier testing pyramid (Unit, Widget, E2E), zero hardcoded UI strings.
+- **P2 — Maintainability & Testing**: 3-tier testing pyramid (Unit, Widget, E2E), context-aware localization.
 - **P3 — Performance**: Bounded rebuild scopes (`BlocSelector`/`select`), list virtualization, isolate computation.
 - **P4 — Style & Convention**: Widget classes in separate files, strict `CardThemeData`, snake_case filenames.
 *When rules conflict, higher priority wins. Project config (`enterprise_flutter.yaml`) overrides defaults.*
@@ -25,9 +25,20 @@ Follow these architectural, coding, and UI/UX design principles:
 
 ## 2. 🛡️ Domain Error Isolation & Result Pattern
 - **Domain Layer Isolation**: The Domain Layer **MUST NEVER** depend on Dio, HTTP status codes, or `ApiErrorModel`.
+- **Domain Contract**: `typedef ResultFuture<T> = Future<Either<Failure, T>>;` (or `Result<T, Failure>`).
+- **Data Layer Pipeline**:
+  ```
+  DioException (HTTP / Network error)
+       ↓
+  ApiErrorModel (Data Layer DTO)
+       ↓
+  ServerFailure / NetworkFailure / UnauthorizedFailure (Domain Failure)
+       ↓
+  Domain Contract (Either<Failure, T> or Result<T, Failure>)
+       ↓
+  Presentation Layer (Cubit maps Failure -> Localized UI string via context.l10n)
+  ```
 - **Domain Failure Hierarchy**: Abstract `Failure` with `ServerFailure`, `NetworkFailure`, `UnauthorizedFailure`, `ValidationFailure`, `CacheFailure`.
-- **Result Types**: Return `Result<T, Failure>` (Sealed class) or `Either<Failure, T>` (dartz/fpdart).
-- **Data Layer Mapping**: Repositories catch `DioException` / `ServerException` and map them into Domain `Failure`s.
 
 ---
 
@@ -42,7 +53,7 @@ Follow these architectural, coding, and UI/UX design principles:
 When the user asks to add/generate a feature:
 1. **Intake Flow**: Ask for feature requirements/documentation and UI/Figma links.
 2. **Scaffold 3 Layers**:
-   - `domain/`: Pure Entities (`Equatable`), abstract Repositories, discrete UseCases.
+   - `domain/`: Pure Entities (`Equatable`), abstract Repositories returning `ResultFuture<T>`, discrete UseCases.
    - `data/`: DataSources, `@JsonSerializable` Models + `copyWith` + `toEntity()`, Repository Implementations.
    - `presentation/`: Cubit/Notifier, Screen (`ResponsiveLayout`), cohesive sub-widgets.
 3. **Generate Tests**: Generate Unit Tests (Domain & State), Widget Tests (UI Components), and E2E Integration Tests.
@@ -78,13 +89,23 @@ Always use standard core atoms:
 
 ---
 
-## 8. 📐 Strict ThemeData Rule (CardThemeData ONLY)
+## 8. 🌍 Context-Aware Localization Standard
+- **User-Facing UI Strings** (`Text(...)`, dialog titles, user toasts, validation errors shown to the user): **MUST NEVER be hardcoded**. Always use `context.l10n.<key>`.
+- **Infrastructure & Developer Strings** (DO NOT localize — use plain English string literals):
+  - **Internal Logs**: `debugPrint('Auth token refreshed')`, `logger.e('...')`.
+  - **Telemetry & Analytics**: `analytics.logEvent(name: 'user_signed_up')`.
+  - **Developer Asserts & Diagnostic Exceptions**: `assert(id != null)`, `ArgumentError('...')`.
+  - **Data/Infrastructure Exception Codes**: `ServerException(code: 'TIMEOUT_504')`.
+
+---
+
+## 9. 📐 Strict ThemeData Rule (CardThemeData ONLY)
 - In `ThemeData`, **ALWAYS use `CardThemeData`** (`cardTheme: const CardThemeData(...)`).
 - **NEVER use `CardTheme(...)`** inside `ThemeData(cardTheme: ...)` as `CardTheme` is a widget class in Flutter.
 
 ---
 
-## 9. ⚡ Interactive Initializer & Automated Runner
+## 10. ⚡ Interactive Initializer & Automated Runner
 - ALWAYS ask the interactive questions first on `init project`.
 - AUTOMATICALLY execute:
   1. `flutter pub get`

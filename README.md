@@ -41,7 +41,30 @@
 ## 📖 Overview
 
 **Flutter Enterprise Pro Max** is a complete, production-grade AI Agent Skill and scaffolding framework engineered to enforce enterprise engineering standards:
-* **🏛️ 3-Layer Clean Architecture & SOLID Principles**: Pure Dart Domain Layer (`entities`, `repositories`, `usecases`), isolated Data Layer (`datasources`, `models`, `repositories`), and Presentation Layer (`cubits`, `screens`, `widgets`).
+* **🏛️ 3-Layer Clean Architecture & Strict SOLID Principles**:
+  - Pure Dart Domain Layer (`entities` with `const` constructors, `repositories` contracts, single-responsibility `usecases`).
+  - Isolated Data Layer (`datasources`, `@JsonSerializable` `models` with manual `copyWith` + Mappers, `repositories` implementations).
+  - High-Performance Presentation Layer (`cubits`, `screens`, `widgets`).
+* **🔄 Cubit + Freezed States (Value Equality & Unit Test Ready)**:
+  - Clean `@freezed class FeatureState with _$FeatureState` union states (`initial`, `loading`, `success`, `failure`).
+  - Immutable value equality out-of-the-box for effortless testing with `bloc_test` and `emitsInOrder`.
+  - Cubits strictly inject single-responsibility UseCases (`LoginCubit(this.loginUseCase)`).
+* **🧪 Standardized Unit Testing with `mocktail` & `bloc_test`**:
+  - Mock UseCases (`class MockLoginUseCase extends Mock implements LoginUseCase {}`), test initial state, happy path, and error path with `verify(...).called(1)`.
+
+
+* **🛰️ Global Observability & Zone Guard**:
+  - `AppBlocObserver` logging bloc creation, state changes, errors, and close events with environment switches.
+  - Global `runZonedGuarded` and `FlutterError.onError` handler in `main_common.dart`.
+* **📜 Standardized Infinite Pagination**:
+  - `PaginatedListState<T>` with Freezed and reusable `PaginationScrollListener` triggering at 80% scroll depth.
+* **🌐 Centralized Connectivity & Offline Handling**:
+  - `ConnectivityService` via `connectivity_plus` with broadcast streams for real-time network state monitoring.
+* **🔒 Enterprise Hardware-Level Storage & Privacy**:
+  - `FlutterSecureStorage` with `AndroidOptions(encryptedSharedPreferences: true)` and `IOSOptions(accessibility: KeychainAccessibility.first_unlock)`.
+  - `PrivacyScreenOverlay` obscuring sensitive screens in the App Switcher when backgrounded.
+* **🎨 Core Design System Atoms (`core/widgets/`)**:
+  - Ready-to-use production UI atoms: `AppButton` (with built-in loading indicator), `AppTextField` (with validation and password toggle), `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` (with retry).
 * **💉 Injectable + GetIt Dependency Injection**: Inversion of control using `@singleton`, `@LazySingleton(as: Interface)`, `@lazySingleton`, `@injectable`, and `@module`.
 * **🌐 Production Network Subsystem with `dartz`**:
   - `DioClient` with `PrettyDioLogger` and timeout settings.
@@ -58,15 +81,19 @@
 * **🌍 Mandatory AR/EN Localization**:
   - **STRICT ZERO HARDCODED STRINGS** in UI and error messages.
   - Arabic (RTL) & English (LTR) ready with `AppLocalizations` and context extensions.
-* **🛡️ Enterprise Validation, Caching & Strict ThemeData**:
+* **⚡ High-Performance Engineering & Strict ThemeData**:
+  - `const` constructors enforced on all States, Entities, Widgets, and layout tokens to maximize Flutter element reuse.
   - Composable `Validators` with localized errors.
   - Secure token storage (`FlutterSecureStorage`) & session caching (`SharedPreferences`).
   - Strict Material 3 `ThemeData` enforcing `CardThemeData` (`cardTheme: const CardThemeData(...)`).
+  - Strict `analysis_options.yaml` enforcing zero lint compromises.
 * **📱 Platform-Adaptive UI**: Native **Material 3** for Android/Desktop/Web & Native **Cupertino (HIG)** for iOS/macOS.
 * **🖥️ Multi-Device Responsiveness**: Automatic layout adaptation for **Phones** (< 600dp), **Tablets** (600dp - 1024dp with Navigation Rail), and **Desktop / Large Screens** (> 1024dp with Sidebar).
 * **🎨 UI/UX Pro Max Design Intelligence**: 7 pre-built psychological design palettes (Fintech, E-Commerce, Healthcare, Food Delivery, SaaS, Fitness, EdTech).
 
+
 ---
+
 
 
 

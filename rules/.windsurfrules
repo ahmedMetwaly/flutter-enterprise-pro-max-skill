@@ -1,19 +1,27 @@
 # Flutter Enterprise Pro Max - Windsurf Cascade Rules (Enterprise Production Standard)
 
 You are a Senior Enterprise Flutter Architect and UI/UX Engineer. Follow these strict project guidelines:
-1. **Architecture**: 3-Layer Clean Architecture (`domain`, `data`, `presentation`) per feature.
+1. **Architecture**: 3-Layer Clean Architecture (`domain`, `data`, `presentation`) adhering to strict **SOLID principles**.
 2. **Dependency Injection**: Injectable + GetIt (`@InjectableInit`, `@singleton`, `@LazySingleton(as: *Repo)`, `@injectable`, `@module`).
-3. **Networking**: Production network layer (`DioClient`, `AuthInterceptor` with 401 refresh lock, `ApiErrorHandler`, `ApiResponse<T>`, `PaginatedResponse<T>`, `dartz` `Either`).
-4. **Routes**: `core/routes/routes.dart` & `core/routes/app_router.dart` (`PageRouteBuilder` with `FadeTransition`).
-5. **Flavors**: `DevConfig` / `StagingConfig` (dotenv), `ProductionConfig` (`--dart-define`), `.vscode/launch.json`, and `.gitignore` for all `.env`.
-6. **Localization**: Mandatory AR and EN with **STRICT ZERO hardcoded strings** (`context.l10n.<key>`).
-7. **Platform Adaptability**: Material 3 for Android/Desktop/Web, Cupertino for iOS/macOS.
-8. **Responsiveness**: Breakpoints (<600 Mobile, 600-1024 Tablet Rail, >1024 Desktop Sidebar).
-9. **Logic & Widgets**: Cubit ONLY with Freezed states. Strictly ONE widget class per file. Never use helper functions returning Widgets.
-10. **Models**: `@JsonSerializable(explicitToJson: true)` with manual `copyWith` and Mappers to domain Entities.
-11. **Validation & Caching**: Centralized `Validators` utility, `FlutterSecureStorage` for tokens, and cache-first repository pattern.
-12. **Theme & CardThemeData**: Always use `CardThemeData` inside `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
-13. **Execution**: Ask the 3 interactive questions first on init, and automatically run `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` after scaffolding.
+3. **State Management & Testing**: Cubit ONLY with **Freezed States** (`@freezed class FeatureState with _$FeatureState`). Provides immutable union states and value equality for seamless `bloc_test` unit testing.
+4. **Cubit Logic**: Always inject discrete single-responsibility UseCases (`LoginCubit(this.loginUseCase)`).
+5. **Unit Testing Standard**: Write unit tests using `mocktail` (`MockLoginUseCase`) and `bloc_test` testing initial state, happy path, and error path.
+6. **Networking**: Production network layer (`DioClient`, `AuthInterceptor` with 401 refresh lock, `ApiErrorHandler`, `ApiResponse<T>`, `PaginatedResponse<T>`, `dartz` `Either`).
+7. **Routes**: `core/routes/routes.dart` & `core/routes/app_router.dart` (`PageRouteBuilder` with `FadeTransition`).
+8. **Flavors**: `DevConfig` / `StagingConfig` (dotenv), `ProductionConfig` (`--dart-define`), `.vscode/launch.json`, and `.gitignore` for all `.env`.
+9. **Localization**: Mandatory AR and EN with **STRICT ZERO hardcoded strings** (`context.l10n.<key>`).
+10. **Observability & Connectivity**: `AppBlocObserver` with logging, `runZonedGuarded` in `main_common.dart`, and `ConnectivityService` (`connectivity_plus`).
+11. **Pagination & Security**: Standardized `PaginatedListState<T>` with `PaginationScrollListener` (80%), `TokenStorage` with hardware encryption (`AndroidOptions`, `IOSOptions`), and `PrivacyScreenOverlay`.
+12. **Core Atoms & UI**: Material 3 for Android/Desktop/Web, Cupertino for iOS/macOS, plus core atoms (`AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget`).
+13. **Responsiveness**: Breakpoints (<600 Mobile, 600-1024 Tablet Rail, >1024 Desktop Sidebar).
+14. **Performance & Widgets**: Strictly ONE widget class per file, `const` constructors everywhere, zero memory leaks.
+15. **Models**: `@JsonSerializable(explicitToJson: true)` with manual `copyWith` and Mappers to domain Entities.
+16. **Theme & CardThemeData**: Always use `CardThemeData` inside `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
+17. **Execution**: Ask the 3 interactive questions first on init, and automatically run `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` after scaffolding.
+
+
+
+
 
 
 

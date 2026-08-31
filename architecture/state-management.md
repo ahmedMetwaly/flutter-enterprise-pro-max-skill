@@ -1,6 +1,8 @@
 # 🔄 State Management Architecture & Implementation Guide
 
-This guide details the supported State Management solutions in Flutter Enterprise Pro Max v2, their architecture conventions, code patterns, and testing strategies.
+This guide details the supported State Management solutions in Flutter Enterprise Pro Max, their architecture conventions, code patterns, and testing strategies.
+
+
 
 ---
 

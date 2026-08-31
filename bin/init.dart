@@ -1,10 +1,11 @@
 import 'dart:io';
 
 void main(List<String> args) async {
-  print('\x1B[36m============================================================\x1B[0m');
-  print('\x1B[32m🚀 Flutter Enterprise Pro Max v2 — Architecture Scaffolder\x1B[0m');
-  print('\x1B[33mConfigurable Clean Architecture • Multi-State • SOLID & Performance\x1B[0m');
-  print('\x1B[36m============================================================\x1B[0m\n');
+  print('============================================================');
+  print('🚀 Flutter Enterprise Pro Max — Architecture Scaffolder');
+  print('Configurable Clean Architecture • Multi-State • SOLID & Performance');
+  print('============================================================\n');
+
 
   // 1. Project Name & Org Domain
   stdout.write('📝 Enter Project Name [default: my_enterprise_app]: ');

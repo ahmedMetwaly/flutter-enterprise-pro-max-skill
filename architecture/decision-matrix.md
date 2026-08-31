@@ -1,4 +1,4 @@
-# 🏛️ Architecture Decision Matrix — Flutter Enterprise Pro Max v2
+# 🏛️ Architecture Decision Matrix — Flutter Enterprise Pro Max
 
 This document serves as the master decision matrix for choosing and configuring architectural dimensions in enterprise Flutter applications.
 

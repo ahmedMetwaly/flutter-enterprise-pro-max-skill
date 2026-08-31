@@ -1,4 +1,4 @@
-# Claude Code Project Guidelines — Flutter Enterprise Pro Max v2
+# Claude Code Project Guidelines — Flutter Enterprise Pro Max
 
 ## Architecture & Standards (Production Enterprise Standard)
 

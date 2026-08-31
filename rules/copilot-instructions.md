@@ -1,30 +1,23 @@
-# GitHub Copilot Custom Instructions for Flutter Enterprise Pro Max
+# GitHub Copilot Custom Instructions for Flutter Enterprise Pro Max v2
 
-- **Architecture**: 3-Layer Clean Architecture (Domain, Data, Presentation) adhering to strict **SOLID principles**.
-- **Dependency Injection**: Injectable with GetIt. Never manually construct repositories or usecases.
-- **State Management**: Cubit only with **Freezed States** (`@freezed class FeatureState with _$FeatureState`). Provides immutable union states and value equality for `bloc_test`.
-- **Cubit Logic & Testing**: Always inject discrete single-responsibility UseCases (`LoginCubit(this.loginUseCase)`). Unit test using `mocktail` (`class MockLoginUseCase extends Mock implements LoginUseCase {}`) and `bloc_test` (testing initial state, happy path, and error path with `verify(...).called(1)`).
-
-- **Data Layer**: Retrofit for DataSources, `@JsonSerializable(explicitToJson: true)` with manual `copyWith` and Model-to-Entity mappers.
-- **Domain Layer**: Pure Entities (`Equatable` with `const` constructors), abstract Repositories (`ResultFuture<T>`), single-responsibility UseCases.
-- **Networking**: Enterprise DioClient, AuthInterceptor, ApiErrorHandler, ApiResponse, PaginatedResponse, `dartz` `Either`.
-- **Routes**: `core/routes/routes.dart` & `core/routes/app_router.dart` (`PageRouteBuilder` with `FadeTransition`).
-- **Flavors**: `DevConfig` / `StagingConfig` (dotenv), `ProductionConfig` (`--dart-define`), `.vscode/launch.json`, and all `.env` in `.gitignore`.
-- **Localization**: Mandatory AR/EN with zero hardcoded strings. Always use `context.l10n.<key>`.
-- **Observability & Connectivity**: `AppBlocObserver` with logging, `runZonedGuarded` in `main_common.dart`, `ConnectivityService` (`connectivity_plus`).
-- **Pagination & Security**: `PaginatedListState<T>` + `PaginationScrollListener` (80%), `TokenStorage` with hardware options (`AndroidOptions`, `IOSOptions`), `PrivacyScreenOverlay`.
-- **Core Atoms**: `AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` in `core/widgets/`.
-- **Platform UI**: Material 3 for Android/Desktop/Web, Cupertino for iOS/macOS.
-- **Responsiveness**: ResponsiveLayout (<600 phone, 600-1024 tablet, >1024 desktop).
-- **Performance & Widgets**: Always use Widget classes in separate files with `const` constructors. Strictly NO widget helper methods.
-- **ScreenUtil**: Use `flutter_screenutil` for sizes (.w, .h, .sp, .r).
+- **Rule Priority**: P0 (Security & Correctness) > P1 (Architecture & SOLID) > P2 (Maintainability & Testing) > P3 (Performance) > P4 (Style).
+- **Architecture Profiles**:
+  - Default: Feature-First Clean Architecture (`domain`, `data`, `presentation`), Cubit + States, Injectable + GetIt, Centralized Routes.
+  - Riverpod: Feature-First, `AsyncNotifier`, GoRouter.
+  - Offline-First: Drift SQLite Database, Sync Queue Engine, Idempotency & Conflict Resolution.
+- **Domain Error Isolation**:
+  - Domain Layer NEVER depends on Dio, HTTP status codes, or `ApiErrorModel`.
+  - Domain contracts return `ResultFuture<T> = Future<Either<Failure, T>>` or `Result<T, Failure>`.
+  - Repositories map data exceptions (`DioException`, `ApiErrorModel`) into pure domain `Failure`s (`ServerFailure`, `NetworkFailure`, `UnauthorizedFailure`).
+- **Feature Generation (`add feature <name>`)**:
+  - Collect documentation / requirements & UI / Figma inputs.
+  - Build 3 layers adhering strictly to SOLID and performance standards.
+  - Generate full 3-tier tests (Unit, Widget, and E2E Integration tests).
+- **State Management & Testing**: Cubit or Riverpod with UseCase injection. Unit test using `mocktail` and `bloc_test` (or `ProviderContainer` for Riverpod).
+- **Hardware Security & Privacy**: `TokenStorage` with hardware options (`encryptedSharedPreferences: true`, `first_unlock`), `PrivacyScreenOverlay` on backgrounding.
+- **Core Atoms**: Standardize on `AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` in `core/widgets/`.
 - **Theme**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
-- **Interactive Initializer & Build Runner**: Ask 3 interactive questions on init, and automatically execute `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` after generating code.
-
-
-
-
-
-
-
-
+- **Context-Aware Localization**:
+  - User-facing UI strings (`Text(...)`, dialogs, user-visible error messages): MUST be localized via `context.l10n.<key>`.
+  - Infrastructure & Dev strings (Logs `debugPrint`, Telemetry events, Asserts, Exception codes): Keep as plain English literals without localization.
+- **Automated Execution**: Ask interactive questions first on init, and automatically run `flutter pub get`, `build_runner` (if needed), and `flutter analyze` after generating code.

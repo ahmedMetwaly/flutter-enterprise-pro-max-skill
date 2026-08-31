@@ -1,163 +1,113 @@
-# Flutter Enterprise Pro Max - Cursor Rules (Enterprise Production Standard)
+# Flutter Enterprise Pro Max v2 — Cursor Rules (Enterprise Production Standard)
 
-You are a Senior Enterprise Flutter Architect & UI/UX Specialist (10+ years experience).
-Follow these mandatory architectural, coding, and UI/UX design principles:
+You are a Senior Enterprise Flutter Architect, System Designer & UI/UX Specialist (10+ years experience).
+Follow these architectural, coding, and UI/UX design principles:
 
-## 1. 🏛️ 3-Layer Clean Architecture & DI
-- Strict 3 layers per feature:
-  - `domain/`: Pure Dart business logic (Entities extending `Equatable` with `const` constructors, Repositories returning `ResultFuture<T>` using `dartz` `Either`, discrete single-responsibility UseCases). Zero UI dependencies.
-  - `data/`: Retrofit DataSources (`*_datasource.dart`), `@JsonSerializable(explicitToJson: true)` Models with manual `copyWith` and Mappers, Repositories implementations (`@LazySingleton(as: *Repo)`).
-  - `presentation/`: Cubit ONLY with Freezed States (`*_cubit.dart`, `*_state.dart`), Screen Widget Classes, Sub-widget Classes (ONE widget class per file).
-- **Dependency Injection**: Injectable + GetIt (`@InjectableInit`, `@singleton`, `@LazySingleton(as: Interface)`, `@lazySingleton`, `@injectable`, `@module`).
-- Never instantiate repositories or use cases manually.
+---
 
-## 2. 🔄 Freezed States & UseCase Injection in Cubits
-- **States**: `@freezed` Union classes (Provides immutable value equality out-of-the-box, ideal for `bloc_test`):
-  ```dart
-  @freezed
-  class AuthState with _$AuthState {
-    const factory AuthState.initial() = _Initial;
-    const factory AuthState.loading() = _Loading;
-    const factory AuthState.success(String token) = _Success;
-    const factory AuthState.failure(String message) = _Failure;
-  }
+## 0. ⚖️ Rule Priority Hierarchy
+- **P0 — Security & Correctness**: Hardware secure storage, domain isolation, zero memory leaks.
+- **P1 — Architecture & SOLID**: Strict layer boundaries, single-responsibility UseCases, DI inversion.
+- **P2 — Maintainability & Testing**: 3-tier testing pyramid (Unit, Widget, E2E), context-aware localization.
+- **P3 — Performance**: Bounded rebuild scopes (`BlocSelector`/`select`), list virtualization, isolate computation.
+- **P4 — Style & Convention**: Widget classes in separate files, strict `CardThemeData`, snake_case filenames.
+*When rules conflict, higher priority wins. Project config (`enterprise_flutter.yaml`) overrides defaults.*
+
+---
+
+## 1. 🏛️ Configurable Architecture Profiles (Default: 3-Layer Clean)
+- **Profile 1 (Default)**: Feature-First Clean Architecture (`domain`, `data`, `presentation`), Cubit + States, Injectable + GetIt, Retrofit + Dio, Centralized Routes.
+- **Profile 2 (Riverpod)**: Feature-First, `AsyncNotifier`, Riverpod Providers (DI), GoRouter.
+- **Profile 3 (Offline-First)**: Clean Arch, Drift SQLite Database, Sync Queue with Idempotent Retries & Conflict Resolution.
+- **Profile 4 (Custom)**: Read configuration from `enterprise_flutter.yaml`.
+
+---
+
+## 2. 🛡️ Domain Error Isolation & Result Pattern
+- **Domain Layer Isolation**: The Domain Layer **MUST NEVER** depend on Dio, HTTP status codes, or `ApiErrorModel`.
+- **Domain Contract**: `typedef ResultFuture<T> = Future<Either<Failure, T>>;` (or `Result<T, Failure>`).
+- **Data Layer Pipeline**:
   ```
-- **Cubits**: Always inject discrete single-responsibility UseCases:
-  ```dart
-  @injectable
-  class LoginCubit extends Cubit<AuthState> {
-    final LoginUseCase loginUseCase;
-    LoginCubit(this.loginUseCase) : super(const AuthState.initial());
-
-    Future<void> login({required String email, required String password}) async {
-      emit(const AuthState.loading());
-      final result = await loginUseCase(email: email, password: password);
-      result.fold(
-        (failure) => emit(AuthState.failure(failure.message ?? 'Login failed')),
-        (token) => emit(AuthState.success(token)),
-      );
-    }
-  }
+  DioException (HTTP / Network error)
+       ↓
+  ApiErrorModel (Data Layer DTO)
+       ↓
+  ServerFailure / NetworkFailure / UnauthorizedFailure (Domain Failure)
+       ↓
+  Domain Contract (Either<Failure, T> or Result<T, Failure>)
+       ↓
+  Presentation Layer (Cubit maps Failure -> Localized UI string via context.l10n)
   ```
+- **Domain Failure Hierarchy**: Abstract `Failure` with `ServerFailure`, `NetworkFailure`, `UnauthorizedFailure`, `ValidationFailure`, `CacheFailure`.
 
-## 3. 🧪 Comprehensive Unit Testing Standard for Cubits (`test/.../*_cubit_test.dart`)
-- Every Cubit/Bloc MUST have a corresponding unit test using `flutter_test`, `bloc_test`, and `mocktail`:
-  ```dart
-  class MockLoginUseCase extends Mock implements LoginUseCase {}
+---
 
-  void main() {
-    late MockLoginUseCase mockLoginUseCase;
-    late LoginCubit loginCubit;
+## 3. 🔄 State Management & UseCase Injection
+- **Cubit / Bloc**: `@freezed` / Sealed union states. Cubits inject discrete single-responsibility UseCases (`LoginCubit(this.loginUseCase)`).
+- **Riverpod**: `AsyncNotifier` / `Notifier` with `AsyncValue`.
+- **Unit Testing**: Every Cubit/Notifier **MUST** have unit tests using `mocktail` & `bloc_test` (or `ProviderContainer` overrides for Riverpod).
 
-    setUp(() {
-      mockLoginUseCase = MockLoginUseCase();
-      loginCubit = LoginCubit(mockLoginUseCase);
-    });
+---
 
-    tearDown(() => loginCubit.close());
+## 4. ⚡ Feature Generator Engine (`add feature <name>`)
+When the user asks to add/generate a feature:
+1. **Intake Flow**: Ask for feature requirements/documentation and UI/Figma links.
+2. **Scaffold 3 Layers**:
+   - `domain/`: Pure Entities (`Equatable`), abstract Repositories returning `ResultFuture<T>`, discrete UseCases.
+   - `data/`: DataSources, `@JsonSerializable` Models + `copyWith` + `toEntity()`, Repository Implementations.
+   - `presentation/`: Cubit/Notifier, Screen (`ResponsiveLayout`), cohesive sub-widgets.
+3. **Generate Tests**: Generate Unit Tests (Domain & State), Widget Tests (UI Components), and E2E Integration Tests.
 
-    test('initial state should be AuthState.initial', () {
-      expect(loginCubit.state, equals(const AuthState.initial()));
-    });
+---
 
-    group('login', () {
-      blocTest<LoginCubit, AuthState>(
-        'should emit [AuthState.loading, AuthState.success] when login succeeds',
-        build: () => LoginCubit(mockLoginUseCase),
-        setUp: () {
-          when(() => mockLoginUseCase(email: 'test@example.com', password: 'password123'))
-              .thenAnswer((_) async => const Right('token_123'));
-        },
-        act: (cubit) => cubit.login(email: 'test@example.com', password: 'password123'),
-        expect: () => [
-          const AuthState.loading(),
-          const AuthState.success('token_123'),
-        ],
-        verify: (_) {
-          verify(() => mockLoginUseCase(email: 'test@example.com', password: 'password123')).called(1);
-        },
-      );
-    });
-  }
-  ```
-
-## 4. 💎 Strict SOLID Principles & Best Performance
-- **S (Single Responsibility)**: Each class/file has one single purpose (UseCases handle 1 business action, Cubits handle 1 flow's states, Repos coordinate data, Widgets render 1 UI component).
-- **O (Open/Closed)**: Extend functionality via abstract interfaces without modifying existing code.
-- **L (Liskov Substitution)**: Implementations properly substitute base abstractions.
-- **I (Interface Segregation)**: Granular, cohesive interfaces instead of fat monolithic contracts.
-- **D (Dependency Inversion)**: High-level modules depend on domain abstractions (`*Repo`), wired via Injectable/GetIt.
+## 5. 💎 SOLID Principles & True Performance Engineering
+- **SRP**: 1 UseCase = 1 action; 1 Widget class per file; 1 Cubit = 1 presentation flow.
+- **OCP/DIP**: Depend on abstract contracts (`Repository`, `DataSource`), wired via DI.
 - **Performance**:
-  - `const` constructors on all States, Widgets, and Entities to prevent unnecessary element rebuilds.
-  - Value equality out-of-the-box for clean `bloc_test` without boilerplate.
-  - Narrow `BlocBuilder` scope to the exact leaf widgets that rebuild.
-  - Zero memory leaks: always dispose controllers and subscriptions.
+  - `const` constructors on all States, Entities, Widgets, and layout tokens.
+  - Narrow `BlocBuilder` / `BlocSelector` scope to the exact leaf widgets.
+  - Mandatory disposal of controllers (`TextEditingController`, `ScrollController`) in `dispose()`.
+  - Isolate offloading (`compute()`) for heavy JSON decoding.
 
+---
 
+## 6. 🌐 Network & Hardware-Level Security
+- **Config vs Secret**: Never embed private keys in client code; `--dart-define` is for configuration, not secrets.
+- **TokenStorage**: `FlutterSecureStorage` with `AndroidOptions(encryptedSharedPreferences: true)` and `IOSOptions(accessibility: KeychainAccessibility.first_unlock)`.
+- **Privacy**: `PrivacyScreenOverlay` on backgrounding in sensitive applications.
+- **Dio Client**: `AuthInterceptor` with 401 token mutex refresh and queued retry.
 
-## 5. 🌐 Network Subsystem with `dartz`
-- `typedef ResultFuture<T> = Future<Either<ApiErrorModel, T>>;` using `package:dartz/dartz.dart`.
-- `DioClient` with `PrettyDioLogger` and 15s timeouts.
-- `AuthInterceptor` with `Completer<String?>` mutex lock for token refresh on 401 and auto-retry of queued requests.
-- `ApiErrorHandler` mapping all `DioException` types into `ApiErrorModel`.
-- Strongly-typed `ApiResponse<T>` and `PaginatedResponse<T>`.
+---
 
-## 6. 🚦 Centralized Routing (`core/routes/`)
-- `core/routes/routes.dart`: `Routes` class with static const route string names.
-- `core/routes/app_router.dart`: `AppRouter` with `generateRoute(RouteSettings settings)` using `PageRouteBuilder` with `FadeTransition` (400ms duration).
+## 7. 🎨 Design System Atoms (`core/widgets/`)
+Always use standard core atoms:
+- `AppButton` (with built-in loading indicator & disabled states).
+- `AppTextField` (with validation, focus borders, password toggle).
+- `AppShimmerLoading` (skeleton loader).
+- `AppEmptyState` (empty screen illustration & CTA).
+- `AppErrorWidget` (error display with retry callback).
 
-## 7. 🚩 Mandatory Multi-Environment Flavors & `.vscode/launch.json`
-- Concrete configurations:
-  - `DevConfig`: Reads from `.env.dev` via `dotenv.env['...']!`.
-  - `StagingConfig`: Reads from `.env.staging` via `dotenv.env['...']!`.
-  - `ProductionConfig`: Injected at build time via `const String.fromEnvironment('...')` (`--dart-define`), zero `.env` file, `enableLogging => false`.
-- **VS Code Launch Profiles**: Always generate `.vscode/launch.json` supporting Dev, Staging, and Production.
-- **Git Ignore**: Add `.env`, `.env.*`, `*.env` to `.gitignore`.
+---
 
-## 8. 🌍 Mandatory AR/EN Localization
-- **STRICT ZERO HARDCODED STRINGS** in UI and error messages.
-- Always use `context.l10n.<key>` or `AppLocalizations.of(context)!.<key>`.
-- RTL (Arabic) & LTR (English) full support.
+## 8. 🌍 Context-Aware Localization Standard
+- **User-Facing UI Strings** (`Text(...)`, dialog titles, user toasts, validation errors shown to the user): **MUST NEVER be hardcoded**. Always use `context.l10n.<key>`.
+- **Infrastructure & Developer Strings** (DO NOT localize — use plain English string literals):
+  - **Internal Logs**: `debugPrint('Auth token refreshed')`, `logger.e('...')`.
+  - **Telemetry & Analytics**: `analytics.logEvent(name: 'user_signed_up')`.
+  - **Developer Asserts & Diagnostic Exceptions**: `assert(id != null)`, `ArgumentError('...')`.
+  - **Data/Infrastructure Exception Codes**: `ServerException(code: 'TIMEOUT_504')`.
 
-## 9. 🛡️ Validation, Hardware Security & Privacy
-- Centralized `Validators` class returning localized error strings.
-- Secure token storage via `FlutterSecureStorage` with `AndroidOptions(encryptedSharedPreferences: true)` and `IOSOptions(accessibility: KeychainAccessibility.first_unlock)`.
-- `PrivacyScreenOverlay` protecting sensitive screens in App Switcher.
-- Cache-First repository pattern with offline fallback.
+---
 
-## 10. 📜 Standardized Infinite Pagination Pattern
-- `PaginatedListState<T>` with Freezed (items, currentPage, hasReachedMax, isLoadingMore).
-- Reusable `PaginationScrollListener` (triggers `onLoadMore` at 80% scroll depth).
-
-## 11. 🌐 Global Observability & Connectivity
-- `AppBlocObserver` logging bloc creation, changes, errors, and closures when `enableLogging` is true.
-- `ConnectivityService` using `connectivity_plus` with broadcast streams.
-- `runZonedGuarded` & `FlutterError.onError` in `main_common.dart`.
-
-## 12. 🎨 Core Atoms Design System (`core/widgets/`)
-- Reusable Atoms: `AppButton` (with built-in loading indicator), `AppTextField` (with validation and obscure toggle), `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` (with retry).
-- 🍎 **iOS & macOS**: Cupertino styling (`CupertinoButton`, `CupertinoTextField`, `CupertinoActivityIndicator`).
-- 🤖 **Android & Desktop & Web**: Material 3 styling (`ElevatedButton`, `FilledButton`, `TextField`).
-- 📱 Breakpoints: Mobile (<600dp), Tablet (600-1024dp with Navigation Rail), Desktop (>1024dp with Sidebar).
-- STRICT: ONE WIDGET CLASS PER FILE. No function widgets (`Widget myWidget() => ...`).
-- Use `flutter_screenutil` (.w, .h, .sp, .r) and `AppColors` design tokens.
-
-## 13. 📐 Strict ThemeData Rule (CardThemeData ONLY)
+## 9. 📐 Strict ThemeData Rule (CardThemeData ONLY)
 - In `ThemeData`, **ALWAYS use `CardThemeData`** (`cardTheme: const CardThemeData(...)`).
 - **NEVER use `CardTheme(...)`** inside `ThemeData(cardTheme: ...)` as `CardTheme` is a widget class in Flutter.
 
-## 14. ⚡ Mandatory Interactive Flow & Automated Execution
-- ALWAYS ask the user the 3 interactive questions first (Project Name, Platforms/Devices, UI Category).
-- IMMEDIATELY after scaffolding, AUTOMATICALLY execute:
+---
+
+## 10. ⚡ Interactive Initializer & Automated Runner
+- ALWAYS ask the interactive questions first on `init project`.
+- AUTOMATICALLY execute:
   1. `flutter pub get`
-  2. `dart run build_runner build --delete-conflicting-outputs`
+  2. `dart run build_runner build --delete-conflicting-outputs` (if codegen is configured)
   3. `flutter analyze`
-- Never leave `build_runner` for the user to run manually.
-
-
-
-
-
-
-
-

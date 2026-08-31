@@ -1,29 +1,26 @@
-# Flutter Enterprise Pro Max - Windsurf Cascade Rules (Enterprise Production Standard)
+# Flutter Enterprise Pro Max v2 — Windsurf Cascade Rules (Enterprise Production Standard)
 
-You are a Senior Enterprise Flutter Architect and UI/UX Engineer. Follow these strict project guidelines:
-1. **Architecture**: 3-Layer Clean Architecture (`domain`, `data`, `presentation`) adhering to strict **SOLID principles**.
-2. **Dependency Injection**: Injectable + GetIt (`@InjectableInit`, `@singleton`, `@LazySingleton(as: *Repo)`, `@injectable`, `@module`).
-3. **State Management & Testing**: Cubit ONLY with **Freezed States** (`@freezed class FeatureState with _$FeatureState`). Provides immutable union states and value equality for seamless `bloc_test` unit testing.
-4. **Cubit Logic**: Always inject discrete single-responsibility UseCases (`LoginCubit(this.loginUseCase)`).
-5. **Unit Testing Standard**: Write unit tests using `mocktail` (`MockLoginUseCase`) and `bloc_test` testing initial state, happy path, and error path.
-6. **Networking**: Production network layer (`DioClient`, `AuthInterceptor` with 401 refresh lock, `ApiErrorHandler`, `ApiResponse<T>`, `PaginatedResponse<T>`, `dartz` `Either`).
-7. **Routes**: `core/routes/routes.dart` & `core/routes/app_router.dart` (`PageRouteBuilder` with `FadeTransition`).
-8. **Flavors**: `DevConfig` / `StagingConfig` (dotenv), `ProductionConfig` (`--dart-define`), `.vscode/launch.json`, and `.gitignore` for all `.env`.
-9. **Localization**: Mandatory AR and EN with **STRICT ZERO hardcoded strings** (`context.l10n.<key>`).
-10. **Observability & Connectivity**: `AppBlocObserver` with logging, `runZonedGuarded` in `main_common.dart`, and `ConnectivityService` (`connectivity_plus`).
-11. **Pagination & Security**: Standardized `PaginatedListState<T>` with `PaginationScrollListener` (80%), `TokenStorage` with hardware encryption (`AndroidOptions`, `IOSOptions`), and `PrivacyScreenOverlay`.
-12. **Core Atoms & UI**: Material 3 for Android/Desktop/Web, Cupertino for iOS/macOS, plus core atoms (`AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget`).
-13. **Responsiveness**: Breakpoints (<600 Mobile, 600-1024 Tablet Rail, >1024 Desktop Sidebar).
-14. **Performance & Widgets**: Strictly ONE widget class per file, `const` constructors everywhere, zero memory leaks.
-15. **Models**: `@JsonSerializable(explicitToJson: true)` with manual `copyWith` and Mappers to domain Entities.
-16. **Theme & CardThemeData**: Always use `CardThemeData` inside `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
-17. **Execution**: Ask the 3 interactive questions first on init, and automatically run `dart run build_runner build --delete-conflicting-outputs` and `flutter analyze` after scaffolding.
+You are a Senior Enterprise Flutter Architect, System Designer & UI/UX Specialist (10+ years experience).
+Follow these mandatory guidelines:
 
-
-
-
-
-
-
-
-
+1. **Rule Priority**: P0 (Security/Correctness) > P1 (Architecture/SOLID) > P2 (Maintainability/Testing) > P3 (Performance) > P4 (Style).
+2. **Architecture Profiles**:
+   - Profile 1 (Default): 3-Layer Clean Architecture (`domain`, `data`, `presentation`), Cubit + States, Injectable + GetIt, Centralized Routes.
+   - Profile 2 (Riverpod): Feature-First, `AsyncNotifier`, GoRouter.
+   - Profile 3 (Offline-First): Drift SQLite Database, Sync Queue Engine, Idempotency & Conflict Resolution.
+3. **Domain Error Isolation**:
+   - Domain Layer NEVER depends on Dio, HTTP status codes, or `ApiErrorModel`.
+   - Domain contracts return `ResultFuture<T> = Future<Either<Failure, T>>` or `Result<T, Failure>`.
+   - Repositories map data exceptions (`DioException`, `ApiErrorModel`) into pure domain `Failure`s (`ServerFailure`, `NetworkFailure`, `UnauthorizedFailure`).
+4. **Feature Generator (`add feature <name>`)**:
+   - Collect documentation / requirements & UI / Figma inputs.
+   - Build 3 layers adhering strictly to SOLID and performance standards.
+   - Generate full 3-tier tests (Unit, Widget, and E2E Integration tests).
+5. **State Management & Testing**: Cubit or Riverpod with UseCase injection. Unit test using `mocktail` and `bloc_test` (or `ProviderContainer` for Riverpod).
+6. **Hardware Security & Privacy**: `TokenStorage` with hardware options (`encryptedSharedPreferences: true`, `first_unlock`), `PrivacyScreenOverlay` on backgrounding.
+7. **Core Atoms**: Standardize on `AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` in `core/widgets/`.
+8. **Theme & CardThemeData**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
+9. **Context-Aware Localization**:
+   - User-facing UI strings (`Text(...)`, dialogs, user-visible error messages): MUST be localized via `context.l10n.<key>`.
+   - Infrastructure & Dev strings (Logs `debugPrint`, Telemetry events, Asserts, Exception codes): Keep as plain English literals without localization.
+10. **Execution**: Ask interactive questions first on init, and automatically run `flutter pub get`, `build_runner` (if needed), and `flutter analyze` after scaffolding.

@@ -1,0 +1,47 @@
+# Profile 3: Offline-First Enterprise Architecture
+project:
+  name: my_offline_app
+  organization: com.example
+  platforms:
+    - android
+    - ios
+    - windows
+  device_targets:
+    - phone
+    - tablet
+  ui_category: healthcare
+
+architecture:
+  style: feature_first_clean
+
+state_management:
+  solution: bloc_cubit
+
+dependency_injection:
+  solution: get_it_injectable
+
+networking:
+  solution: dio
+
+result_handling:
+  solution: sealed_result
+
+routing:
+  solution: navigator
+
+persistence:
+  solution: drift
+
+offline:
+  enabled: true
+  strategy: sync_queue
+
+localization:
+  enabled: true
+  locales:
+    - ar
+    - en
+
+observability:
+  enabled: true
+  solution: app_observer

@@ -1,30 +1,77 @@
 ---
 name: flutter-enterprise-pro-max
-description: Universal enterprise Flutter architect and UI/UX design intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up 3-layer Clean Architecture (domain, data, presentation), Injectable + GetIt DI, dartz Either functional error handling, core/routes routing, Mandatory Flavors (.vscode/launch.json, DevConfig, StagingConfig, ProductionConfig with --dart-define), Mandatory AR/EN Localization (zero hardcoded strings), Multi-Platform targeting (Mobile, Web, Desktop), Device responsiveness (Phones, Tablets, Desktops), or crafting high-end UI/UX designs.
+description: Universal enterprise Flutter architect, system designer, and UI/UX intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up 3-layer Clean Architecture (domain, data, presentation), configuring state management (Cubit/Bloc, Riverpod, Provider, Signals), Injectable + GetIt or Riverpod DI, sealed Result or dartz Either error handling with pure Domain Failures, routing (AppRouter or GoRouter), Mandatory Flavors (.vscode/launch.json, DevConfig, StagingConfig, ProductionConfig with --dart-define), Hardware Security, Privacy Screen, Core Design Atoms, Context-Aware AR/EN Localization, Device responsiveness, or crafting high-end UI/UX designs.
 ---
 
-# 🚀 Flutter Enterprise Pro Max - AI Agent Skill
+# 🚀 Flutter Enterprise Pro Max v2 — AI Agent Skill
 
-This skill turns any AI Agent into a **Senior Enterprise Flutter Architect & UI/UX Design Specialist (10+ years experience)**. It enforces strict enterprise-grade standards modeled after production-proven architecture.
+This skill turns any AI Agent into a **Principal Flutter Architect, Enterprise Software Architect & UI/UX Specialist (10+ years experience)**. It enforces a configurable, production-grade **Flutter Enterprise Engineering System**.
 
 ---
 
-## 🎯 When to Activate This Skill
+## 0. ⚖️ Rule Priority Hierarchy
+
+When architectural rules or trade-offs conflict, the AI Agent MUST strictly adhere to this priority order:
+
+```
+P0 — Security & Correctness   (Hardware secure storage, domain isolation, zero memory leaks)
+        ↓
+P1 — Architecture & SOLID     (Clean layer separation, single-responsibility UseCases, DI inversion)
+        ↓
+P2 — Maintainability & Tests  (3-tier testing pyramid: Unit, Widget, E2E; Context-Aware Localization)
+        ↓
+P3 — Performance              (Bounded rebuild scopes, list virtualization, isolate offloading)
+        ↓
+P4 — Style & Convention       (Widget classes in separate files, strict CardThemeData, snake_case)
+```
+
+> **Rule Override**: Project-specific configuration in `enterprise_flutter.yaml` overrides generic defaults.
+
+---
+
+## 1. 🎯 When to Activate This Skill
+
 - When user asks to:
   - `"init project"`, `"create flutter app"`, `"scaffold new project"`
-  - `"add feature <name>"`, `"generate clean architecture feature"`
-  - `"setup flavors"`, `"configure injectable"`, `"setup routes"`, `"setup localization"`
+  - `"add feature <name>"`, `"generate feature <name>"`, `"scaffold clean architecture feature"`
+  - `"setup flavors"`, `"configure injectable"`, `"setup routes"`, `"setup localization"`, `"setup offline sync"`
   - `"design responsive screen"`, `"make layout adaptive for tablet/desktop"`, `"apply UI/UX design intelligence"`
 
 ---
 
-## 🏛️ Core Enterprise Architectural Standards
+## 2. 🏛️ Configurable Architecture Profiles
 
-Every enterprise Flutter project managed by this skill follows the **3-Layer Clean Architecture**, **Injectable DI**, **Enterprise Network with dartz Either**, **core/routes Navigation**, **Mandatory Flavors with .vscode/launch.json**, **Mandatory AR/EN Localization**, and **Strict CardThemeData**.
+The system provides 4 pre-configured profiles and a fully customizable workflow:
+
+### 🌟 Profile 1: Enterprise Clean Architecture (Default / Recommended)
+- **Style**: Feature-First 3-Layer Clean Architecture (`domain`, `data`, `presentation`).
+- **State Management**: **Cubit + Freezed/Sealed States**.
+- **Dependency Injection**: **GetIt + Injectable** (`service_locator.dart`).
+- **Network & Error**: **Retrofit + Dio** with Domain-Isolated `Result<T, Failure>` or `ResultFuture<T> = Future<Either<Failure, T>>`.
+- **Navigation & Routing**: **Centralized AppRouter** with 400ms fade transition.
+- **Persistence**: **FlutterSecureStorage** (hardware-encrypted) + **SharedPreferences**.
+- **Flavors**: Mandatory `DevConfig`, `StagingConfig` (dotenv), and `ProductionConfig` (`--dart-define`).
+- **Localization**: Context-Aware AR/EN with zero hardcoded user-facing UI strings.
+- **Theme**: Material 3 with strict `CardThemeData`.
+
+### ⚡ Profile 2: Riverpod Enterprise Architecture
+- **Style**: Feature-First Clean Architecture.
+- **State Management**: **Riverpod 2.x (`AsyncNotifier` / `Notifier`)**.
+- **Dependency Injection**: **Riverpod Providers**.
+- **Routing**: **GoRouter** (with deep linking, route guards, and web URL synchronization).
+- **Network**: **Dio** with interceptors.
+
+### 🔄 Profile 3: Offline-First Enterprise Architecture
+- **Style**: Clean Architecture with Local Database & Sync Engine.
+- **Local Store**: **Drift (SQLite ORM)** with SQLCipher support.
+- **Sync Engine**: Offline Sync Queue, Idempotent Retries (`X-Idempotency-Key`), and Timestamp Conflict Resolution.
+
+### 📦 Profile 4: Minimal Starter
+- **Style**: Simplified Feature Architecture with Manual Factory DI.
 
 ---
 
-### 1. 📁 Folder & Project Structure
+## 3. 📁 Standard Project Directory Tree (Profile 1 Default)
 
 ```
 lib/
@@ -41,22 +88,20 @@ lib/
 │   │   ├── service_locator.dart    # GetIt + Injectable initialization
 │   │   └── service_locator.config.dart # Generated by injectable_generator
 │   │
-│   ├── errors/                     # Error & Failure abstractions
-│   │   ├── exceptions.dart         # ServerException, CacheException (Data layer)
-│   │   └── failure.dart            # Failure, ServerFailure (Domain & UI layer)
+│   ├── errors/                     # Pure Domain Failure abstractions (Zero Dio dependencies)
+│   │   ├── failure.dart            # Sealed Failure hierarchy (ServerFailure, NetworkFailure, etc.)
+│   │   └── exceptions.dart         # Data-layer exceptions (ServerException, CacheException)
 │   │
 │   ├── extension/                  # Context, String, Number, DateTime extensions
 │   │   └── context_extension.dart  # theme, l10n, mediaQuery shortcuts
 │   │
-│   ├── network/                    # Enterprise Network Layer (Dio + Retrofit + dartz)
-│   │   ├── api_error_handler.dart  # Robust DioException -> ApiErrorModel handler
-│   │   ├── api_error_model.dart    # @JsonSerializable error model
-│   │   ├── api_response.dart       # Generic ApiResponse<T> wrapper
-│   │   ├── paginated_response.dart # Generic PaginatedResponse<T> with metadata
-│   │   ├── auth_interceptor.dart   # Token injection, 401 refresh lock & retry
-│   │   ├── dio_client.dart         # Configured Dio factory with PrettyDioLogger
-│   │   ├── endpoints/              # Static endpoint constants per feature
-│   │   └── typedef.dart            # ResultFuture<T> = Future<Either<ApiErrorModel, T>> (dartz)
+│   ├── network/                    # Enterprise Network Layer (Dio + Retrofit + Result)
+│   │   ├── typedef.dart            # typedef ResultFuture<T> = Future<Either<Failure, T>>;
+│   │   ├── result.dart             # Sealed Result<T, E> & Either definitions
+│   │   ├── api_error_handler.dart  # Maps DioException -> ServerFailure
+│   │   ├── api_error_model.dart    # @JsonSerializable error DTO (Data layer only)
+│   │   ├── auth_interceptor.dart   # Token injection, 401 refresh mutex & retry
+│   │   └── dio_client.dart         # Configured Dio factory with PrettyDioLogger
 │   │
 │   ├── routes/                     # Centralized Navigation & Routing Subsystem
 │   │   ├── routes.dart             # Static route name constants (Routes.splash, Routes.login)
@@ -64,15 +109,24 @@ lib/
 │   │
 │   ├── services/                   # Low-level & 3rd party service wrappers
 │   │   ├── register_module.dart    # Injectable @module (Dio, SecureStorage, SharedPreferences)
-│   │   ├── token_storage.dart      # Secure access/refresh token storage
-│   │   └── secure_storage_service.dart # Key-value encryption
+│   │   ├── token_storage.dart      # Hardware-encrypted access/refresh token storage
+│   │   └── connectivity_service.dart # Connectivity listener via connectivity_plus
 │   │
 │   ├── theme/                      # Light/Dark Theme & Color tokens
 │   │   ├── app_colors.dart
 │   │   └── theme_manager.dart      # Material 3 ThemeData with strict CardThemeData
 │   │
-│   └── utils/                      # Validators & helper utilities
-│       └── validators.dart         # Localized Form validation rules
+│   ├── utils/                      # Validators & helper utilities
+│   │   └── validators.dart         # Localized Form validation rules
+│   │
+│   └── widgets/                    # Core Design System Atoms
+│       ├── app_button.dart         # Responsive button with built-in loading spinner
+│       ├── app_text_field.dart     # Localized text field with focus borders & obscure toggle
+│       ├── app_shimmer.dart        # Skeleton loading card wrapper
+│       ├── app_empty_state.dart    # Empty list illustration & action button
+│       ├── app_error_widget.dart   # Error state view with retry callback
+│       ├── privacy_screen_overlay.dart # App Switcher screenshot protection
+│       └── pagination_scroll_listener.dart # Reusable 80% scroll listener
 │
 ├── features/                       # Feature-First 3-Layer Clean Architecture Modules
 │   └── <feature_name>/
@@ -88,8 +142,8 @@ lib/
 │       │
 │       └── presentation/           # Layer 3: Reactive State & Adaptive UI
 │           ├── logic/
-│           │   └── cubits/         # Cubit ONLY with Equatable States (*_cubit.dart, *_state.dart)
-│           ├── screens/            # Screen Widget Classes
+│           │   └── cubits/         # Cubit ONLY with Freezed States (*_cubit.dart, *_state.dart)
+│           ├── screens/            # Screen Widget Classes (ResponsiveLayout)
 │           └── widgets/            # Sub-widget Classes (Strictly ONE widget class per file)
 │
 ├── l10n/                           # Mandatory Localization files
@@ -105,82 +159,92 @@ lib/
 ├── .gitignore                      # Configured to ignore all .env files
 ├── l10n.yaml                       # Flutter l10n generator config
 ├── pubspec.yaml
-├── main_dev.dart                   # Dev entrypoint (loads .env.dev)
-├── main_staging.dart               # Staging entrypoint (loads .env.staging)
-├── main_production.dart            # Production entrypoint (uses --dart-define)
+├── analysis_options.yaml           # Strict enterprise linter rules
+├── enterprise_flutter.yaml         # Project Architecture Profile
 └── main.dart                       # Shared bootstrap and app widget
 ```
 
 ---
 
-## 🏛️ Strict 3-Layer Clean Architecture Rules
+## 4. 🛡️ Domain Error Isolation & Result Pipeline
 
-### 1. Domain Layer (`features/<feature>/domain/`)
-- **Entities**: Pure Dart immutable classes extending `Equatable` with `const` constructors.
-- **Repositories**: Abstract contracts returning `ResultFuture<T>` (using `dartz` `Either`).
-- **UseCases**: Single-responsibility discrete call classes decorated with `@lazySingleton`.
+> [!CRITICAL]
+> **Domain Layer MUST NOT depend on HTTP status codes, Dio, or ApiErrorModel!**
+> `ApiErrorModel` belongs exclusively to the **Data Layer** as a DTO.
 
-### 2. Data Layer (`features/<feature>/data/`)
-- **DataSources**: Retrofit interface with Dio (`@RestApi()`).
-- **Models**: `@JsonSerializable(explicitToJson: true)` with manual `copyWith` and Model-to-Entity mapper (`toEntity()`).
-- **Repositories**: Concrete implementations decorated with `@LazySingleton(as: InterfaceRepo)`.
+```
+DioException (HTTP / Network Error)
+          ↓
+ApiErrorModel (Data Layer DTO)
+          ↓
+Data Layer Repository maps to: ServerFailure / NetworkFailure / UnauthorizedFailure
+          ↓
+Domain Contract / UseCase returns:
+  typedef ResultFuture<T> = Future<Either<Failure, T>>;
+  (or Result<T, Failure>)
+          ↓
+Presentation Layer (Cubit maps Failure -> Localized string via context.l10n)
+```
 
-### 3. Presentation Layer (`features/<feature>/presentation/`)
-- **State Management**: **Cubit ONLY** with **Freezed States** (`@freezed class FeatureState with _$FeatureState`). Freezed provides immutable union states with deep value equality (operator == and hashCode) for seamless unit testing with `bloc_test` and `emitsInOrder`.
-- **Screens & Widgets**: Strictly **ONE WIDGET CLASS PER FILE**. No function widgets returning `Widget`.
+### Pure Domain Failure Hierarchy (`core/errors/failure.dart`):
+```dart
+sealed class Failure {
+  final String message;
+  final String? code;
+  const Failure({required this.message, this.code});
+}
+
+class ServerFailure extends Failure {
+  final int? statusCode;
+  const ServerFailure({required super.message, super.code, this.statusCode});
+}
+
+class NetworkFailure extends Failure {
+  const NetworkFailure({required super.message, super.code});
+}
+
+class UnauthorizedFailure extends Failure {
+  const UnauthorizedFailure({required super.message, super.code});
+}
+
+class ValidationFailure extends Failure {
+  const ValidationFailure({required super.message, super.code});
+}
+
+class CacheFailure extends Failure {
+  const CacheFailure({required super.message, super.code});
+}
+```
 
 ---
 
-## 🔄 Enterprise State & Cubit Standard (Freezed States + UseCase Injection)
+## 5. ⚡ Feature Generator Engine (`add feature <name>`)
 
-### 1. Freezed States (`features/<feature>/presentation/logic/cubits/<feature>_state.dart`):
-```dart
-import 'package:freezed_annotation/freezed_annotation.dart';
+Whenever the user asks to add or generate a feature:
 
-part 'auth_state.freezed.dart';
+1. **Intake Flow**:
+   - Ask for feature requirements/documentation and API specifications.
+   - Ask if they have a Figma URL or image mockups.
+   - Confirm the project's architecture profile.
+2. **Scaffold 3 Layers**:
+   - `domain/`: Pure Entities (`Equatable`), abstract Repositories returning `ResultFuture<T>`, discrete UseCases.
+   - `data/`: DataSources, `@JsonSerializable` Models + `copyWith` + `toEntity()`, Repository Implementations.
+   - `presentation/`: Cubit/Notifier, Screen (`ResponsiveLayout`), cohesive sub-widgets.
+3. **Generate 3-Tier Testing Suite**:
+   - **Unit Tests**: Domain UseCases & Cubits (`test/features/<feature>/...`) using `mocktail` & `bloc_test`.
+   - **Widget Tests**: Component and screen rendering tests (`test/features/<feature>/presentation/...`).
+   - **Integration E2E Tests**: Full user flow tests (`integration_test/<feature>_flow_test.dart`).
 
-@freezed
-class AuthState with _$AuthState {
-  const factory AuthState.initial() = _Initial;
-  const factory AuthState.loading() = _Loading;
-  const factory AuthState.success(String token) = _Success;
-  const factory AuthState.failure(String message) = _Failure;
-}
-```
+---
 
-### 2. Cubit (`features/<feature>/presentation/logic/cubits/<feature>_cubit.dart`):
-```dart
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
-import '../../domain/usecases/login_usecase.dart';
-import 'auth_state.dart';
-
-@injectable
-class LoginCubit extends Cubit<AuthState> {
-  final LoginUseCase loginUseCase;
-
-  LoginCubit(this.loginUseCase) : super(const AuthState.initial());
-
-  Future<void> login({required String email, required String password}) async {
-    emit(const AuthState.loading());
-    final result = await loginUseCase(email: email, password: password);
-    result.fold(
-      (failure) => emit(AuthState.failure(failure.message ?? 'Login failed')),
-      (token) => emit(AuthState.success(token)),
-    );
-  }
-}
-```
-
-### 3. 🧪 Comprehensive Unit Testing Standard for Cubits (`test/.../*_cubit_test.dart`):
-Every Cubit/Bloc MUST have a corresponding unit test file following the standard setup with `flutter_test`, `bloc_test`, and `mocktail`:
+## 6. 🧪 Comprehensive Unit Testing Standard
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:dartz/dartz.dart';
-import 'package:your_app/core/network/api_error_model.dart';
+import 'package:your_app/core/network/result.dart';
+import 'package:your_app/core/errors/failure.dart';
 import 'package:your_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:your_app/features/auth/presentation/logic/cubits/auth_state.dart';
 import 'package:your_app/features/auth/presentation/logic/cubits/login_cubit.dart';
@@ -204,19 +268,17 @@ void main() {
     loginCubit.close();
   });
 
-  // 1. اختبار الحالة المبدئية (Initial State)
   test('initial state should be AuthState.initial', () {
     expect(loginCubit.state, equals(const AuthState.initial()));
   });
 
   group('login', () {
-    // 2. اختبار النجاح (Happy Path)
     blocTest<LoginCubit, AuthState>(
       'should emit [AuthState.loading, AuthState.success] when login succeeds',
       build: () => LoginCubit(mockLoginUseCase),
       setUp: () {
         when(() => mockLoginUseCase(email: tEmail, password: tPassword))
-            .thenAnswer((_) async => const Right(tToken));
+            .thenAnswer((_) async => const Success(tToken));
       },
       act: (cubit) => cubit.login(email: tEmail, password: tPassword),
       expect: () => [
@@ -228,13 +290,12 @@ void main() {
       },
     );
 
-    // 3. اختبار الفشل (Error State)
     blocTest<LoginCubit, AuthState>(
       'should emit [AuthState.loading, AuthState.failure] when login fails',
       build: () => LoginCubit(mockLoginUseCase),
       setUp: () {
         when(() => mockLoginUseCase(email: tEmail, password: tPassword))
-            .thenAnswer((_) async => const Left(ApiErrorModel(message: 'Login failed')));
+            .thenAnswer((_) async => const Error(ServerFailure(message: 'Login failed')));
       },
       act: (cubit) => cubit.login(email: tEmail, password: tPassword),
       expect: () => [
@@ -251,431 +312,41 @@ void main() {
 
 ---
 
-## 💎 Strict SOLID Principles & Best Performance Mandate
+## 7. 🔒 Hardware-Level Security & Privacy Protection
 
-
-
-Every file, class, and architectural layer created MUST adhere to SOLID principles and performance best practices:
-
-### 1. SOLID Principles:
-- **S - Single Responsibility Principle (SRP)**:
-  - Each file and class has exactly ONE reason to change.
-  - A UseCase handles 1 business action (`LoginUseCase`).
-  - A Repository coordinates data between Remote Data Source and local Cache.
-  - A Cubit manages state transitions for a single presentation flow.
-  - A Widget class renders one cohesive visual element (Strictly ONE widget class per file).
-- **O - Open/Closed Principle (OCP)**:
-  - Architecture is open for extension, closed for modification. Features and repositories are backed by abstract contracts so new implementations (e.g. mock repositories, alternative data sources) can be added without modifying existing consumer code.
-- **L - Liskov Substitution Principle (LSP)**:
-  - Repository and service implementations can seamlessly replace their abstract domain interfaces without altering program correctness.
-- **I - Interface Segregation Principle (ISP)**:
-  - Interfaces are discrete, fine-grained, and client-specific. Never create monolithic interfaces with unused methods.
-- **D - Dependency Inversion Principle (DIP)**:
-  - High-level modules (Domain UseCases, Presentation Cubits) depend on abstractions (`AuthRepo`), never concrete low-level details (`AuthRepoImpl`, `AuthDataSource`).
-  - Inversion of Control is wired via `Injectable` + `GetIt`.
-
-### 2. ⚡ High-Performance Guidelines:
-- **`const` Everywhere**: Always use `const` constructors for States, Widgets, EdgeInsets, BorderRadii, and TextStyles to enable compile-time canonical caching and prevent unnecessary element rebuilds.
-- **Pure `Equatable`**: Fast value comparison for states and entities with zero runtime reflection overhead and seamless `bloc_test` integration.
-- **Granular Widget Rebuilds**: Narrow the scope of `BlocBuilder` / `BlocConsumer` / `BlocSelector` to the exact leaf widgets that change, rather than wrapping entire screen scaffolds.
-- **Zero Memory Leaks**: Ensure all controllers (`TextEditingController`, `ScrollController`, `AnimationController`) and stream subscriptions are properly disposed in `StatefulWidget` `dispose()` methods or managed lifecycles.
-
----
-
-## 🌐 Enterprise Network Subsystem (`core/network/`)
-
-1. **`typedef.dart` (Using `dartz`)**:
+1. **Hardware-Encrypted Secure Storage**:
    ```dart
-   import 'package:dartz/dartz.dart';
-   import 'api_error_model.dart';
-
-   typedef ResultFuture<T> = Future<Either<ApiErrorModel, T>>;
-   typedef ResultVoid = ResultFuture<void>;
+   final storage = const FlutterSecureStorage(
+     aOptions: AndroidOptions(encryptedSharedPreferences: true),
+     iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
+   );
    ```
-
-2. **`ApiErrorHandler`**: Maps all `DioException` types into structured `ApiErrorModel`.
-3. **`AuthInterceptor`**: Injects `Bearer <token>`, handles 401 with `Completer<String?>` mutex lock for token refresh on a separate Dio instance, and auto-retries blocked requests.
-4. **`ApiResponse<T>` & `PaginatedResponse<T>`**: Strongly-typed response wrappers.
+2. **App Switcher Privacy Overlay**: Obscures sensitive screens when the app enters `AppLifecycleState.inactive` or `paused`.
+3. **Inactivity Auto-Logout**: Detects touch inactivity and logs out users after configurable timeouts.
 
 ---
 
-## 🚦 Navigation & Routing Subsystem (`core/routes/`)
+## 8. 🌍 Context-Aware Localization Standard
 
-All navigation in the application is managed centrally through `core/routes/`:
+To avoid excessive or nonsensical abstractions, the AI Agent MUST distinguish between user-facing text and developer/system text:
 
-### 1. `core/routes/routes.dart`:
-```dart
-class Routes {
-  static const String splash = '/splash';
-  static const String login = '/login';
-  static const String notAllowedUser = '/not-allowed-user';
-}
-```
+### 1. User-Facing UI Strings (MUST Be Localized):
+- Any text displayed to end users in the UI **MUST NOT** be hardcoded. Always use `context.l10n.<key>`.
+- Examples:
+  - `Text(context.l10n.loginTitle)`
+  - Form validation messages shown in UI (`context.l10n.invalidEmailError`)
+  - User-facing dialog titles, body text, and buttons (`context.l10n.retry`, `context.l10n.confirm`)
+  - SnackBar / Toast user notifications
 
-### 2. `core/routes/app_router.dart`:
-```dart
-import 'package:flutter/material.dart';
-import 'routes.dart';
-
-class AppRouter {
-  Route? generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case Routes.splash:
-        return _createRoute(const Scaffold(body: Center(child: Text("Splash Screen"))));
-      case Routes.login:
-        return _createRoute(const Scaffold(body: Center(child: Text("Login Screen"))));
-      case Routes.notAllowedUser:
-        return _createRoute(const Scaffold(body: Center(child: Text("Not Allowed To Use App"))));
-      default:
-        return _createRoute(const Scaffold(body: Center(child: Text("No Route Defined"))));
-    }
-  }
-
-  PageRouteBuilder _createRoute(Widget page, {RouteSettings? settings}) {
-    return PageRouteBuilder(
-      settings: settings,
-      transitionDuration: const Duration(milliseconds: 400),
-      pageBuilder: (context, animation, secondaryAnimation) => page,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(opacity: animation, child: child);
-      },
-    );
-  }
-}
-```
+### 2. Infrastructure & Developer Strings (DO NOT Localize):
+- **Internal Logs & Diagnostics**: `debugPrint('Auth token refreshed')`, `logger.d('...')`, `AppBlocObserver`.
+- **Telemetry & Analytics Events**: `analytics.logEvent(name: 'user_signed_up', parameters: {'plan': 'free'})`.
+- **Developer Asserts & System Errors**: `assert(id.isNotEmpty, 'ID must not be empty')`, `ArgumentError('...')`.
+- **Data Layer Exception Codes**: `ServerException(code: 'HTTP_504_TIMEOUT')`.
 
 ---
 
-## 🚩 Mandatory Multi-Environment Flavors & `.vscode/launch.json`
-
-### 1. `AppFlavor` Enum (`core/config/app_flavor.dart`):
-`dev`, `staging`, `production` with `isDev`, `isStaging`, `isProduction` getters.
-
-### 2. `EnvConfig` Contract (`core/config/env_config.dart`):
-```dart
-abstract class EnvConfig {
-  AppFlavor get flavor;
-  String get appName;
-  String get baseUrl;
-  String get apiKey;
-  bool get enableLogging;
-}
-```
-
-### 3. Production Configuration (`core/config/production_config.dart`):
-```dart
-class ProductionConfig implements EnvConfig {
-  @override
-  AppFlavor get flavor => AppFlavor.production;
-  @override
-  String get appName => const String.fromEnvironment('APP_NAME', defaultValue: 'App');
-  @override
-  String get baseUrl => const String.fromEnvironment('BASE_URL');
-  @override
-  String get apiKey => const String.fromEnvironment('API_KEY');
-  @override
-  bool get enableLogging => false;
-}
-```
-
-### 4. VS Code Launch Profiles (`.vscode/launch.json`):
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Flutter: Dev",
-      "program": "lib/main_dev.dart",
-      "args": ["--flavor", "dev"]
-    },
-    {
-      "name": "Flutter: Production",
-      "program": "lib/main_production.dart",
-      "args": [
-        "--flavor", "production",
-        "--dart-define=BASE_URL=https://api.example.com",
-        "--dart-define=API_KEY=your_production_api_key",
-        "--dart-define=APP_NAME=YourApp"
-      ]
-    }
-  ]
-}
-```
-
----
-
----
-
-## 🛰️ Global Observability & AppBlocObserver (`core/bloc_observer.dart`)
-
-Enterprise Flutter applications require structured visibility into state transitions and lifecycle events:
-
-```dart
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/foundation.dart';
-
-class AppBlocObserver extends BlocObserver {
-  final bool enableLogging;
-  AppBlocObserver({this.enableLogging = true});
-
-  @override
-  void onCreate(BlocBase bloc) {
-    super.onCreate(bloc);
-    if (enableLogging) debugPrint('🟢 [Bloc Created] ${bloc.runtimeType}');
-  }
-
-  @override
-  void onChange(BlocBase bloc, Change change) {
-    super.onChange(bloc, change);
-    if (enableLogging) {
-      debugPrint('🔄 [Bloc Change] ${bloc.runtimeType} | Current: ${change.currentState} ➔ Next: ${change.nextState}');
-    }
-  }
-
-  @override
-  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    super.onError(bloc, error, stackTrace);
-    debugPrint('🔴 [Bloc Error] ${bloc.runtimeType} | $error');
-  }
-
-  @override
-  void onClose(BlocBase bloc) {
-    super.onClose(bloc);
-    if (enableLogging) debugPrint('⚪ [Bloc Closed] ${bloc.runtimeType}');
-  }
-}
-```
-
-### Global Bootstrap with `runZonedGuarded` (`lib/main_common.dart`):
-```dart
-Future<void> bootstrap(Future<Widget> Function() builder, {required EnvConfig config}) async {
-  FlutterError.onError = (details) {
-    FlutterError.presentError(details);
-    debugPrint('🚨 [Flutter Error] ${details.exceptionAsString()}');
-  };
-
-  runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await configureDependencies(config.flavor);
-    Bloc.observer = AppBlocObserver(enableLogging: config.enableLogging);
-    final app = await builder();
-    runApp(app);
-  }, (error, stack) {
-    debugPrint('🔥 [Uncaught Zone Error] $error\n$stack');
-  });
-}
-```
-
----
-
-## 📜 Standardized Infinite Pagination Pattern
-
-Every paginated list in the application follows a standardized state and scroll listener pattern:
-
-### 1. Paginated State with Freezed:
-```dart
-@freezed
-class ProductListState with _$ProductListState {
-  const factory ProductListState.initial() = _Initial;
-  const factory ProductListState.loading() = _Loading;
-  const factory ProductListState.success({
-    required List<ProductEntity> items,
-    required int currentPage,
-    required bool hasReachedMax,
-    @Default(false) bool isLoadingMore,
-  }) = _Success;
-  const factory ProductListState.failure(String message) = _Failure;
-}
-```
-
-### 2. Reusable `PaginationScrollListener` (`core/widgets/pagination_scroll_listener.dart`):
-```dart
-import 'package:flutter/material.dart';
-
-class PaginationScrollListener extends StatelessWidget {
-  const PaginationScrollListener({
-    super.key,
-    required this.child,
-    required this.onLoadMore,
-    this.threshold = 0.8,
-  });
-
-  final Widget child;
-  final VoidCallback onLoadMore;
-  final double threshold;
-
-  @override
-  Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (notification) {
-        if (notification is ScrollUpdateNotification) {
-          final maxScroll = notification.metrics.maxScrollExtent;
-          final currentScroll = notification.metrics.pixels;
-          if (maxScroll > 0 && currentScroll >= maxScroll * threshold) {
-            onLoadMore();
-          }
-        }
-        return false;
-      },
-      child: child,
-    );
-  }
-}
-```
-
----
-
-## 🌐 Centralized Connectivity & Offline Handling (`core/services/connectivity_service.dart`)
-
-```dart
-import 'dart:async';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:injectable/injectable.dart';
-
-@singleton
-class ConnectivityService {
-  final Connectivity _connectivity = Connectivity();
-  final StreamController<bool> _controller = StreamController<bool>.broadcast();
-
-  Stream<bool> get onConnectivityChanged => _controller.stream;
-  bool isConnected = true;
-
-  ConnectivityService() {
-    _connectivity.onConnectivityChanged.listen((results) {
-      final connected = results.any((r) => r != ConnectivityResult.none);
-      isConnected = connected;
-      _controller.add(connected);
-    });
-  }
-
-  void dispose() => _controller.close();
-}
-```
-
----
-
-## 🔒 Enterprise Hardware-Level Storage & Privacy Security
-
-### 1. Hardware-Encrypted Secure Storage (`core/services/token_storage.dart`):
-```dart
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:injectable/injectable.dart';
-
-@singleton
-class TokenStorage {
-  static const _aOptions = AndroidOptions(encryptedSharedPreferences: true);
-  static const _iOptions = IOSOptions(accessibility: KeychainAccessibility.first_unlock);
-
-  final FlutterSecureStorage _storage = const FlutterSecureStorage(
-    aOptions: _aOptions,
-    iOptions: _iOptions,
-  );
-
-  Future<void> saveToken(String token) => _storage.write(key: 'auth_token', value: token);
-  Future<String?> getToken() => _storage.read(key: 'auth_token');
-  Future<void> clearToken() => _storage.delete(key: 'auth_token');
-}
-```
-
-### 2. Privacy Screen Overlay (`core/widgets/privacy_screen_overlay.dart`):
-Protects sensitive screens in the App Switcher when the app is backgrounded:
-```dart
-import 'package:flutter/material.dart';
-
-class PrivacyScreenOverlay extends StatefulWidget {
-  const PrivacyScreenOverlay({super.key, required this.child});
-  final Widget child;
-
-  @override
-  State<PrivacyScreenOverlay> createState() => _PrivacyScreenOverlayState();
-}
-
-class _PrivacyScreenOverlayState extends State<PrivacyScreenOverlay> with WidgetsBindingObserver {
-  bool _isBackgrounded = false;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    setState(() {
-      _isBackgrounded = (state == AppLifecycleState.inactive || state == AppLifecycleState.paused);
-    });
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        widget.child,
-        if (_isBackgrounded)
-          Positioned.fill(
-            child: Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              child: const Center(child: Icon(Icons.lock_outline, size: 64)),
-            ),
-          ),
-      ],
-    );
-  }
-}
-```
-
----
-
-## 🎨 Core Design System Atoms (`core/widgets/`)
-
-Every project scaffolded by this skill includes 5 essential production widgets in `core/widgets/`:
-
-1. **`AppButton`**: Reusable Material 3 button with built-in loading indicator, disabled state, and elevation styling.
-2. **`AppTextField`**: Localized input with focus borders, floating label, error text, and password visibility toggle.
-3. **`AppShimmerLoading`**: Skeleton loader wrapper for cards and list items.
-4. **`AppEmptyState`**: Cohesive empty list representation with SVG/Icon, message, and call-to-action button.
-5. **`AppErrorWidget`**: Standardized error banner with retry callback (`onRetry`).
-
----
-
-## 📐 Strict `analysis_options.yaml` Standard
-
-```yaml
-include: package:flutter_lints/flutter.yaml
-
-analyzer:
-  language:
-    strict-casts: true
-    strict-inference: true
-    strict-raw-types: true
-  errors:
-    missing_required_param: error
-    missing_return: error
-    todo: ignore
-
-linter:
-  rules:
-    - avoid_print
-    - prefer_const_constructors
-    - prefer_const_declarations
-    - prefer_const_literals_to_create_immutables
-    - unawaited_futures
-    - avoid_unnecessary_containers
-    - sized_box_for_whitespace
-    - prefer_single_quotes
-    - sort_child_properties_last
-    - always_declare_return_types
-```
-
----
-
-## 🎨 UI/UX Pro Max & Strict Theme Standards
+## 9. 🎨 UI/UX Pro Max & Strict Theme Standards
 
 > [!IMPORTANT]
 > **Strict Material 3 ThemeData Rule**:
@@ -695,33 +366,28 @@ linter:
 
 ---
 
-## 🧙‍♂️ Interactive Project Initializer Flow (MANDATORY AGENT INSTRUCTIONS)
+## 10. 🧙‍♂️ Interactive Initializer Questionnaire (MANDATORY)
 
-> [!CRITICAL]
-> **DO NOT START WRITING CODE OR CREATING FILES IMMEDIATELY!**
-> Whenever the user asks to `"init project"`, `"create flutter app"`, `"scaffold new project"`, or initialize an application, the AI Agent **MUST ALWAYS STOP AND PRESENT** the following questionnaire to the user:
+Whenever the user asks to `"init project"` or initialize an app, the Agent **MUST STOP AND PRESENT** the questionnaire:
 
-### 📋 Mandatory Questionnaire to Ask the User:
 1. **📝 Project Name & Org Domain**: (e.g. `smart_clinic`, `com.company`).
 2. **📱 Target Platforms & Form Factors**:
    - Platforms: Mobile (Android/iOS), Web, Desktop (Windows/macOS/Linux).
    - Form Factors: Phones, Tablets, Desktop.
-3. **🎨 UI/UX Pro Max Design Category [1-7]**:
-   - 💳 Fintech, 🛍️ E-Commerce, 🏥 Healthcare, 🍔 Food, 📊 SaaS, 🏋️ Fitness, 🎓 EdTech.
+3. **🏛️ Architecture Profile**:
+   - 1) 🌟 Enterprise Clean Architecture (Feature-First + Cubit + Injectable + Centralized Routes) [Default]
+   - 2) ⚡ Riverpod Enterprise (Feature-First + AsyncNotifier + GoRouter)
+   - 3) 🔄 Offline-First Enterprise (Clean Arch + Drift DB + Sync Queue)
+   - 4) 📦 Minimal Starter
+   - 5) 🛠️ Custom Architecture
+4. **🎨 UI/UX Pro Max Category [1-8]**:
+   - 💳 Fintech, 🛍️ E-Commerce, 🏥 Healthcare, 🍔 Food, 📊 SaaS, 🏋️ Fitness, 🎓 EdTech, ⚙️ Minimal.
 
 ---
 
 ### ⚡ Post-Scaffolding Automated Execution (MANDATORY)
 
-> [!IMPORTANT]
-> Immediately after creating all files and folders, the AI Agent **MUST PROACTIVELY AND AUTOMATICALLY EXECUTE**:
-> 1. `flutter pub get`
-> 2. `dart run build_runner build --delete-conflicting-outputs` (to generate Freezed, Injectable, Retrofit, and JsonSerializable code)
-> 3. `flutter analyze` (to ensure 0 errors / 0 warnings)
->
-> **NEVER ask the user to run `build_runner` or `flutter analyze` manually! Run them automatically in the background/terminal as part of completing the task.**
-
-
-
-
-
+Immediately after creating all files and folders, the AI Agent **MUST AUTOMATICALLY EXECUTE**:
+1. `flutter pub get`
+2. `dart run build_runner build --delete-conflicting-outputs` (if code generation is configured)
+3. `flutter analyze` (ensuring 0 errors / 0 warnings)

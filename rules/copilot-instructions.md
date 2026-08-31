@@ -1,4 +1,4 @@
-# GitHub Copilot Custom Instructions for Flutter Enterprise Pro Max v2
+# GitHub Copilot Custom Instructions for Flutter Enterprise Pro Max
 
 - **Rule Priority**: P0 (Security & Correctness) > P1 (Architecture & SOLID) > P2 (Maintainability & Testing) > P3 (Performance) > P4 (Style).
 - **Architecture Profiles**:

@@ -1,10 +1,11 @@
 import 'dart:io';
 
 void main(List<String> args) async {
-  print('\x1B[36m============================================================\x1B[0m');
-  print('\x1B[32m⚡ Flutter Enterprise Pro Max v2 — Feature Generator\x1B[0m');
-  print('\x1B[33mClean Architecture • SOLID Principles • 3-Tier Testing Pyramid\x1B[0m');
-  print('\x1B[36m============================================================\x1B[0m\n');
+  print('============================================================');
+  print('⚡ Flutter Enterprise Pro Max — Feature Generator');
+  print('Clean Architecture • SOLID Principles • 3-Tier Testing Pyramid');
+  print('============================================================\n');
+
 
   String featureName = '';
   if (args.isNotEmpty && !args.first.startsWith('-')) {

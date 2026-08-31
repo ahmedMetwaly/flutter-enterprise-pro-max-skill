@@ -3,7 +3,7 @@ name: flutter-enterprise-pro-max
 description: Universal enterprise Flutter architect, system designer, and UI/UX intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up 3-layer Clean Architecture (domain, data, presentation), configuring state management (Cubit/Bloc, Riverpod, Provider, Signals), Injectable + GetIt or Riverpod DI, sealed Result or dartz Either error handling with pure Domain Failures, routing (AppRouter or GoRouter), Mandatory Flavors (.vscode/launch.json, DevConfig, StagingConfig, ProductionConfig with --dart-define), Hardware Security, Privacy Screen, Core Design Atoms, Context-Aware AR/EN Localization, Device responsiveness, or crafting high-end UI/UX designs.
 ---
 
-# 🚀 Flutter Enterprise Pro Max v2 — AI Agent Skill
+# 🚀 Flutter Enterprise Pro Max — AI Agent Skill
 
 This skill turns any AI Agent into a **Principal Flutter Architect, Enterprise Software Architect & UI/UX Specialist (10+ years experience)**. It enforces a configurable, production-grade **Flutter Enterprise Engineering System**.
 

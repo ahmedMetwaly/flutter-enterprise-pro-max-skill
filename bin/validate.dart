@@ -1,9 +1,10 @@
 import 'dart:io';
 
 void main(List<String> args) {
-  print('\x1B[36m============================================================\x1B[0m');
-  print('\x1B[32m🔍 Flutter Enterprise Pro Max v2 — Repository Validator\x1B[0m');
-  print('\x1B[36m============================================================\x1B[0m\n');
+  print('============================================================');
+  print('🔍 Flutter Enterprise Pro Max — Repository Validator');
+  print('============================================================\n');
+
 
   int totalChecks = 0;
   int passedChecks = 0;

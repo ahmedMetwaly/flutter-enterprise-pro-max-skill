@@ -49,6 +49,9 @@
   - Clean `@freezed class FeatureState with _$FeatureState` union states (`initial`, `loading`, `success`, `failure`).
   - Immutable value equality out-of-the-box for effortless testing with `bloc_test` and `emitsInOrder`.
   - Cubits strictly inject single-responsibility UseCases (`LoginCubit(this.loginUseCase)`).
+* **🧪 Standardized Unit Testing with `mocktail` & `bloc_test`**:
+  - Mock UseCases (`class MockLoginUseCase extends Mock implements LoginUseCase {}`), test initial state, happy path, and error path with `verify(...).called(1)`.
+
 
 * **💉 Injectable + GetIt Dependency Injection**: Inversion of control using `@singleton`, `@LazySingleton(as: Interface)`, `@lazySingleton`, `@injectable`, and `@module`.
 * **🌐 Production Network Subsystem with `dartz`**:

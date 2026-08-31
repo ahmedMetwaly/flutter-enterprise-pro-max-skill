@@ -40,7 +40,48 @@ Follow these mandatory architectural, coding, and UI/UX design principles:
   }
   ```
 
-## 3. 💎 Strict SOLID Principles & Best Performance
+## 3. 🧪 Comprehensive Unit Testing Standard for Cubits (`test/.../*_cubit_test.dart`)
+- Every Cubit/Bloc MUST have a corresponding unit test using `flutter_test`, `bloc_test`, and `mocktail`:
+  ```dart
+  class MockLoginUseCase extends Mock implements LoginUseCase {}
+
+  void main() {
+    late MockLoginUseCase mockLoginUseCase;
+    late LoginCubit loginCubit;
+
+    setUp(() {
+      mockLoginUseCase = MockLoginUseCase();
+      loginCubit = LoginCubit(mockLoginUseCase);
+    });
+
+    tearDown(() => loginCubit.close());
+
+    test('initial state should be AuthState.initial', () {
+      expect(loginCubit.state, equals(const AuthState.initial()));
+    });
+
+    group('login', () {
+      blocTest<LoginCubit, AuthState>(
+        'should emit [AuthState.loading, AuthState.success] when login succeeds',
+        build: () => LoginCubit(mockLoginUseCase),
+        setUp: () {
+          when(() => mockLoginUseCase(email: 'test@example.com', password: 'password123'))
+              .thenAnswer((_) async => const Right('token_123'));
+        },
+        act: (cubit) => cubit.login(email: 'test@example.com', password: 'password123'),
+        expect: () => [
+          const AuthState.loading(),
+          const AuthState.success('token_123'),
+        ],
+        verify: (_) {
+          verify(() => mockLoginUseCase(email: 'test@example.com', password: 'password123')).called(1);
+        },
+      );
+    });
+  }
+  ```
+
+## 4. 💎 Strict SOLID Principles & Best Performance
 - **S (Single Responsibility)**: Each class/file has one single purpose (UseCases handle 1 business action, Cubits handle 1 flow's states, Repos coordinate data, Widgets render 1 UI component).
 - **O (Open/Closed)**: Extend functionality via abstract interfaces without modifying existing code.
 - **L (Liskov Substitution)**: Implementations properly substitute base abstractions.
@@ -53,18 +94,19 @@ Follow these mandatory architectural, coding, and UI/UX design principles:
   - Zero memory leaks: always dispose controllers and subscriptions.
 
 
-## 4. 🌐 Network Subsystem with `dartz`
+
+## 5. 🌐 Network Subsystem with `dartz`
 - `typedef ResultFuture<T> = Future<Either<ApiErrorModel, T>>;` using `package:dartz/dartz.dart`.
 - `DioClient` with `PrettyDioLogger` and 15s timeouts.
 - `AuthInterceptor` with `Completer<String?>` mutex lock for token refresh on 401 and auto-retry of queued requests.
 - `ApiErrorHandler` mapping all `DioException` types into `ApiErrorModel`.
 - Strongly-typed `ApiResponse<T>` and `PaginatedResponse<T>`.
 
-## 5. 🚦 Centralized Routing (`core/routes/`)
+## 6. 🚦 Centralized Routing (`core/routes/`)
 - `core/routes/routes.dart`: `Routes` class with static const route string names.
 - `core/routes/app_router.dart`: `AppRouter` with `generateRoute(RouteSettings settings)` using `PageRouteBuilder` with `FadeTransition` (400ms duration).
 
-## 6. 🚩 Mandatory Multi-Environment Flavors & `.vscode/launch.json`
+## 7. 🚩 Mandatory Multi-Environment Flavors & `.vscode/launch.json`
 - Concrete configurations:
   - `DevConfig`: Reads from `.env.dev` via `dotenv.env['...']!`.
   - `StagingConfig`: Reads from `.env.staging` via `dotenv.env['...']!`.
@@ -72,34 +114,35 @@ Follow these mandatory architectural, coding, and UI/UX design principles:
 - **VS Code Launch Profiles**: Always generate `.vscode/launch.json` supporting Dev, Staging, and Production.
 - **Git Ignore**: Add `.env`, `.env.*`, `*.env` to `.gitignore`.
 
-## 7. 🌍 Mandatory AR/EN Localization
+## 8. 🌍 Mandatory AR/EN Localization
 - **STRICT ZERO HARDCODED STRINGS** in UI and error messages.
 - Always use `context.l10n.<key>` or `AppLocalizations.of(context)!.<key>`.
 - RTL (Arabic) & LTR (English) full support.
 
-## 8. 🛡️ Validation & Caching Standards
+## 9. 🛡️ Validation & Caching Standards
 - Centralized `Validators` class returning localized error strings.
 - Secure token storage via `FlutterSecureStorage` (`TokenStorage`).
 - Cache-First repository pattern with offline fallback.
 
-## 9. 📱 Platform-Adaptive & Multi-Device UI
+## 10. 📱 Platform-Adaptive & Multi-Device UI
 - 🍎 **iOS & macOS**: Cupertino styling (`CupertinoButton`, `CupertinoTextField`, `CupertinoActivityIndicator`).
 - 🤖 **Android & Desktop & Web**: Material 3 styling (`ElevatedButton`, `FilledButton`, `TextField`).
 - 📱 Breakpoints: Mobile (<600dp), Tablet (600-1024dp with Navigation Rail), Desktop (>1024dp with Sidebar).
 - STRICT: ONE WIDGET CLASS PER FILE. No function widgets (`Widget myWidget() => ...`).
 - Use `flutter_screenutil` (.w, .h, .sp, .r) and `AppColors` design tokens.
 
-## 10. 📐 Strict ThemeData Rule (CardThemeData ONLY)
+## 11. 📐 Strict ThemeData Rule (CardThemeData ONLY)
 - In `ThemeData`, **ALWAYS use `CardThemeData`** (`cardTheme: const CardThemeData(...)`).
 - **NEVER use `CardTheme(...)`** inside `ThemeData(cardTheme: ...)` as `CardTheme` is a widget class in Flutter.
 
-## 11. ⚡ Mandatory Interactive Flow & Automated Execution
+## 12. ⚡ Mandatory Interactive Flow & Automated Execution
 - ALWAYS ask the user the 3 interactive questions first (Project Name, Platforms/Devices, UI Category).
 - IMMEDIATELY after scaffolding, AUTOMATICALLY execute:
   1. `flutter pub get`
   2. `dart run build_runner build --delete-conflicting-outputs`
   3. `flutter analyze`
 - Never leave `build_runner` for the user to run manually.
+
 
 
 

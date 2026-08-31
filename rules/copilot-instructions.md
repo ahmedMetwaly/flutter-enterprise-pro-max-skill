@@ -3,7 +3,8 @@
 - **Architecture**: 3-Layer Clean Architecture (Domain, Data, Presentation) adhering to strict **SOLID principles**.
 - **Dependency Injection**: Injectable with GetIt. Never manually construct repositories or usecases.
 - **State Management**: Cubit only with **Freezed States** (`@freezed class FeatureState with _$FeatureState`). Provides immutable union states and value equality for `bloc_test`.
-- **Cubit Logic**: Always inject discrete single-responsibility UseCases (`LoginCubit(this.loginUseCase)`).
+- **Cubit Logic & Testing**: Always inject discrete single-responsibility UseCases (`LoginCubit(this.loginUseCase)`). Unit test using `mocktail` (`class MockLoginUseCase extends Mock implements LoginUseCase {}`) and `bloc_test` (testing initial state, happy path, and error path with `verify(...).called(1)`).
+
 - **Data Layer**: Retrofit for DataSources, `@JsonSerializable(explicitToJson: true)` with manual `copyWith` and Model-to-Entity mappers.
 - **Domain Layer**: Pure Entities (`Equatable` with `const` constructors), abstract Repositories (`ResultFuture<T>`), single-responsibility UseCases.
 - **Networking**: Enterprise DioClient, AuthInterceptor, ApiErrorHandler, ApiResponse, PaginatedResponse, `dartz` `Either`.

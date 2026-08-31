@@ -6,7 +6,9 @@
 - **Dependency Injection**: Injectable + GetIt (`@InjectableInit`, `@singleton`, `@LazySingleton(as: *Repo)`, `@lazySingleton`, `@injectable`, `@module`).
 - **State Management**: Cubit only with **Freezed States** (`@freezed class FeatureState with _$FeatureState`). Provides immutable union states and value equality for seamless `bloc_test` unit testing.
 - **Cubit Logic**: Always inject discrete single-responsibility UseCases (`LoginCubit(this.loginUseCase)`).
+- **Unit Testing**: Every Cubit must have a comprehensive test suite using `mocktail` (`class MockLoginUseCase extends Mock implements LoginUseCase {}`) and `bloc_test` covering initial state, happy path, and error path.
 - **Data Layer**: Retrofit DataSources (`*_datasource.dart`), `@JsonSerializable` Models + manual `copyWith` + Mappers, Repositories returning `ResultFuture<T>`.
+
 - **Domain Layer**: Pure Entities (`Equatable` with `const` constructors), abstract Repositories, discrete UseCases.
 - **Networking**: Enterprise DioClient, AuthInterceptor (with 401 refresh lock and auto-retry), ApiErrorHandler, ApiResponse<T>, PaginatedResponse<T>, `dartz` `Either`.
 - **Routes**: Centralized `core/routes/routes.dart` and `core/routes/app_router.dart` (`PageRouteBuilder` with `FadeTransition`).

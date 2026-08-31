@@ -172,27 +172,87 @@ class LoginCubit extends Cubit<AuthState> {
 }
 ```
 
-### 3. Effortless Unit Testing with `bloc_test`:
-Because `@freezed` implements immutable value equality out-of-the-box (like `Equatable`), unit testing state sequences in `bloc_test` is clean and direct:
+### 3. 🧪 Comprehensive Unit Testing Standard for Cubits (`test/.../*_cubit_test.dart`):
+Every Cubit/Bloc MUST have a corresponding unit test file following the standard setup with `flutter_test`, `bloc_test`, and `mocktail`:
+
 ```dart
-blocTest<LoginCubit, AuthState>(
-  'emits [AuthState.loading, AuthState.success] on successful login',
-  build: () {
-    when(() => mockLoginUseCase(email: 'test@example.com', password: 'password'))
-        .thenAnswer((_) async => const Right('dummy_token'));
-    return LoginCubit(mockLoginUseCase);
-  },
-  act: (cubit) => cubit.login(email: 'test@example.com', password: 'password'),
-  expect: () => [
-    const AuthState.loading(),
-    const AuthState.success('dummy_token'),
-  ],
-);
+import 'package:flutter_test/flutter_test.dart';
+import 'package:bloc_test/bloc_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:dartz/dartz.dart';
+import 'package:your_app/core/network/api_error_model.dart';
+import 'package:your_app/features/auth/domain/usecases/login_usecase.dart';
+import 'package:your_app/features/auth/presentation/logic/cubits/auth_state.dart';
+import 'package:your_app/features/auth/presentation/logic/cubits/login_cubit.dart';
+
+class MockLoginUseCase extends Mock implements LoginUseCase {}
+
+void main() {
+  late MockLoginUseCase mockLoginUseCase;
+  late LoginCubit loginCubit;
+
+  const tEmail = 'test@example.com';
+  const tPassword = 'password123';
+  const tToken = 'sample_jwt_token_123';
+
+  setUp(() {
+    mockLoginUseCase = MockLoginUseCase();
+    loginCubit = LoginCubit(mockLoginUseCase);
+  });
+
+  tearDown(() {
+    loginCubit.close();
+  });
+
+  // 1. اختبار الحالة المبدئية (Initial State)
+  test('initial state should be AuthState.initial', () {
+    expect(loginCubit.state, equals(const AuthState.initial()));
+  });
+
+  group('login', () {
+    // 2. اختبار النجاح (Happy Path)
+    blocTest<LoginCubit, AuthState>(
+      'should emit [AuthState.loading, AuthState.success] when login succeeds',
+      build: () => LoginCubit(mockLoginUseCase),
+      setUp: () {
+        when(() => mockLoginUseCase(email: tEmail, password: tPassword))
+            .thenAnswer((_) async => const Right(tToken));
+      },
+      act: (cubit) => cubit.login(email: tEmail, password: tPassword),
+      expect: () => [
+        const AuthState.loading(),
+        const AuthState.success(tToken),
+      ],
+      verify: (_) {
+        verify(() => mockLoginUseCase(email: tEmail, password: tPassword)).called(1);
+      },
+    );
+
+    // 3. اختبار الفشل (Error State)
+    blocTest<LoginCubit, AuthState>(
+      'should emit [AuthState.loading, AuthState.failure] when login fails',
+      build: () => LoginCubit(mockLoginUseCase),
+      setUp: () {
+        when(() => mockLoginUseCase(email: tEmail, password: tPassword))
+            .thenAnswer((_) async => const Left(ApiErrorModel(message: 'Login failed')));
+      },
+      act: (cubit) => cubit.login(email: tEmail, password: tPassword),
+      expect: () => [
+        const AuthState.loading(),
+        const AuthState.failure('Login failed'),
+      ],
+      verify: (_) {
+        verify(() => mockLoginUseCase(email: tEmail, password: tPassword)).called(1);
+      },
+    );
+  });
+}
 ```
 
 ---
 
 ## 💎 Strict SOLID Principles & Best Performance Mandate
+
 
 
 Every file, class, and architectural layer created MUST adhere to SOLID principles and performance best practices:

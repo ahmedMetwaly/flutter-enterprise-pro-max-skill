@@ -34,6 +34,7 @@ void main(List<String> args) {
     'architecture/state-management.md',
     'architecture/performance.md',
     'architecture/offline-first.md',
+    'architecture/feature-documentation.md',
     'architecture/testing.md',
     'architecture/security.md',
   ];
@@ -68,6 +69,7 @@ void main(List<String> args) {
   final templates = [
     'templates/common/core/errors/failure.dart',
     'templates/common/core/network/result.dart',
+    'templates/common/core/network/typedef.dart',
     'templates/common/core/widgets/app_button.dart',
     'templates/common/core/widgets/app_text_field.dart',
     'templates/common/core/widgets/app_empty_state.dart',
@@ -89,7 +91,9 @@ void main(List<String> args) {
   print('\n6. ⚡ Checking CLI Tools:');
   check('bin/init.dart exists', File('bin/init.dart').existsSync());
   check('bin/generate.dart exists', File('bin/generate.dart').existsSync());
+  check('bin/doc.dart exists', File('bin/doc.dart').existsSync());
   check('bin/validate.dart exists', File('bin/validate.dart').existsSync());
+
 
   print('\n============================================================');
   print('📊 Validation Summary:');

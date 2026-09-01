@@ -370,13 +370,53 @@ void main() {
 }
 ''');
 
+  // 11. Feature PRD & Architecture Documentation
+  final docsPath = '$basePath/docs';
+  Directory(docsPath).createSync(recursive: true);
+  final dateStr = DateTime.now().toIso8601String().split('T').first;
+
+  File('$docsPath/${featureName}_prd_and_architecture.md').writeAsStringSync('''
+# 📋 Product Requirements Document (PRD) & Architecture Blueprint
+## Feature: $pascalName
+**Author**: Principal Product Manager & Lead Flutter Architect (10+ Years Experience)  
+**Date**: $dateStr  
+**Status**: Approved / Ready for Implementation  
+
+## 1. 🎯 Executive Summary & Product Vision
+* **Feature**: $pascalName
+* **Description**: $featureDesc
+* **Business Objective**: Deliver high-conversion, resilient, and enterprise-grade user experience with zero memory leaks and hardware-grade security.
+
+## 2. 👥 User Journeys & Acceptance Criteria
+```gherkin
+Feature: $pascalName Flow
+  Scenario: Successful Execution
+    Given the user is on the $pascalName screen
+    When the user enters valid data and submits
+    Then the system executes Get${pascalName}DetailsUseCase
+    And transitions state from Loading to Success
+```
+
+## 3. 🏛️ Technical Architecture Breakdown
+* **Domain Layer**: `${pascalName}Entity`, `${pascalName}Repository` contract, `Get${pascalName}DetailsUseCase`.
+* **Data Layer**: `${pascalName}RemoteDataSource`, `${pascalName}Model`, `${pascalName}RepositoryImpl`.
+* **Presentation Layer**: `${pascalName}Cubit`, `${pascalName}State`, `${pascalName}Screen`.
+
+## 4. 🛡️ Error & Failure Mapping
+* Maps `DioException` to pure Domain `Failure`s (`ServerFailure`, `NetworkFailure`).
+* UI renders localized messages via `context.l10n`.
+''');
+
   print('✅ Domain Layer created: entities, repos, usecases');
   print('✅ Data Layer created: remote data source, models, repo impl');
   print('✅ Presentation Layer created: cubit, state, screen, widgets');
   print('✅ Unit Tests created: $testBasePath');
   print('✅ Integration E2E Test created: $integrationBasePath/${featureName}_flow_test.dart');
+  print('✅ PRD & Technical Documentation created: $docsPath/${featureName}_prd_and_architecture.md');
   print('\n🎉 Feature "$featureName" successfully generated! Run:');
+  print('   dart bin/doc.dart $featureName (to export PDF)');
   print('   dart run build_runner build --delete-conflicting-outputs');
   print('   flutter test $testBasePath\n');
 }
+
 

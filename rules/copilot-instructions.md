@@ -13,7 +13,12 @@
   - Collect documentation / requirements & UI / Figma inputs.
   - Build 3 layers adhering strictly to SOLID and performance standards.
   - Generate full 3-tier tests (Unit, Widget, and E2E Integration tests).
+- **Feature PRD & PDF Documentation Engine (`bin/doc.dart`)**:
+  - When asked to document a feature or generate a PRD: Act as a 10-Year Senior PM + Software Architect.
+  - Generate executive PRD & technical architecture blueprint following the 7-section scheme.
+  - Save Markdown, HTML, and export PDF to `lib/features/<feature>/docs/<feature>_prd_and_architecture.pdf`.
 - **State Management & Testing**: Cubit or Riverpod with UseCase injection. Unit test using `mocktail` and `bloc_test` (or `ProviderContainer` for Riverpod).
+
 - **Hardware Security & Privacy**: `TokenStorage` with hardware options (`encryptedSharedPreferences: true`, `first_unlock`), `PrivacyScreenOverlay` on backgrounding.
 - **Core Atoms**: Standardize on `AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` in `core/widgets/`.
 - **Theme**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.

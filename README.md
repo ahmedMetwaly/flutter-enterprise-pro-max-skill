@@ -25,22 +25,24 @@
 3. [Domain Error Isolation Principle](#-domain-error-isolation-principle)
 4. [Context-Aware Localization Standard](#-context-aware-localization-standard)
 5. [Feature Generator Engine (`add feature <name>`)](#-feature-generator-engine-add-feature-name)
-6. [3-Tier Testing Pyramid & Standard](#-3-tier-testing-pyramid--standard)
-7. [Universal Installation Matrix](#-universal-installation-matrix)
+6. [Feature PRD & PDF Documentation Engine (`bin/doc.dart`)](#-feature-prd--pdf-documentation-engine-bindocdart)
+7. [3-Tier Testing Pyramid & Standard](#-3-tier-testing-pyramid--standard)
+8. [Universal Installation Matrix](#-universal-installation-matrix)
    - [Google Antigravity / Gemini CLI](#1-google-antigravity--gemini-cli)
    - [Cursor IDE](#2-cursor-ide)
    - [Claude Code](#3-claude-code)
    - [Windsurf / Cascade](#4-windsurf--cascade)
    - [GitHub Copilot](#5-github-copilot)
    - [Standalone Terminal CLI](#6-standalone-terminal-cli-no-ai-required)
-8. [UI/UX Pro Max: Category Design Tokens](#-uiux-pro-max-category-design-tokens)
-9. [Platform-Adaptive & Responsive Architecture](#-platform-adaptive--responsive-architecture)
-10. [Project Directory Layout](#-project-directory-layout)
-11. [Interactive Prompts & Usage Examples](#-interactive-prompts--usage-examples)
-12. [CLI Tools & Commands](#-cli-tools--commands)
-13. [Automated Repository Validation](#-automated-repository-validation)
-14. [Troubleshooting & FAQ](#-troubleshooting--faq)
-15. [License](#-license)
+9. [UI/UX Pro Max: Category Design Tokens](#-uiux-pro-max-category-design-tokens)
+10. [Platform-Adaptive & Responsive Architecture](#-platform-adaptive--responsive-architecture)
+11. [Project Directory Layout](#-project-directory-layout)
+12. [Interactive Prompts & Usage Examples](#-interactive-prompts--usage-examples)
+13. [CLI Tools & Commands](#-cli-tools--commands)
+14. [Automated Repository Validation](#-automated-repository-validation)
+15. [Troubleshooting & FAQ](#-troubleshooting--faq)
+16. [License](#-license)
+
 
 ---
 
@@ -199,7 +201,37 @@ When you ask the AI Agent to `add feature <name>` or run `dart bin/generate.dart
 
 ---
 
+## 📑 Feature PRD & PDF Documentation Engine (`bin/doc.dart`)
+
+When you ask the AI Agent to `"document feature <name>"`, `"generate PRD for <name>"`, or `"اعملى documentation <name>"` (or run `dart bin/doc.dart <name>`):
+
+The AI Agent assumes the role of a **10-Year Senior Product Manager + Principal Software Architect**, generating an executive Product Requirements Document (PRD) and Technical Blueprint adhering to the exact project scheme:
+
+1. **Executive Summary & KPIs**: Problem statement, target personas, KPIs (completion rate > 98.5%, TTI < 600ms, crash-free > 99.9%).
+2. **Gherkin User Stories**: Given / When / Then acceptance criteria covering happy path and failure/offline scenarios.
+3. **3-Layer Code Architecture Walkthrough**: Domain (`entities`, `repos`, `usecases`), Data (`data_sources`, `models`, `repos`), Presentation (`cubits`, `states`, `screens`, `widgets`).
+4. **API Contracts & JSON Schemas**: Headers (`AuthInterceptor`, `X-Idempotency-Key`), Request and 200 OK / 401 / 500 error schemas.
+5. **Domain Failure Mapping Pipeline**: Data exceptions mapped to pure domain `Failure`s.
+6. **Non-Functional Requirements & Security**: Hardware secure storage, privacy screen overlay, 60/120fps rendering, zero memory leaks.
+7. **3-Tier Testing Matrix**: Complete Unit, Widget, and E2E QA plan.
+
+### 📕 Generated Artifacts & Automated PDF Export:
+```
+lib/features/<feature_name>/docs/
+├── <feature_name>_prd_and_architecture.md   # Markdown PRD & Blueprint
+├── <feature_name>_prd_and_architecture.html # Formatted Printable HTML
+└── <feature_name>_prd_and_architecture.pdf  # Auto-generated PDF Document
+```
+
+```bash
+# Generate documentation and PDF blueprint for any feature
+dart bin/doc.dart auth
+```
+
+---
+
 ## 🧪 3-Tier Testing Pyramid & Standard
+
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';

@@ -16,7 +16,12 @@
   - Ask for user stories/documentation and UI/Figma links.
   - Scaffold 3 layers under strict SOLID principles.
   - Generate full 3-tier tests (Unit, Widget, and E2E Integration tests).
+- **Feature PRD & PDF Documentation Engine (`bin/doc.dart`)**:
+  - When asked to document a feature or generate a PRD: Act as a 10-Year Senior PM + Software Architect.
+  - Generate executive PRD & technical blueprint following the 7-section scheme.
+  - Save Markdown, HTML, and export PDF to `lib/features/<feature>/docs/<feature>_prd_and_architecture.pdf`.
 - **State Management**: Cubit or Riverpod with immutable states and UseCase dependency injection.
+
 - **Unit Testing**: Standardized unit tests with `mocktail` & `bloc_test` (or `ProviderContainer` overrides for Riverpod).
 - **Security & Privacy**: Hardware-encrypted `TokenStorage` (`encryptedSharedPreferences: true`, `first_unlock`), `PrivacyScreenOverlay` on backgrounding.
 - **Core Atoms**: `AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` in `core/widgets/`.

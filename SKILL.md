@@ -34,8 +34,10 @@ P4 — Style & Convention       (Widget classes in separate files, strict CardTh
 - When user asks to:
   - `"init project"`, `"create flutter app"`, `"scaffold new project"`
   - `"add feature <name>"`, `"generate feature <name>"`, `"scaffold clean architecture feature"`
+  - `"document feature <name>"`, `"generate PRD for <name>"`, `"اعملى documentation <name>"`
   - `"setup flavors"`, `"configure injectable"`, `"setup routes"`, `"setup localization"`, `"setup offline sync"`
   - `"design responsive screen"`, `"make layout adaptive for tablet/desktop"`, `"apply UI/UX design intelligence"`
+
 
 ---
 
@@ -235,9 +237,29 @@ Whenever the user asks to add or generate a feature:
    - **Widget Tests**: Component and screen rendering tests (`test/features/<feature>/presentation/...`).
    - **Integration E2E Tests**: Full user flow tests (`integration_test/<feature>_flow_test.dart`).
 
+## 6. 📑 Senior Product Manager (10+ Yrs) Feature Documentation & PDF Engine
+
+Whenever the user asks to `"document feature <name>"`, `"generate PRD for <name>"`, or `"اعملى documentation <name>"`:
+
+The AI Agent acts as a **10-Year Senior Product Manager + Principal Software Architect**, generating an executive Product Requirements Document (PRD) & Technical Architecture Blueprint following the project's exact scheme:
+
+1. **Executive Summary & Business KPIs**: Problem statement, target personas, conversion and TTI benchmarks.
+2. **Gherkin User Stories**: Given / When / Then acceptance criteria covering happy path and failure/offline scenarios.
+3. **3-Layer Code Architecture Walkthrough**: Domain (Entities, UseCases, Repos), Data (DataSources, Models, Mappers, Repos), Presentation (Cubits, Freezed States, Atoms).
+4. **API Contracts & Schema**: Endpoint URLs, Headers (`AuthInterceptor`, `X-Idempotency-Key`), JSON Request & Response contracts.
+5. **Domain Failure Mapping Table**: Mapping HTTP status codes & network exceptions to pure domain `Failure`s and `context.l10n` strings.
+6. **Non-Functional Requirements**: Hardware secure storage, privacy screen overlay, 60/120fps rendering, zero memory leaks.
+7. **3-Tier Testing Matrix**: Unit, Widget, and E2E integration test breakdown.
+
+### Storage & Automatic PDF Generation:
+* **Markdown PRD**: Saved in `lib/features/<feature_name>/docs/<feature_name>_prd_and_architecture.md`.
+* **Printable HTML**: Saved in `lib/features/<feature_name>/docs/<feature_name>_prd_and_architecture.html`.
+* **PDF Blueprint**: Exported to `lib/features/<feature_name>/docs/<feature_name>_prd_and_architecture.pdf` via `dart bin/doc.dart <feature_name>`.
+
 ---
 
-## 6. 🧪 Comprehensive Unit Testing Standard
+## 7. 🧪 Comprehensive Unit Testing Standard
+
 
 ```dart
 import 'package:flutter_test/flutter_test.dart';
@@ -312,7 +334,7 @@ void main() {
 
 ---
 
-## 7. 🔒 Hardware-Level Security & Privacy Protection
+## 8. 🔒 Hardware-Level Security & Privacy Protection
 
 1. **Hardware-Encrypted Secure Storage**:
    ```dart
@@ -326,7 +348,7 @@ void main() {
 
 ---
 
-## 8. 🌍 Context-Aware Localization Standard
+## 9. 🌍 Context-Aware Localization Standard
 
 To avoid excessive or nonsensical abstractions, the AI Agent MUST distinguish between user-facing text and developer/system text:
 
@@ -346,7 +368,7 @@ To avoid excessive or nonsensical abstractions, the AI Agent MUST distinguish be
 
 ---
 
-## 9. 🎨 UI/UX Pro Max & Strict Theme Standards
+## 10. 🎨 UI/UX Pro Max & Strict Theme Standards
 
 > [!IMPORTANT]
 > **Strict Material 3 ThemeData Rule**:
@@ -366,7 +388,8 @@ To avoid excessive or nonsensical abstractions, the AI Agent MUST distinguish be
 
 ---
 
-## 10. 🧙‍♂️ Interactive Initializer Questionnaire (MANDATORY)
+## 11. 🧙‍♂️ Interactive Initializer Questionnaire (MANDATORY)
+
 
 Whenever the user asks to `"init project"` or initialize an app, the Agent **MUST STOP AND PRESENT** the questionnaire:
 

@@ -60,7 +60,23 @@ When the user asks to add/generate a feature:
 
 ---
 
-## 5. 💎 SOLID Principles & True Performance Engineering
+## 5. 📑 Feature PRD & PDF Documentation Engine (`bin/doc.dart`)
+When the user asks to `"document feature <name>"`, `"generate PRD for <name>"`, or `"اعملى documentation <name>"`:
+- Act as a **10-Year Senior Product Manager + Principal Software Architect**.
+- Generate an executive PRD following the project's exact scheme:
+  - 1. Executive Summary & KPIs
+  - 2. Gherkin User Stories & Acceptance Criteria
+  - 3. 3-Layer Code Architecture Walkthrough
+  - 4. API Contracts & JSON Request/Response Schemas
+  - 5. Domain Failure Mapping Pipeline
+  - 6. Non-Functional Requirements & Security
+  - 7. 3-Tier Testing Matrix
+- Save Markdown in `lib/features/<feature>/docs/<feature>_prd_and_architecture.md`, HTML in `...html`, and export PDF to `...pdf` via `dart bin/doc.dart <feature>`.
+
+
+---
+
+## 6. 💎 SOLID Principles & True Performance Engineering
 - **SRP**: 1 UseCase = 1 action; 1 Widget class per file; 1 Cubit = 1 presentation flow.
 - **OCP/DIP**: Depend on abstract contracts (`Repository`, `DataSource`), wired via DI.
 - **Performance**:
@@ -71,7 +87,7 @@ When the user asks to add/generate a feature:
 
 ---
 
-## 6. 🌐 Network & Hardware-Level Security
+## 7. 🌐 Network & Hardware-Level Security
 - **Config vs Secret**: Never embed private keys in client code; `--dart-define` is for configuration, not secrets.
 - **TokenStorage**: `FlutterSecureStorage` with `AndroidOptions(encryptedSharedPreferences: true)` and `IOSOptions(accessibility: KeychainAccessibility.first_unlock)`.
 - **Privacy**: `PrivacyScreenOverlay` on backgrounding in sensitive applications.
@@ -79,7 +95,7 @@ When the user asks to add/generate a feature:
 
 ---
 
-## 7. 🎨 Design System Atoms (`core/widgets/`)
+## 8. 🎨 Design System Atoms (`core/widgets/`)
 Always use standard core atoms:
 - `AppButton` (with built-in loading indicator & disabled states).
 - `AppTextField` (with validation, focus borders, password toggle).
@@ -89,7 +105,7 @@ Always use standard core atoms:
 
 ---
 
-## 8. 🌍 Context-Aware Localization Standard
+## 9. 🌍 Context-Aware Localization Standard
 - **User-Facing UI Strings** (`Text(...)`, dialog titles, user toasts, validation errors shown to the user): **MUST NEVER be hardcoded**. Always use `context.l10n.<key>`.
 - **Infrastructure & Developer Strings** (DO NOT localize — use plain English string literals):
   - **Internal Logs**: `debugPrint('Auth token refreshed')`, `logger.e('...')`.
@@ -99,15 +115,16 @@ Always use standard core atoms:
 
 ---
 
-## 9. 📐 Strict ThemeData Rule (CardThemeData ONLY)
+## 10. 📐 Strict ThemeData Rule (CardThemeData ONLY)
 - In `ThemeData`, **ALWAYS use `CardThemeData`** (`cardTheme: const CardThemeData(...)`).
 - **NEVER use `CardTheme(...)`** inside `ThemeData(cardTheme: ...)` as `CardTheme` is a widget class in Flutter.
 
 ---
 
-## 10. ⚡ Interactive Initializer & Automated Runner
+## 11. ⚡ Interactive Initializer & Automated Runner
 - ALWAYS ask the interactive questions first on `init project`.
 - AUTOMATICALLY execute:
   1. `flutter pub get`
   2. `dart run build_runner build --delete-conflicting-outputs` (if codegen is configured)
   3. `flutter analyze`
+

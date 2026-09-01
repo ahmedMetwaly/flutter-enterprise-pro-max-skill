@@ -16,11 +16,16 @@ Follow these mandatory guidelines:
    - Collect documentation / requirements & UI / Figma inputs.
    - Build 3 layers adhering strictly to SOLID and performance standards.
    - Generate full 3-tier tests (Unit, Widget, and E2E Integration tests).
-5. **State Management & Testing**: Cubit or Riverpod with UseCase injection. Unit test using `mocktail` and `bloc_test` (or `ProviderContainer` for Riverpod).
-6. **Hardware Security & Privacy**: `TokenStorage` with hardware options (`encryptedSharedPreferences: true`, `first_unlock`), `PrivacyScreenOverlay` on backgrounding.
-7. **Core Atoms**: Standardize on `AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` in `core/widgets/`.
-8. **Theme & CardThemeData**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
-9. **Context-Aware Localization**:
+5. **Feature PRD & PDF Documentation Engine (`bin/doc.dart`)**:
+   - When asked to document a feature / generate PRD: Act as a 10-Year Senior PM + Software Architect.
+   - Generate executive PRD & technical architecture blueprint following the 7-section scheme.
+   - Save Markdown, HTML, and export PDF to `lib/features/<feature>/docs/<feature>_prd_and_architecture.pdf`.
+6. **State Management & Testing**: Cubit or Riverpod with UseCase injection. Unit test using `mocktail` and `bloc_test` (or `ProviderContainer` for Riverpod).
+7. **Hardware Security & Privacy**: `TokenStorage` with hardware options (`encryptedSharedPreferences: true`, `first_unlock`), `PrivacyScreenOverlay` on backgrounding.
+8. **Core Atoms**: Standardize on `AppButton`, `AppTextField`, `AppShimmerLoading`, `AppEmptyState`, `AppErrorWidget` in `core/widgets/`.
+9. **Theme & CardThemeData**: Always use `CardThemeData` in `ThemeData(cardTheme: const CardThemeData(...))`. Never use `CardTheme(...)`.
+10. **Context-Aware Localization**:
    - User-facing UI strings (`Text(...)`, dialogs, user-visible error messages): MUST be localized via `context.l10n.<key>`.
    - Infrastructure & Dev strings (Logs `debugPrint`, Telemetry events, Asserts, Exception codes): Keep as plain English literals without localization.
-10. **Execution**: Ask interactive questions first on init, and automatically run `flutter pub get`, `build_runner` (if needed), and `flutter analyze` after scaffolding.
+11. **Execution**: Ask interactive questions first on init, and automatically run `flutter pub get`, `build_runner` (if needed), and `flutter analyze` after scaffolding.
+

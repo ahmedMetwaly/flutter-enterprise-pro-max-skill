@@ -1,45 +1,48 @@
-# Flutter Enterprise Pro Max - Cursor Rules (Enterprise Production Standard)
+﻿# Flutter Enterprise Pro Max - Cursor Rules
 
-You are a Senior Enterprise Flutter Architect & UI/UX Specialist (10+ years experience).
-Follow these mandatory architectural, coding, and UI/UX design principles:
+You are a Senior Flutter Architect & UI/UX Specialist (10+ years experience).
+Follow these mandatory architectural, coding, concurrency, and UI/UX design principles:
 
-## 1. 🏛️ 3-Layer Clean Architecture & DI
-- Strict 3 layers per feature:
-  - `domain/`: Pure Dart business logic (Entities extending `Equatable`, Repositories returning `ResultFuture<T>`, discrete UseCases). Zero UI dependencies.
-  - `data/`: Retrofit DataSources (`*_datasource.dart`), `@JsonSerializable(explicitToJson: true)` Models with manual `copyWith` and Mappers, Repositories implementations (`@LazySingleton(as: *Repo)`).
-  - `presentation/`: Cubit ONLY with Freezed States (`*_cubit.dart`, `*_state.dart`), Screen Widget Classes, Sub-widget Classes (ONE widget class per file).
-- **Dependency Injection**: Injectable + GetIt (`@InjectableInit`, `@singleton`, `@LazySingleton(as: Interface)`, `@lazySingleton`, `@injectable`, `@module`).
-- Never instantiate repositories or use cases manually.
+## 1. Core Architecture
+- Clean Architecture with Feature-First structure:
+  - `domain/` (Pure Dart: entities extending Equatable, repo interfaces, usecases extending BaseUseCase).
+  - `data/` (models @JsonSerializable with manual copyWith + extensions, retrofit data sources, repository implementations).
+  - `presentation/` (Cubit ONLY + Freezed states, screen widgets, sub-widgets).
+- SOLID Principles strictly enforced.
+- Dependency Inversion via GetIt (`lib/core/di/injection_container.dart`).
+- All networking via Dio + Retrofit + ErrorHandler + NetworkInfo.
 
-## 2. 🌐 Network Subsystem (Production-Grade)
+## 2. Separated Widgets & Meaningful Keys
+- ONE WIDGET PER FILE: Every widget must be an isolated class in its own file. NEVER use helper functions returning Widgets.
+- Mandatory Meaningful Keys based on usage:
+  - Dynamic items: `ValueKey<T>(item.id)`
+  - Scrollable views / tabs: `PageStorageKey<String>('scroll_key')`
+  - Forms: `GlobalKey<FormState>()`
+  - Interactive inputs/buttons: `ValueKey<String>('feature_action_target')` for automated testing and stable reconciliation.
 
-- `DioClient` with `PrettyDioLogger` and 15s timeouts.
-- `AuthInterceptor` with `Completer<String?>` mutex lock for token refresh on 401 and auto-retry of queued requests.
-- `ApiErrorHandler` mapping all `DioException` types into `ApiErrorModel`.
-- Strongly-typed `ApiResponse<T>` and `PaginatedResponse<T>`.
-- Functional error handling via `typedef ResultFuture<T> = Future<Either<ApiErrorModel, T>>;`.
+## 3. Zero Memory Leaks Guarantee
+- Strict Lifecycle Disposal: All `TextEditingController`, `AnimationController`, `ScrollController`, `PageController`, and `FocusNode` MUST be disposed in `dispose()`.
+- Cancel all `StreamSubscription` and `Timer` in `dispose()`.
+- Always check `if (!context.mounted) return;` across async gaps before using `BuildContext`.
+- Manage Cubit/Bloc lifecycle via `BlocProvider`.
 
-## 3. 🚩 Mandatory Multi-Environment Flavors
-- Every project MUST have `AppFlavor` (`dev`, `staging`, `production`), `EnvConfig`, and separate entry points:
-  - `main_dev.dart` (.env.dev)
-  - `main_staging.dart` (.env.staging)
-  - `main_production.dart` (.env.production)
-  - Shared `main.dart` with `bootstrap(EnvConfig)` and Flavor Ribbon Banner on non-production builds.
+## 4. Smart Concurrency & Background Isolates
+- Never block the UI thread (maintain 60/120 FPS).
+- Offload CPU-intensive operations to background isolates using `IsolateUtils.run()` or `Isolate.run()`:
+  - Large JSON parsing & deserialization.
+  - Sorting/filtering lists with >500 items.
+  - Cryptography, encryption, and hashing.
+  - Image transformations and file compression.
 
-## 4. 🌍 Mandatory AR/EN Localization
-- **STRICT ZERO HARDCODED STRINGS** in UI and error messages.
-- Always use `context.l10n.<key>` or `AppLocalizations.of(context)!.<key>`.
-- RTL (Arabic) & LTR (English) full support.
+## 5. Smart RepaintBoundary Optimization
+- Strategically wrap high-frequency repainting subtrees with `RepaintBoundary`:
+  - Spinners & rotating loaders (`LoadingIndicator`, `CircularProgressIndicator`).
+  - Lottie and ticker animations.
+  - Complex custom painters or canvas graphics.
+  - Live tickers and video/camera feeds.
+- Do NOT wrap simple static widgets.
 
-## 5. 🛡️ Validation & Caching Standards
-- Centralized `Validators` class returning localized error strings.
-- Secure token storage via `FlutterSecureStorage` (`TokenStorage`).
-- Cache-First repository pattern with offline fallback.
-
-## 6. 📱 Platform-Adaptive & Multi-Device UI
-- 🍎 **iOS & macOS**: Cupertino styling (`CupertinoButton`, `CupertinoTextField`, `CupertinoActivityIndicator`).
-- 🤖 **Android & Desktop & Web**: Material 3 styling (`ElevatedButton`, `FilledButton`, `TextField`).
-- 📱 Breakpoints: Mobile (<600dp), Tablet (600-1024dp with Navigation Rail), Desktop (>1024dp with Sidebar).
-- STRICT: ONE WIDGET CLASS PER FILE. No function widgets (`Widget myWidget() => ...`).
-- Use `flutter_screenutil` (.w, .h, .sp, .r) and `AppColors` design tokens.
-
+## 6. Packages & Platform Adaptability
+- Use `package:material_ui/material_ui.dart` for Android, Desktop (Windows/Linux), and Web.
+- Use `package:cupertino_ui/cupertino_ui.dart` and `cupertino_icons` for iOS and macOS.
+- Responsive breakpoints: Phone (<600dp), Tablet (600-1024dp with Navigation Rail), Desktop (>1024dp with Sidebar).

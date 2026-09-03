@@ -1,9 +1,11 @@
-﻿import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+﻿import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_enterprise_template/core/adaptive/platform_utils.dart';
 import 'package:flutter_enterprise_template/core/theme/app_colors.dart';
 
+/// Platform-Adaptive Text Field implementing Cupertino UI on iOS/macOS
+/// and Material UI on Android/Desktop/Web.
 class AdaptiveTextField extends StatelessWidget {
   const AdaptiveTextField({
     super.key,
@@ -52,6 +54,7 @@ class AdaptiveTextField extends StatelessWidget {
             SizedBox(height: 6.h),
           ],
           CupertinoTextField(
+            key: const ValueKey('adaptive_text_field_cupertino'),
             controller: controller,
             placeholder: hintText,
             obscureText: obscureText,
@@ -77,6 +80,7 @@ class AdaptiveTextField extends StatelessWidget {
     }
 
     return TextFormField(
+      key: const ValueKey('adaptive_text_field_material'),
       controller: controller,
       obscureText: obscureText,
       maxLines: maxLines,

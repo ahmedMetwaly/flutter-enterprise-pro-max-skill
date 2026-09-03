@@ -1,16 +1,9 @@
-# GitHub Copilot Custom Instructions for Flutter Enterprise Pro Max
+﻿# GitHub Copilot Custom Instructions for Flutter Enterprise Pro Max
 
-- **Architecture**: 3-Layer Clean Architecture (Domain, Data, Presentation).
-- **Dependency Injection**: Injectable with GetIt. Never manually construct repositories or usecases.
-- **State Management**: Cubit only. States must use `@freezed`.
-- **Data Layer**: Retrofit for DataSources, `@JsonSerializable(explicitToJson: true)` with manual `copyWith` and Model-to-Entity mappers.
-- **Domain Layer**: Pure Entities (`Equatable`), abstract Repositories (`ResultFuture<T>`), single-responsibility UseCases.
-- **Flavors**: Mandatory dev, staging, production configuration.
-- **Localization**: Mandatory AR/EN with zero hardcoded strings. Always use `context.l10n.<key>`.
-- **Platform UI**: Material 3 for Android/Desktop/Web, Cupertino for iOS/macOS.
-- **Responsiveness**: ResponsiveLayout (<600 phone, 600-1024 tablet, >1024 desktop).
-- **Widgets**: Always use Widget classes in separate files. Strictly NO widget helper methods.
-- **Networking**: Enterprise production pattern (AuthInterceptor, ApiErrorHandler, ApiResponse, PaginatedResponse).
-
-- **ScreenUtil**: Use `flutter_screenutil` for sizes (.w, .h, .sp, .r).
-
+- Architecture: Clean Architecture + Feature-First.
+- One widget per file as a class. Never generate widget helper methods.
+- Assign meaningful Keys (ValueKey for dynamic items, PageStorageKey for scrollables, GlobalKey for forms).
+- Zero memory leaks: Always dispose all controllers/nodes and cancel streams/timers in dispose(). Check if (!context.mounted) return;
+- Concurrency: Offload heavy computation to Isolate.run() to prevent UI jank.
+- Performance: Use RepaintBoundary on animations, loaders, and custom painters.
+- Packages: Use material_ui for Android/Desktop/Web and cupertino_ui for iOS/macOS.

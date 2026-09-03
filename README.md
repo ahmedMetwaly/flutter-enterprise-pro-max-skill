@@ -1,19 +1,17 @@
-<div align="center">
+﻿<div align="center">
 
 # 🚀 Flutter Enterprise Pro Max Skill
-### Universal AI Agent Skill & Enterprise Architecture Toolkit for Flutter
-*Modeled after Senior Enterprise Production Architecture*
-
+### The Universal AI Agent Skill & Enterprise Architecture Toolkit for Flutter
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.19+-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
 [![Dart](https://img.shields.io/badge/Dart-3.3+-0175C2?logo=dart&logoColor=white)](https://dart.dev)
-[![Architecture](https://img.shields.io/badge/Architecture-3--Layer%20Clean%20%2B%20Injectable-brightgreen)](https://github.com)
-[![SOLID](https://img.shields.io/badge/Principles-SOLID%20%26%20High%20Performance-blue)](https://github.com)
-[![Localization](https://img.shields.io/badge/Localization-Mandatory%20AR%2FEN-green)](https://github.com)
-[![Flavors](https://img.shields.io/badge/Flavors-Dev%20%7C%20Staging%20%7C%20Prod-orange)](https://github.com)
+[![Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20TDD-brightgreen)](https://github.com)
+[![SOLID](https://img.shields.io/badge/Principles-SOLID%20%26%20Zero%20Leaks-blue)](https://github.com)
+[![Platform](https://img.shields.io/badge/Packages-material__ui%20%7C%20cupertino__ui-orange)](https://github.com)
+[![UI/UX](https://img.shields.io/badge/Design-UI%2FUX%20Pro%20Max-ff69b4)](https://github.com)
 [![License](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
-*Turn any AI Agent (Antigravity, Cursor, Claude Code, Windsurf, Copilot) or Terminal into a **10-Year Senior Enterprise Flutter Architect & UI/UX Specialist**.*
+*Turn any AI Agent (Antigravity, Cursor, Claude Code, Windsurf, Copilot) or Terminal into a **10-Year Senior Flutter Architect & UI/UX Specialist**.*
 
 </div>
 
@@ -21,60 +19,89 @@
 
 ## 📑 Table of Contents
 1. [Overview](#-overview)
-2. [Universal Installation Matrix](#-universal-installation-matrix)
+2. [Core Engineering & Performance Pillars](#-core-engineering--performance-pillars)
+   - [Separated Widgets & Meaningful Keys](#1-separated-widgets--meaningful-keys-by-usage)
+   - [Zero Memory Leaks Guarantee](#2-zero-memory-leaks-guarantee)
+   - [Smart Background Concurrency (Isolates)](#3-smart-background-concurrency-isolates)
+   - [Smart RepaintBoundary Optimization](#4-smart-repaintboundary-optimization)
+   - [Packages: material_ui & cupertino_ui](#5-platform-packages-material_ui--cupertino_ui)
+3. [Universal Installation Matrix](#-universal-installation-matrix)
    - [Google Antigravity / Gemini CLI](#1-google-antigravity--gemini-cli)
    - [Cursor IDE](#2-cursor-ide)
    - [Claude Code](#3-claude-code)
    - [Windsurf / Cascade](#4-windsurf--cascade)
    - [GitHub Copilot](#5-github-copilot)
    - [Standalone Terminal CLI](#6-standalone-terminal-cli-no-ai-required)
-3. [UI/UX Pro Max: Category Design Tokens](#-uiux-pro-max-category-design-tokens)
-4. [Platform-Adaptive & Responsive Architecture](#-platform-adaptive--responsive-architecture)
-5. [Project Directory Layout](#-project-directory-layout)
-6. [Interactive Prompts & Usage Examples](#-interactive-prompts--usage-examples)
-7. [Quickstart Commands](#-quickstart-commands)
-8. [Troubleshooting & FAQ](#-troubleshooting--faq)
-9. [License](#-license)
+4. [UI/UX Pro Max: Category Design Tokens](#-uiux-pro-max-category-design-tokens)
+5. [Platform-Adaptive & Responsive Architecture](#-platform-adaptive--responsive-architecture)
+6. [Project Directory Layout](#-project-directory-layout)
+7. [Troubleshooting & FAQ](#-troubleshooting--faq)
+8. [License](#-license)
 
 ---
 
 ## 📖 Overview
 
-**Flutter Enterprise Pro Max** is a complete, production-grade AI Agent Skill and scaffolding framework engineered to enforce enterprise engineering standards:
-* **🏛️ 3-Layer Clean Architecture & SOLID Principles**: Pure Dart Domain Layer (`entities`, `repositories`, `usecases`), isolated Data Layer (`datasources`, `models`, `repositories`), and Presentation Layer (`cubits`, `screens`, `widgets`).
-* **💉 Injectable + GetIt Dependency Injection**: Inversion of control using `@singleton`, `@LazySingleton(as: Interface)`, `@injectable`, and `@module`.
-* **🌐 Production Network Subsystem **:
-  - `DioClient` with `PrettyDioLogger` and timeout settings.
-  - `AuthInterceptor` with thread-safe token refresh mutex (`Completer`), token storage, and automatic retry of queued requests.
-  - `ApiErrorHandler` mapping Dio errors to structured `ApiErrorModel`.
-  - Generic `ApiResponse<T>` and `PaginatedResponse<T>`.
-  - `ResultFuture<T> = Future<Either<ApiErrorModel, T>>` functional error paradigm.
-* **🚩 Mandatory Multi-Environment Flavors**:
-  - `dev`, `staging`, and `production` with `.env.*` support, `AppFlavor`, `EnvConfig`, and visual ribbon banners on non-production builds.
-* **🌍 Mandatory AR/EN Localization**:
-  - **STRICT ZERO HARDCODED STRINGS** in UI and error messages.
-  - Arabic (RTL) & English (LTR) ready with `AppLocalizations` and context extensions.
-* **📦 FVM (Flutter Version Management)**:
-  - Interactive prompt to pin a custom SDK version or use machine default.
-* **🛡️ Enterprise Validation, Caching & Error Handling**:
-  - Composable `Validators` with localized errors.
-  - Secure token storage (`FlutterSecureStorage`) & session caching (`SharedPreferences`).
-* **📱 Platform-Adaptive UI**: Native **Material 3** for Android/Desktop/Web & Native **Cupertino (HIG)** for iOS/macOS.
-* **🖥️ Multi-Device Responsiveness**: Automatic layout adaptation for **Phones** (< 600dp), **Tablets** (600dp - 1024dp with Navigation Rail), and **Desktop / Large Screens** (> 1024dp with Sidebar).
-* **🎨 UI/UX Pro Max Design Intelligence**: 7 pre-built psychological design palettes (Fintech, E-Commerce, Healthcare, Food Delivery, SaaS, Fitness, EdTech).
-* **🔥 Firebase & Fastlane**: Flavor-aware Firebase setup with Crashlytics plugged into `BlocObserver`, plus Android/iOS Fastlane deployment pipelines.
+**Flutter Enterprise Pro Max** is an enterprise-grade AI Agent Skill and scaffolding framework engineered to enforce the highest industry standards:
+* **🏛️ Clean Architecture & SOLID Principles**: Pure Dart Domain Layer, isolated Data Layer (Retrofit + JsonSerializable), and Cubit/Freezed Presentation Layer.
+* **📦 Enterprise UI Packages**: Utilizes **`material_ui`** for Android/Desktop/Web and **`cupertino_ui`** for iOS/macOS.
+* **🧩 Separated Widgets with Explicit Keys**: Every widget in its own file as a class with purposeful keys (`ValueKey`, `PageStorageKey`, `GlobalKey`).
+* **🛡️ Zero Memory Leaks Guarantee**: Strict lifecycle management and disposal for controllers, nodes, subscriptions, and timers.
+* **⚡ Smart Concurrency & Isolates**: Heavy computations offloaded to background threads using `IsolateUtils.run()` to maintain 60/120 FPS.
+* **🎯 Smart RepaintBoundary Optimization**: High-frequency repainting animations and loaders isolated to prevent cascading redraws.
+* **📱 Multi-Device Responsiveness**: Smart layout adaptation for **Phones** (< 600dp), **Tablets** (600dp - 1024dp with Navigation Rail), and **Desktop / Large Screens** (> 1024dp with Sidebar).
+* **🧪 Test-Driven Development (TDD)**: Unit testing suite with `mocktail` and `bloc_test`.
+* **🎨 UI/UX Pro Max Design Intelligence**: 7 pre-built psychological design palettes.
+
+---
+
+## ⚡ Core Engineering & Performance Pillars
+
+### 1. Separated Widgets & Meaningful Keys by Usage
+- **One Widget Per File**: Every UI component is built as a separate `StatelessWidget` or `StatefulWidget` class. **Zero function widgets** (`Widget myButton() => ...`).
+- **Targeted Keys**:
+  - `ValueKey<T>(item.id)`: Mandatory for dynamic list/grid items.
+  - `PageStorageKey<String>('scroll_key')`: Mandatory for scrollable lists/tabs to preserve scroll position across tab switches.
+  - `GlobalKey<FormState>()`: Reserved strictly for Form validation.
+  - `ValueKey<String>('feature_action')`: For buttons and interactive inputs for automated testing and element reconciliation.
+
+### 2. Zero Memory Leaks Guarantee
+- **Mandatory Controller Disposal**: Every `TextEditingController`, `AnimationController`, `ScrollController`, `PageController`, and `FocusNode` created in a `StatefulWidget` is disposed inside `dispose()`.
+- **Stream & Timer Management**: All `StreamSubscription` and `Timer` instances are cancelled in `dispose()`.
+- **Async Context Protection**: Always verify `if (!context.mounted) return;` across async gaps before using `BuildContext`.
+
+### 3. Smart Background Concurrency (Isolates)
+- **UI Thread Protection**: The main isolate is kept free of CPU-heavy workloads to prevent dropped frames (guaranteeing 60/120 FPS).
+- **Automated Isolate Offloading**: Heavy JSON parsing, cryptographic operations, image processing, and large list filtering are run via `IsolateUtils.run()`:
+  ```dart
+  final filteredData = await IsolateUtils.run(
+    (items) => items.where((e) => e.matches(query)).toList(),
+    largeItemList,
+  );
+  ```
+
+### 4. Smart RepaintBoundary Optimization
+- **Isolate Animations**: Elements that tick or repaint frequently (rotating spinners, Lottie animations, custom painters, video feeds) are isolated with `RepaintBoundary` so they do not trigger repainting of the parent screen:
+  ```dart
+  RepaintBoundary(
+    child: CircularProgressIndicator(...),
+  )
+  ```
+- **Selective Application**: Plain static widgets are not wrapped to avoid texture allocation overhead.
+
+### 5. Platform Packages: `material_ui` & `cupertino_ui`
+- **Android, Desktop & Web**: Powered by `package:material_ui/material_ui.dart`.
+- **iOS & macOS**: Powered by `package:cupertino_ui/cupertino_ui.dart` and `cupertino_icons`.
 
 ---
 
 ## 🤖 Universal Installation Matrix
 
-Install this skill once, and use it across any AI Assistant, Terminal, or IDE.
-
 ---
 
 ### 1️⃣ Google Antigravity / Gemini CLI
 
-#### 🔹 Option A: Using Windows PowerShell
+#### 🔹 Using Windows PowerShell
 ```powershell
 if (!(Test-Path "$env:USERPROFILE\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max")) { 
     New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max" | Out-Null 
@@ -82,66 +109,40 @@ if (!(Test-Path "$env:USERPROFILE\.gemini\config\plugins\flutter\skills\flutter-
 Copy-Item "SKILL.md" "$env:USERPROFILE\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max\SKILL.md" -Force
 ```
 
-#### 🔹 Option B: Using Windows Command Prompt (CMD)
+#### 🔹 Using Windows Command Prompt (CMD)
 ```cmd
 if not exist "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max" mkdir "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max"
 copy "SKILL.md" "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max\SKILL.md"
 ```
 
-#### 🔹 Option C: Using macOS / Linux
+#### 🔹 Using macOS / Linux
 ```bash
-mkdir -p ~/.gemini/antigravity/skills/flutter-enterprise-pro-max
-cp SKILL.md ~/.gemini/antigravity/skills/flutter-enterprise-pro-max/SKILL.md
+mkdir -p ~/.gemini/config/plugins/flutter/skills/flutter-enterprise-pro-max
+cp SKILL.md ~/.gemini/config/plugins/flutter/skills/flutter-enterprise-pro-max/SKILL.md
 ```
 
 #### 💡 How to Use in Antigravity:
-Simply type in your chat:
-> `"init project"` or `"scaffold clean architecture feature auth"`
+Type in your chat:
+> `"init project"` or `"scaffold clean architecture feature cart"`
 
 ---
 
 ### 2️⃣ Cursor IDE
-
-#### 🔹 In PowerShell (Windows):
+Copy `rules/.cursorrules` to your project root:
 ```powershell
 Copy-Item "rules\.cursorrules" ".cursorrules" -Force
 ```
-
-#### 🔹 In CMD (Windows):
-```cmd
-copy "rules\.cursorrules" ".cursorrules"
-```
-
-#### 🔹 In macOS / Linux:
-```bash
-cp rules/.cursorrules .cursorrules
-```
-
-#### 💡 How to Use in Cursor:
-Open **Composer** (`Ctrl+I` / `Cmd+I`) or **Chat** (`Ctrl+L` / `Cmd+L`) and type:
-> `"Read .cursorrules and initialize a new Flutter project named smart_wallet for Fintech."`
+*Prompt Cursor Composer/Chat:*
+> `"Follow .cursorrules and initialize a new Flutter project named smart_wallet for Fintech."`
 
 ---
 
 ### 3️⃣ Claude Code
-
-#### 🔹 In PowerShell (Windows):
+Copy `rules/CLAUDE.md` to your workspace root:
 ```powershell
 Copy-Item "rules\CLAUDE.md" "CLAUDE.md" -Force
 ```
-
-#### 🔹 In CMD (Windows):
-```cmd
-copy "rules\CLAUDE.md" "CLAUDE.md"
-```
-
-#### 🔹 In macOS / Linux:
-```bash
-cp rules/CLAUDE.md CLAUDE.md
-```
-
-#### 💡 How to Use in Claude Code:
-Run in your terminal:
+*Run:*
 ```bash
 claude "Read CLAUDE.md and scaffold a Clean Architecture Flutter project named mega_store."
 ```
@@ -149,69 +150,35 @@ claude "Read CLAUDE.md and scaffold a Clean Architecture Flutter project named m
 ---
 
 ### 4️⃣ Windsurf / Cascade
-
-#### 🔹 In PowerShell (Windows):
+Copy `rules/.windsurfrules` into your workspace root:
 ```powershell
 Copy-Item "rules\.windsurfrules" ".windsurfrules" -Force
 ```
 
-#### 🔹 In CMD (Windows):
-```cmd
-copy "rules\.windsurfrules" ".windsurfrules"
-```
-
-#### 🔹 In macOS / Linux:
-```bash
-cp rules/.windsurfrules .windsurfrules
-```
-
-#### 💡 How to Use in Windsurf:
-In the **Cascade** chat panel, type:
-> `"Follow .windsurfrules and build a responsive authentication screen."`
-
 ---
 
 ### 5️⃣ GitHub Copilot
-
-#### 🔹 In PowerShell (Windows):
+Copy `rules/copilot-instructions.md` into your `.github/` folder:
 ```powershell
 if (!(Test-Path ".github")) { New-Item -ItemType Directory -Force -Path ".github" | Out-Null }
 Copy-Item "rules\copilot-instructions.md" ".github\copilot-instructions.md" -Force
-```
-
-#### 🔹 In CMD (Windows):
-```cmd
-if not exist ".github" mkdir ".github"
-copy "rules\copilot-instructions.md" ".github\copilot-instructions.md"
-```
-
-#### 🔹 In macOS / Linux:
-```bash
-mkdir -p .github
-cp rules/copilot-instructions.md .github/copilot-instructions.md
 ```
 
 ---
 
 ### 6️⃣ Standalone Terminal CLI (No AI Required)
 
-You can run the built-in interactive wizard directly from your terminal:
-
-#### 🔹 Cross-Platform (Dart):
 ```bash
+# Cross-Platform Dart
 dart run bin/init.dart
-```
 
-#### 🔹 Windows PowerShell:
-```powershell
+# Windows PowerShell
 powershell -ExecutionPolicy Bypass -File .\bin\init.ps1
 ```
 
 ---
 
 ## 🎨 UI/UX Pro Max: Category Design Tokens
-
-The generator embeds custom psychological color harmonies, typography pairings, and layout structures according to the chosen category:
 
 | Category | Visual Archetype | Primary / Accent Colors | Font Pairing | Key Components |
 | :--- | :--- | :--- | :--- | :--- |
@@ -227,166 +194,21 @@ The generator embeds custom psychological color harmonies, typography pairings, 
 
 ## 📱 Platform-Adaptive & Responsive Architecture
 
-### 1. Platform-Adaptive Core
-* **iOS & macOS**: Automatic fallback to native Cupertino widgets (`CupertinoButton`, `CupertinoTextField`, `CupertinoActivityIndicator`, `cupertino_icons`).
-* **Android & Desktop & Web**: Automatic fallback to Material 3 widgets (`ElevatedButton`, `FilledButton`, `TextField`, Material icons).
-
-### 2. Multi-Device Screen Breakpoints
-```dart
-ResponsiveLayout(
-  mobile: MobilePhoneLayout(),    // < 600dp (Bottom Navigation Bar)
-  tablet: TabletRailLayout(),     // 600dp - 1024dp (Navigation Rail & 2-Col Grid)
-  desktop: DesktopSidebarLayout(), // > 1024dp (Full Sidebar & Master-Detail)
-)
-```
-
----
-
-## 📁 Project Directory Layout
-
-```
-lib/
-├── core/                                # Shared infrastructure
-│   ├── bloc_observer.dart               # Global Bloc logging and error tracking
-│   ├── config/                          # Environment & Flavors Configuration
-│   │   ├── app_config.dart              # Central AppConfig facade (@singleton)
-│   │   ├── app_flavor.dart              # AppFlavor enum (dev, staging, production)
-│   │   ├── env_config.dart              # Abstract EnvConfig contract
-│   │   ├── env_config_factory.dart      # Flavor factory
-│   │   ├── env/                         # DevConfig, StagingConfig, ProductionConfig
-│   │   ├── service_locator.dart         # GetIt + Injectable initialization
-│   │   └── service_locator.config.dart  # Generated by injectable_generator
-│   │
-│   ├── errors/                          # Failures & Exceptions
-│   │   ├── exceptions.dart              # ServerException, CacheException
-│   │   └── failure.dart                 # Failure, ServerFailure
-│   │
-│   ├── extension/                       # Extensions (context, l10n, string)
-│   │   └── context_extension.dart
-│   │
-│   ├── network/                         # Enterprise Network Layer
-│   │   ├── api_error_handler.dart       # DioException -> ApiErrorModel handler
-│   │   ├── api_error_model.dart         # @JsonSerializable error model
-│   │   ├── api_response.dart            # Generic ApiResponse<T> wrapper
-│   │   ├── paginated_response.dart      # Generic PaginatedResponse<T>
-│   │   ├── auth_interceptor.dart        # 401 refresh lock, token injection & retry
-│   │   ├── dio_client.dart              # Configured Dio factory with PrettyDioLogger
-│   │   └── endpoints/                   # Static endpoint constants per feature
-│   │
-│   ├── services/                        # Service wrappers
-│   │   ├── register_module.dart         # Injectable @module (Dio, SecureStorage, etc.)
-│   │   ├── token_storage.dart           # Secure token storage
-│   │   └── secure_storage_service.dart
-│   │
-│   ├── theme/                           # Light/Dark Theme & Design Tokens
-│   │   ├── app_colors.dart
-│   │   └── theme_manager.dart
-│   │
-│   ├── utils/                           # Utils & Typedefs
-│   │   ├── either.dart                  # Pure Dart Left/Right sealed class
-│   │   ├── typedef.dart                 # ResultFuture<T> = Future<Either<ApiErrorModel, T>>
-│   │   ├── responsive_layout.dart       # Breakpoint builder (Mobile, Tablet, Desktop)
-│   │   └── validators.dart              # Composable Form Validators
-│   │
-│   └── widgets/                         # Core Reusable UI Component Classes
-│       ├── adaptive_scaffold.dart
-│       ├── custom_button.dart
-│       ├── custom_text_field.dart
-│       ├── custom_card.dart
-│       ├── custom_badge.dart
-│       ├── custom_avatar.dart
-│       ├── loading_indicator.dart
-│       ├── empty_state_widget.dart
-│       └── error_state_widget.dart
-│
-├── features/ (or src/)                  # Feature-First Modules
-│   └── feature_name/
-│       ├── data/                        # DATA LAYER
-│       │   ├── datasources/             # Retrofit Remote DataSources (*_datasource.dart)
-│       │   ├── models/                  # @JsonSerializable + copyWith + Mappers
-│       │   └── repositories/            # *_repo_impl.dart (@LazySingleton(as: *Repo))
-│       │
-│       ├── domain/                      # DOMAIN LAYER (Pure Business Logic)
-│       │   ├── entities/                # Pure Dart Business Entities (Equatable)
-│       │   ├── repositories/            # Abstract Repository contracts (*_repo.dart)
-│       │   └── usecases/                # Business UseCases
-│       │
-│       └── presentation/                # PRESENTATION LAYER
-│           ├── logic/                   # Cubit ONLY + Freezed States
-│           ├── screens/                 # Screen Widget Classes
-│           └── widgets/                 # Sub-widgets (1 class per file)
-│
-├── l10n/                                # LOCALIZATION
-│   ├── intl_en.arb                      # English
-│   └── intl_ar.arb                      # Arabic (RTL)
-│
-├── main.dart                            # Shared bootstrap(EnvConfig) runner
-├── main_dev.dart                        # Dev Flavor Entrypoint
-├── main_staging.dart                    # Staging Flavor Entrypoint
-└── main_production.dart                 # Production Flavor Entrypoint
-```
-
----
-
-## ⚡ Interactive Prompts & Usage Examples
-
-### 1. Initialize a Project
-Ask your AI Agent:
-> `"init project"`
-
-The wizard will guide you through:
-1. 📝 Project Name & Org Domain.
-2. 📦 FVM Setup (Custom version or Machine default).
-3. 📱 Target Platforms (Mobile, Web, Desktop, All).
-4. 🖥️ Device Types (Phones, Tablets, Desktops).
-5. 🎨 UI/UX Pro Max Category (Fintech, E-Commerce, Healthcare, SaaS, etc.).
-6. 🔥 Firebase Services (Auth, Firestore, Storage, Messaging, Crashlytics).
-7. 🚀 Fastlane & CI/CD Pipelines.
-
-### 2. Scaffold a New Feature
-Ask your AI Agent:
-> `"Scaffold a Clean Architecture feature named 'auth' with 3 layers following enterprise standards."`
-
-
----
-
-## ⚡ Quickstart Commands
-
-```bash
-# 1. Install dependencies
-flutter pub get
-
-# 2. Run Code Generation (Injectable, Freezed, Retrofit, JsonSerializable)
-dart run build_runner build --delete-conflicting-outputs
-
-# 3. Run Automated Tests
-flutter test
-
-# 4. Run Specific Flavor
-flutter run -t lib/main_dev.dart --flavor dev
-```
+* **Breakpoints**: Phone (< 600dp), Tablet (600dp - 1024dp with Navigation Rail), Desktop (> 1024dp with Sidebar).
+* **Adaptive Widgets**: Automatically switch between `material_ui` and `cupertino_ui` based on target OS.
 
 ---
 
 ## ❓ Troubleshooting & FAQ
 
 #### Q1: Error `'Copy-Item' is not recognized as an internal or external command`?
-* **Fix**: Run inside Windows PowerShell, or use CMD command syntax:
-  ```cmd
-  if not exist "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max" mkdir "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max"
-  copy "SKILL.md" "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max\SKILL.md"
-  ```
+* **Cause**: You ran a PowerShell command inside Windows **Command Prompt (CMD)**.
+* **Fix**: Use the CMD copy syntax or switch to PowerShell.
 
 #### Q2: Error `File init.ps1 cannot be loaded because running scripts is disabled`?
-* **Fix**: Run PowerShell with the ExecutionPolicy bypass flag:
+* **Fix**: Run PowerShell with execution policy bypass:
   ```powershell
   powershell -ExecutionPolicy Bypass -File .\bin\init.ps1
-  ```
-
-#### Q3: How do I run code generation for Injectable & Freezed?
-* **Fix**: Run:
-  ```bash
-  dart run build_runner build --delete-conflicting-outputs
   ```
 
 ---
@@ -394,4 +216,3 @@ flutter run -t lib/main_dev.dart --flavor dev
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-

@@ -1,9 +1,10 @@
 ﻿Write-Host "============================================================" -ForegroundColor Cyan
 Write-Host "🚀 Flutter Enterprise Pro Max - Project Initializer (PowerShell)" -ForegroundColor Green
-Write-Host "Clean Architecture + TDD + UI/UX Pro Max + Quality Gate CI" -ForegroundColor Yellow
-Write-Host "Zero Memory Leaks + Smart Isolates + Lefthook Git Hooks" -ForegroundColor Magenta
+Write-Host "Clean Architecture • Multi-State • UI/UX Pro Max • Quality Gate CI" -ForegroundColor Yellow
+Write-Host "Zero Memory Leaks • Smart Isolates • Lefthook Git Hooks" -ForegroundColor Magenta
 Write-Host "============================================================`n" -ForegroundColor Cyan
 
+# 1. Project Name & Org
 $projectName = Read-Host "📝 Enter Project Name (e.g. smart_pay) [default: my_flutter_app]"
 if ([string]::IsNullOrWhiteSpace($projectName)) { $projectName = "my_flutter_app" }
 $projectName = $projectName.ToLower().Replace("-", "_")
@@ -11,6 +12,7 @@ $projectName = $projectName.ToLower().Replace("-", "_")
 $orgDomain = Read-Host "🌐 Enter Organization Domain (e.g. com.company) [default: com.example]"
 if ([string]::IsNullOrWhiteSpace($orgDomain)) { $orgDomain = "com.example" }
 
+# 2. Platforms
 Write-Host "`n📱 Select Target Platforms:" -ForegroundColor Cyan
 Write-Host "  1) 📱 Mobile Only (Android & iOS)"
 Write-Host "  2) 🌐 Mobile & Web (Android, iOS, Web)"
@@ -19,6 +21,7 @@ Write-Host "  4) 🚀 All Platforms (Android, iOS, Web, Windows, macOS, Linux)"
 $platforms = Read-Host "👉 Choose [1-4] [default: 1]"
 if ([string]::IsNullOrWhiteSpace($platforms)) { $platforms = "1" }
 
+# 3. Device Form Factors
 Write-Host "`n🖥️ Select Supported Device Types & Screen Responsiveness:" -ForegroundColor Cyan
 Write-Host "  1) 📱 Phones Only"
 Write-Host "  2) 📱+📟 Phones & Tablets (Adaptive Navigation Rail)"
@@ -26,6 +29,17 @@ Write-Host "  3) 📱+📟+🖥️ All Form Factors: Phones, Tablets & Desktop /
 $deviceTypes = Read-Host "👉 Choose [1-3] [default: 2]"
 if ([string]::IsNullOrWhiteSpace($deviceTypes)) { $deviceTypes = "2" }
 
+# 4. Architecture Profile Selection
+Write-Host "`n🏛️ Select Architecture Profile:" -ForegroundColor Cyan
+Write-Host "  1) 🌟 Enterprise Clean Architecture (Feature-First + Cubit + Injectable + Centralized Routes) [RECOMMENDED]"
+Write-Host "  2) ⚡ Riverpod Enterprise (Feature-First + AsyncNotifier + GoRouter)"
+Write-Host "  3) 🔄 Offline-First Enterprise (Clean Arch + Drift DB + Sync Queue Engine)"
+Write-Host "  4) 📦 Minimal Starter (Simplified Feature + Manual DI)"
+Write-Host "  5) 🛠️ Custom Architecture (Configure every dimension step-by-step)"
+$profileChoice = Read-Host "👉 Choose [1-5] [default: 1]"
+if ([string]::IsNullOrWhiteSpace($profileChoice)) { $profileChoice = "1" }
+
+# 5. UI/UX Category
 Write-Host "`n🎨 Select App Category / Design Intelligence:" -ForegroundColor Cyan
 Write-Host "  1) 💳 Fintech & Banking (Deep Slate, Emerald Green, High-Trust)"
 Write-Host "  2) 🛍️ E-Commerce & Retail (Clean White, Vibrant Coral, High-Conversion)"
@@ -38,6 +52,7 @@ Write-Host "  8) ⚙️ Clean Slate Enterprise (Default Minimalist)"
 $category = Read-Host "👉 Choose [1-8] [default: 1]"
 if ([string]::IsNullOrWhiteSpace($category)) { $category = "1" }
 
+# 6. Firebase & Fastlane
 $enableFirebase = Read-Host "`n🔥 Enable Firebase Services? (Y/N) [default: Y]"
 if ([string]::IsNullOrWhiteSpace($enableFirebase)) { $enableFirebase = "Y" }
 
@@ -61,6 +76,8 @@ Write-Host "✅ Responsiveness: Mobile (<600), Tablet (600-1024 with Rail), Desk
 Write-Host "✅ UI/UX: Design Tokens + 8-point grid + Bento Grid & Micro-interactions" -ForegroundColor Green
 Write-Host "✅ Flavors: dev, staging, prod + FVM (.fvmrc)" -ForegroundColor Green
 Write-Host "✅ State Management: Cubit + Freezed + JsonSerializable" -ForegroundColor Green
+Write-Host "✅ Hardware Secure Storage & Privacy Protection configured" -ForegroundColor Green
+Write-Host "✅ AR/EN Localization structure configured" -ForegroundColor Green
 if ($enableFirebase -match "^[Yy]") { Write-Host "✅ Firebase: Initialized with Crashlytics BlocObserver" -ForegroundColor Green }
 if ($enableFastlane -match "^[Yy]") { Write-Host "✅ DevOps: Fastfile & GitHub Actions deployment pipelines ready" -ForegroundColor Green }
 
@@ -68,3 +85,10 @@ Write-Host "`n🎉 Project created successfully!" -ForegroundColor Cyan
 Write-Host "To install Lefthook Git Hooks on your machine, run:" -ForegroundColor Yellow
 Write-Host "  npm install -g @evilmartians/lefthook" -ForegroundColor White
 Write-Host "  lefthook install`n" -ForegroundColor White
+Write-Host "Next commands:" -ForegroundColor Cyan
+Write-Host "  cd $projectName"
+Write-Host "  flutter pub get"
+Write-Host "  dart run build_runner build -d"
+Write-Host "  flutter test --coverage"
+Write-Host "  dart run scripts/check_coverage.dart"
+Write-Host "  flutter run -t lib/main_dev.dart --flavor dev`n"

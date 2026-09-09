@@ -1,47 +1,126 @@
 ﻿---
 name: flutter-enterprise-pro-max
-description: Universal enterprise Flutter architect and UI/UX design intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up Clean Architecture with TDD, Flavors, FVM, Firebase, Fastlane, Multi-Platform targeting (Mobile, Web, Desktop), Device responsiveness (Phones, Tablets, Desktops), zero memory leaks, smart background isolates (compute/Isolate.run), smart RepaintBoundary optimization, material_ui / cupertino_ui packages, GitHub Workflows (auto_pr_to_dev.yml, enterprise_quality_gate_&_ci.yml), Lefthook git hooks, coverage scripts (check_coverage.dart), and comprehensive unit/widget tests for all files.
+description: Universal enterprise Flutter architect, system designer, and UI/UX intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up 3-layer Clean Architecture (domain, data, presentation), configuring state management (Cubit/Bloc, Riverpod, Provider, Signals), Injectable + GetIt or Riverpod DI, sealed Result or dartz Either error handling with pure Domain Failures, routing (AppRouter or GoRouter), Mandatory Flavors (.vscode/launch.json, DevConfig, StagingConfig, ProductionConfig with --dart-define), Hardware Security, Privacy Screen, Core Design Atoms, Context-Aware AR/EN Localization, Device responsiveness, zero memory leaks, smart background isolates (compute/Isolate.run), smart RepaintBoundary optimization, material_ui / cupertino_ui packages, GitHub Workflows (auto_pr_to_dev.yml, enterprise_quality_gate_&_ci.yml), Lefthook git hooks, coverage scripts (check_coverage.dart), and comprehensive unit/widget tests for all files.
 ---
 
-# 🚀 Flutter Enterprise Pro Max - AI Agent Skill
+# 🚀 Flutter Enterprise Pro Max — AI Agent Skill
 
-This skill turns any AI Agent into a **Senior Flutter Architect & UI/UX Design Specialist (10+ years experience)** capable of scaffolding production-grade Flutter applications adhering to **Clean Architecture**, **SOLID Principles**, **Test-Driven Development (TDD)**, **Platform-Adaptive UI** (`material_ui` on Android/Desktop/Web, `cupertino_ui` on iOS/macOS), **Multi-Device Responsiveness** (Phones, Tablets, Desktops), **Zero Memory Leaks**, **Smart Background Isolates**, **Smart RepaintBoundary Optimization**, **Automated CI/CD Quality Gates & PR Automation**, and **Lefthook Local Git Hooks**.
+This skill turns any AI Agent into a **Principal Flutter Architect, Enterprise Software Architect & UI/UX Specialist (10+ years experience)**. It enforces a configurable, production-grade **Flutter Enterprise Engineering System** adhering to **Clean Architecture**, **SOLID Principles**, **Test-Driven Development (TDD)**, **Platform-Adaptive UI** (`material_ui` on Android/Desktop/Web, `cupertino_ui` on iOS/macOS), **Multi-Device Responsiveness** (Phones, Tablets, Desktops), **Zero Memory Leaks**, **Smart Background Isolates**, **Smart RepaintBoundary Optimization**, **Automated CI/CD Quality Gates & PR Automation**, and **Lefthook Local Git Hooks**.
 
 ---
 
-## 🎯 When to Activate This Skill
+## 0. ⚖️ Rule Priority Hierarchy
+
+When architectural rules or trade-offs conflict, the AI Agent MUST strictly adhere to this priority order:
+
+```
+P0 — Security & Correctness   (Hardware secure storage, domain isolation, zero memory leaks)
+        ↓
+P1 — Architecture & SOLID     (Clean layer separation, single-responsibility UseCases, DI inversion)
+        ↓
+P2 — Quality Gates & Tests    (3-tier testing pyramid, Lefthook, CI Quality Gate [80%], Context-Aware L10n)
+        ↓
+P3 — Concurrency & Perf       (Isolates offloading, smart RepaintBoundary, bounded rebuild scopes)
+        ↓
+P4 — Style & Convention       (Separated widgets with keys, strict CardThemeData, snake_case)
+```
+
+> **Rule Override**: Project-specific configuration in `enterprise_flutter.yaml` overrides generic defaults.
+
+---
+
+## 1. 🎯 When to Activate This Skill
+
 - When user asks to:
   - `"init project"`, `"create flutter app"`, `"scaffold new project"`
-  - `"add feature <name>"`, `"generate clean architecture feature"`
-  - `"setup flavors"`, `"configure firebase"`, `"setup fastlane"`
+  - `"add feature <name>"`, `"generate feature <name>"`, `"scaffold clean architecture feature"`
+  - `"setup flavors"`, `"configure injectable"`, `"setup routes"`, `"setup localization"`, `"setup offline sync"`
   - `"setup ci/cd"`, `"setup quality gate"`, `"configure lefthook"`, `"check coverage"`
   - `"write unit and widget tests for all files"`
+  - `"design responsive screen"`, `"make layout adaptive for tablet/desktop"`, `"apply UI/UX design intelligence"`
 
 ---
 
-## 🏛️ Core Architectural Standards
+## 2. 🏛️ Configurable Architecture Profiles
 
-### 1. Clean Architecture + Feature-First
-Each feature in `lib/features/<feature_name>/` contains:
+The system provides 4 pre-configured profiles and a fully customizable workflow:
+
+### 🌟 Profile 1: Enterprise Clean Architecture (Default / Recommended)
+- **Style**: Feature-First 3-Layer Clean Architecture (`domain`, `data`, `presentation`).
+- **State Management**: **Cubit + Freezed/Sealed States**.
+- **Dependency Injection**: **GetIt + Injectable** (`service_locator.dart`).
+- **Network & Error**: **Retrofit + Dio** with Domain-Isolated `Result<T, Failure>` or `ResultFuture<T> = Future<Either<Failure, T>>`.
+- **Navigation & Routing**: **Centralized AppRouter** with 400ms fade transition.
+- **Persistence**: **FlutterSecureStorage** (hardware-encrypted) + **SharedPreferences**.
+- **Flavors**: Mandatory `DevConfig`, `StagingConfig` (dotenv), and `ProductionConfig` (`--dart-define`).
+- **Localization**: Context-Aware AR/EN with zero hardcoded user-facing UI strings.
+- **Theme**: Material 3 with strict `CardThemeData`.
+
+### ⚡ Profile 2: Riverpod Enterprise Architecture
+- **Style**: Feature-First Clean Architecture.
+- **State Management**: **Riverpod 2.x (`AsyncNotifier` / `Notifier`)**.
+- **Dependency Injection**: **Riverpod Providers**.
+- **Routing**: **GoRouter** (with deep linking, route guards, and web URL synchronization).
+- **Network**: **Dio** with interceptors.
+
+### 🔄 Profile 3: Offline-First Enterprise Architecture
+- **Style**: Clean Architecture with Local Database & Sync Engine.
+- **Local Store**: **Drift (SQLite ORM)** with SQLCipher support.
+- **Sync Engine**: Offline Sync Queue, Idempotent Retries (`X-Idempotency-Key`), and Timestamp Conflict Resolution.
+
+### 📦 Profile 4: Minimal Starter
+- **Style**: Simplified Feature Architecture with Manual Factory DI.
+
+---
+
+## 3. 📁 Standard Project Directory Tree
+
 ```
-feature_name/
-├── data/
-│   ├── data_sources/      # Remote & Local DataSources (*_data_source.dart via Retrofit)
-│   ├── models/            # @JsonSerializable + manual copyWith + Extensions (*_model.dart)
-│   └── repos/             # Repository Implementations (*_repository_impl.dart)
-├── domain/
-│   ├── entities/          # Pure Dart Business Entities extending Equatable
-│   ├── repos/             # Abstract Repository Contracts (*_repository.dart)
-│   └── usecases/          # Discrete UseCases extending BaseUseCase<Type, Params>
-└── presentation/
-    ├── logic/             # Cubit ONLY + Freezed States (*_cubit.dart, *_state.dart)
-    ├── screens/           # Screen Widget Classes
-    └── widgets/           # Sub-widget Classes (Separated, 1 widget per file)
+lib/
+├── core/
+│   ├── adaptive/                   # Platform-Adaptive Widgets (Cupertino vs Material 3)
+│   ├── bloc_observer.dart          # Global Bloc logging and error tracking
+│   ├── config/                     # Environment & Flavors Configuration
+│   │   ├── app_config.dart         # Central AppConfig facade (@singleton)
+│   │   ├── app_flavor.dart         # AppFlavor enum (dev, staging, production)
+│   │   ├── dev_config.dart         # DevConfig (.env.dev)
+│   │   ├── staging_config.dart     # StagingConfig (.env.staging)
+│   │   ├── production_config.dart  # ProductionConfig (--dart-define)
+│   │   └── service_locator.dart    # GetIt + Injectable initialization
+│   ├── errors/                     # Pure Domain Failure abstractions (Zero Dio dependencies)
+│   │   ├── failure.dart            # Sealed Failure hierarchy (ServerFailure, NetworkFailure, etc.)
+│   │   └── exceptions.dart         # Data-layer exceptions (ServerException, CacheException)
+│   ├── extension/                  # context, theme, l10n, mediaQuery shortcuts
+│   ├── network/                    # Enterprise Network Layer (Dio + Retrofit + Result)
+│   ├── responsive/                 # Breakpoints & ResponsiveLayout (Phone, Tablet, Desktop)
+│   ├── routes/                     # Centralized Navigation & Routing Subsystem
+│   ├── services/                   # Hardware Secure Storage & Connectivity
+│   ├── theme/                      # AppTheme & Design Tokens
+│   ├── utils/                      # IsolateUtils (Background isolates)
+│   └── widgets/                    # Separated Core Atoms (AppButton, AppTextField, etc.)
+│
+├── features/                       # Feature-First Modules
+│   └── <feature_name>/
+│       ├── data/                   # DataSources, Models (@JsonSerializable), Repos
+│       ├── domain/                 # Pure Entities (Equatable), Repo Interfaces, UseCases
+│       └── presentation/           # Cubit + Freezed States, Screens, Separated Widgets
+│
+├── scripts/
+│   └── check_coverage.dart         # Code Coverage Quality Gate (Target: 80%)
+│
+├── .github/
+│   └── workflows/
+│       ├── auto_pr_to_dev.yml      # Automated PR generation on push
+│       └── enterprise_quality_gate_&_ci.yml # Comprehensive CI Quality Gate
+│
+├── lefthook.yml                    # Local Git Hooks (pre-commit, pre-push)
+├── .gitignore                      # Configured for coverage and secrets
+└── main.dart                       # Entrypoint
 ```
 
 ---
 
-## 🛡️ DevOps, CI/CD & Quality Gate Infrastructure
+## 4. 🛡️ DevOps, CI/CD & Quality Gate Infrastructure
 
 When scaffolding a project (`init project`), the agent MUST automatically generate:
 
@@ -96,7 +175,7 @@ Must include:
 
 ---
 
-## 🧪 Mandatory Comprehensive Test Suite (Unit & Widget Tests)
+## 5. 🧪 Mandatory Comprehensive Test Suite (Unit & Widget Tests)
 
 Whenever scaffolding a project or feature, the agent MUST generate test files for **EVERY file created**:
 1. **Unit Tests** (`test/.../unit/`):
@@ -113,15 +192,37 @@ Whenever scaffolding a project or feature, the agent MUST generate test files fo
 
 ---
 
-## ⚡ Performance, Concurrency & Memory Pillars
+## 6. 🛡️ Domain Error Isolation & Result Pipeline
+
+> [!CRITICAL]
+> **Domain Layer MUST NOT depend on HTTP status codes, Dio, or ApiErrorModel!**
+> `ApiErrorModel` belongs exclusively to the **Data Layer** as a DTO.
+
+```
+DioException (HTTP / Network Error)
+          ↓
+ApiErrorModel (Data Layer DTO)
+          ↓
+Data Layer Repository maps to: ServerFailure / NetworkFailure / UnauthorizedFailure
+          ↓
+Domain Contract / UseCase returns:
+  typedef ResultFuture<T> = Future<Either<Failure, T>>;
+  (or Result<T, Failure>)
+          ↓
+Presentation Layer (Cubit maps Failure -> Localized string via context.l10n)
+```
+
+---
+
+## 7. ⚡ Performance, Concurrency & Memory Pillars
 
 ### 1. Separated Widgets + Meaningful Keys by Usage
 - ✅ **ONE WIDGET PER FILE**: Every widget component MUST be an isolated `StatelessWidget` or `StatefulWidget` class in its own dedicated file. **NEVER use function widgets** (`Widget buildButton() => ...`).
 - ✅ **Meaningful `Key` Assignment by Usage**:
-  - `ValueKey<T>(item.id)`: Mandatory for dynamic items in ListViews, GridViews, and cards to maintain proper element reconciliation.
-  - `PageStorageKey<String>('unique_scroll_key')`: Mandatory for scrollable lists/tabs to preserve scroll position across tab switches and lifecycle changes.
-  - `GlobalKey<FormState>()`: Reserved strictly for Form validation and state queries.
-  - `ValueKey<String>('feature_action_target')`: For buttons, inputs, and interactive widgets to guarantee stability and automated testability.
+  - `ValueKey<T>(item.id)`: Mandatory for dynamic items in ListViews, GridViews, and cards.
+  - `PageStorageKey<String>('unique_scroll_key')`: Mandatory for scrollable lists/tabs to preserve scroll position.
+  - `GlobalKey<FormState>()`: Reserved strictly for Form validation.
+  - `ValueKey<String>('feature_action_target')`: For buttons, inputs, and interactive widgets.
 
 ### 2. Zero Memory Leaks Guarantee (Lifecycle Discipline)
 - ✅ **Mandatory Controller Disposal**: Every `TextEditingController`, `AnimationController`, `ScrollController`, `PageController`, and `FocusNode` created in a `StatefulWidget` MUST be disposed inside `dispose()`:
@@ -136,9 +237,8 @@ Whenever scaffolding a project or feature, the agent MUST generate test files fo
     super.dispose();
   }
   ```
-- ✅ **Async Context Protection**: ALWAYS check `if (!context.mounted) return;` after any `await` before touching `BuildContext` or navigation.
+- ✅ **Async Context Protection**: ALWAYS check `if (!context.mounted) return;` after any `await` before touching `BuildContext`.
 - ✅ **Stream & Timer Management**: All `StreamSubscription` and `Timer` instances must be cancelled upon widget disposal.
-- ✅ **Bloc/Cubit Lifecycle**: Prefer `BlocProvider` to automatically close Cubits when widgets leave the tree.
 
 ### 3. Smart Background Concurrency (`Isolate.run` / `compute`)
 - ✅ **Never Block the Main UI Thread**: Keep UI rendering locked at 60/120 FPS.
@@ -150,16 +250,12 @@ Whenever scaffolding a project or feature, the agent MUST generate test files fo
 - ✅ Use `IsolateUtils.run((data) => computeHeavyTask(data), payload)` from `core/utils/isolate_utils.dart`.
 
 ### 4. Smart `RepaintBoundary` Optimization
-- ✅ **Isolate High-Frequency Repaints**: Wrap elements that trigger constant re-draws in `RepaintBoundary` to prevent cascading redraws of the whole widget tree:
-  - Animated loaders / rotating spinners (`LoadingIndicator`, `CircularProgressIndicator`).
-  - Lottie animations and tickers.
-  - Complex custom painters and charts (`CustomPaint`).
-  - Live tickers, streaming video, or camera previews.
-- ❌ **Avoid Blind Wrapping**: Do NOT wrap plain static text or basic buttons to avoid unnecessary layer memory overhead.
+- ✅ **Isolate High-Frequency Repaints**: Wrap elements that trigger constant re-draws in `RepaintBoundary` (loaders, spinners, Lottie, custom canvas painters, live tickers).
+- ❌ **Avoid Blind Wrapping**: Do NOT wrap plain static text or basic buttons.
 
 ---
 
-## 📱 Platform-Adaptive UI (`material_ui` & `cupertino_ui`)
+## 8. 📱 Platform-Adaptive UI (`material_ui` & `cupertino_ui`)
 
 - 🤖 **Android, Desktop (Windows/Linux) & Web**: Use **`material_ui`** (`package:material_ui/material_ui.dart`) for Material 3 design systems.
 - 🍎 **iOS & macOS**: Use **`cupertino_ui`** (`package:cupertino_ui/cupertino_ui.dart`) and `cupertino_icons` for Apple Human Interface Guidelines (HIG).
@@ -170,7 +266,37 @@ Whenever scaffolding a project or feature, the agent MUST generate test files fo
 
 ---
 
-## 🎨 UI/UX Pro Max: Category-Driven Design Intelligence
+## 9. 🔒 Hardware-Level Security & Privacy Protection
+
+1. **Hardware-Encrypted Secure Storage**:
+   ```dart
+   final storage = const FlutterSecureStorage(
+     aOptions: AndroidOptions(encryptedSharedPreferences: true),
+     iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
+   );
+   ```
+2. **App Switcher Privacy Overlay**: Obscures sensitive screens when the app enters `AppLifecycleState.inactive` or `paused`.
+3. **Inactivity Auto-Logout**: Detects touch inactivity and logs out users after configurable timeouts.
+
+---
+
+## 10. 🌍 Context-Aware Localization Standard
+
+To avoid excessive or nonsensical abstractions, the AI Agent MUST distinguish between user-facing text and developer/system text:
+
+### 1. User-Facing UI Strings (MUST Be Localized):
+- Any text displayed to end users in the UI **MUST NOT** be hardcoded. Always use `context.l10n.<key>`.
+- Examples: `Text(context.l10n.loginTitle)`, `context.l10n.invalidEmailError`, `context.l10n.retry`.
+
+### 2. Infrastructure & Developer Strings (DO NOT Localize):
+- **Internal Logs & Diagnostics**: `debugPrint('Auth token refreshed')`, `logger.d('...')`.
+- **Telemetry & Analytics Events**: `analytics.logEvent(name: 'user_signed_up')`.
+- **Developer Asserts & System Errors**: `assert(id.isNotEmpty)`, `ArgumentError('...')`.
+- **Data Layer Exception Codes**: `ServerException(code: 'HTTP_504_TIMEOUT')`.
+
+---
+
+## 11. 🎨 UI/UX Pro Max: Category-Driven Design Intelligence
 
 | Category | Visual Style & Archetype | Primary / Accent Colors | Font Pairing |
 | :--- | :--- | :--- | :--- |
@@ -182,22 +308,26 @@ Whenever scaffolding a project or feature, the agent MUST generate test files fo
 | 🏋️ **Fitness & Wellness** | High-Energy Dark / Neon | Pitch Dark (`#0A0A0A`) + Lime (`#84CC16`) | Plus Jakarta Sans |
 | 🎓 **EdTech & Learning** | Gamified & Friendly | Soft Indigo (`#4F46E5`) + Gold (`#FBBF24`) | Nunito |
 
+> [!IMPORTANT]
+> **Strict Material 3 ThemeData Rule**:
+> In `ThemeData`, **ALWAYS USE `CardThemeData`** for `cardTheme`:
+> `cardTheme: const CardThemeData(color: AppColors.lightSurface, elevation: 0, ...)`
+
 ---
 
-## 🧙‍♂️ Interactive Project Initializer Flow
+## 12. 🧙‍♂️ Interactive Initializer Questionnaire & Execution
 
-When requested to initialize a project:
-1. **Prompt for Project Name & Org Domain** (e.g. `smart_wallet`, `com.company`).
-2. **Select Target Platforms** (Mobile, Web, Desktop, All).
-3. **Select Device Form Factors** (Phones, Tablets, Desktops / Large Screens).
-4. **Select App Category** [1-8] for UI/UX Pro Max tokens.
-5. **Ask for Firebase Services** (Auth, Firestore, Storage, Messaging, Crashlytics, Remote Config).
-6. **Ask for Fastlane & CI/CD** (Android / iOS Fastfile, GitHub Actions).
-7. **Scaffold Project Infrastructure**:
-   - Generate Clean Architecture folders (`core/`, `features/`).
-   - Generate `.github/workflows/auto_pr_to_dev.yml` & `.github/workflows/enterprise_quality_gate_&_ci.yml`.
-   - Generate `scripts/check_coverage.dart` with configurable `targetCoverage = 80.0`.
-   - Generate `lefthook.yml`.
-   - Configure `.gitignore` (`/coverage/`, `/scripts/*`, `!/scripts/check_coverage.dart`).
-   - Generate **complete Unit & Widget test suite** for all created files.
-   - Output `lefthook install` instructions.
+Whenever the user asks to `"init project"`, the Agent **MUST PRESENT**:
+1. **📝 Project Name & Org Domain**
+2. **📱 Target Platforms & Form Factors**
+3. **🏛️ Architecture Profile Selection [1-5]**
+4. **🎨 UI/UX Pro Max Category [1-8]**
+5. **🔥 Firebase Services Integration**
+6. **🚀 Fastlane & GitHub Actions CI/CD**
+
+### ⚡ Post-Scaffolding Automated Execution:
+Immediately after creating all files and folders, the AI Agent executes:
+1. `flutter pub get`
+2. `dart run build_runner build --delete-conflicting-outputs` (if code generation is configured)
+3. `flutter test --coverage && dart run scripts/check_coverage.dart`
+4. `flutter analyze`

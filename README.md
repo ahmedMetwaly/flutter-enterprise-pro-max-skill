@@ -1,47 +1,59 @@
 ﻿<div align="center">
 
-# 🚀 Flutter Enterprise Pro Max Skill
-### The Universal AI Agent Skill & Enterprise Architecture Toolkit for Flutter
+# 🚀 Flutter Enterprise Pro Max
+### Universal AI Agent Skill & Enterprise Architecture Decision System for Flutter
+*Engineered by 10+ Year Senior Principal Flutter & Enterprise Software Architects*
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.19+-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
 [![Dart](https://img.shields.io/badge/Dart-3.3+-0175C2?logo=dart&logoColor=white)](https://dart.dev)
-[![Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20TDD-brightgreen)](https://github.com)
+[![Architecture](https://img.shields.io/badge/Architecture-Configurable%20Clean%20%7C%20Riverpod%20%7C%20Offline--First-brightgreen)](https://github.com)
 [![Quality Gate](https://img.shields.io/badge/CI%2FCD-Quality%20Gate%20%26%20Auto%20PR-blueviolet)](https://github.com)
 [![Lefthook](https://img.shields.io/badge/Git%20Hooks-Lefthook-red)](https://github.com)
+[![SOLID](https://img.shields.io/badge/Principles-SOLID%20%26%20Zero%20Leaks-blue)](https://github.com)
 [![Platform](https://img.shields.io/badge/Packages-material__ui%20%7C%20cupertino__ui-orange)](https://github.com)
-[![UI/UX](https://img.shields.io/badge/Design-UI%2FUX%20Pro%20Max-ff69b4)](https://github.com)
 [![License](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
-*Turn any AI Agent (Antigravity, Cursor, Claude Code, Windsurf, Copilot) or Terminal into a **10-Year Senior Flutter Architect & UI/UX Specialist**.*
+*Turn any AI Agent (Antigravity, Cursor, Claude Code, Windsurf, Copilot) or Terminal into a **10-Year Senior Principal Flutter Architect & UI/UX Specialist**.*
 
 </div>
 
 ---
 
 ## 📑 Table of Contents
-1. [Overview](#-overview)
+1. [Overview & Core Architecture](#-overview--core-architecture)
 2. [CI/CD, Quality Gate & Git Hooks](#-cicd-quality-gate--git-hooks)
    - [Automated GitHub Workflows](#1-automated-github-workflows)
    - [Code Coverage Quality Gate (check_coverage.dart)](#2-code-coverage-quality-gate-check_coveragedart)
    - [Unified Local Quality Gate (lefthook.yml)](#3-unified-local-quality-gate-lefthookyml)
    - [Git Ignore Configuration](#4-git-ignore-configuration)
 3. [Mandatory Comprehensive Testing (Unit & Widget Tests)](#-mandatory-comprehensive-testing-unit--widget-tests)
-4. [Core Engineering & Performance Pillars](#-core-engineering--performance-pillars)
+4. [Configurable Architecture Profiles](#-configurable-architecture-profiles)
+5. [Domain Error Isolation Principle](#-domain-error-isolation-principle)
+6. [Core Engineering, Concurrency & Performance Pillars](#-core-engineering-concurrency--performance-pillars)
    - [Separated Widgets & Meaningful Keys](#1-separated-widgets--meaningful-keys-by-usage)
    - [Zero Memory Leaks Guarantee](#2-zero-memory-leaks-guarantee)
    - [Smart Background Concurrency (Isolates)](#3-smart-background-concurrency-isolates)
    - [Smart RepaintBoundary Optimization](#4-smart-repaintboundary-optimization)
    - [Platform Packages: material_ui & cupertino_ui](#5-platform-packages-material_ui--cupertino_ui)
-5. [Universal Installation Matrix](#-universal-installation-matrix)
-6. [UI/UX Pro Max: Category Design Tokens](#-uiux-pro-max-category-design-tokens)
-7. [Platform-Adaptive & Responsive Architecture](#-platform-adaptive--responsive-architecture)
-8. [Project Directory Layout](#-project-directory-layout)
-9. [Troubleshooting & FAQ](#-troubleshooting--faq)
-10. [License](#-license)
+7. [Context-Aware Localization Standard](#-context-aware-localization-standard)
+8. [Feature Generator Engine (`add feature <name>`)](#-feature-generator-engine-add-feature-name)
+9. [Hardware-Level Security & Privacy Protection](#-hardware-level-security--privacy-protection)
+10. [Universal Installation Matrix](#-universal-installation-matrix)
+    - [Google Antigravity / Gemini CLI](#1-google-antigravity--gemini-cli)
+    - [Cursor IDE](#2-cursor-ide)
+    - [Claude Code](#3-claude-code)
+    - [Windsurf / Cascade](#4-windsurf--cascade)
+    - [GitHub Copilot](#5-github-copilot)
+    - [Standalone Terminal CLI](#6-standalone-terminal-cli-no-ai-required)
+11. [UI/UX Pro Max: Category Design Tokens](#-uiux-pro-max-category-design-tokens)
+12. [Platform-Adaptive & Responsive Architecture](#-platform-adaptive--responsive-architecture)
+13. [Project Directory Tree Layout](#-project-directory-tree-layout)
+14. [Troubleshooting & FAQ](#-troubleshooting--faq)
+15. [License](#-license)
 
 ---
 
-## 📖 Overview
+## 📖 Overview & Core Architecture
 
 **Flutter Enterprise Pro Max** is an enterprise-grade AI Agent Skill and scaffolding framework engineered to enforce the highest industry standards:
 * **🏛️ Clean Architecture & SOLID Principles**: Pure Dart Domain Layer, isolated Data Layer (Retrofit + JsonSerializable), and Cubit/Freezed Presentation Layer.
@@ -161,7 +173,61 @@ Whenever scaffolding a project or adding a feature, the agent automatically crea
 
 ---
 
-## ⚡ Core Engineering & Performance Pillars
+## 🏛️ Configurable Architecture Profiles
+
+The system provides 4 pre-configured profiles and a fully customizable workflow:
+
+### 🌟 Profile 1: Enterprise Clean Architecture (Default / Recommended)
+- **Style**: Feature-First 3-Layer Clean Architecture (`domain`, `data`, `presentation`).
+- **State Management**: **Cubit + Freezed/Sealed States**.
+- **Dependency Injection**: **GetIt + Injectable** (`service_locator.dart`).
+- **Network & Error**: **Retrofit + Dio** with Domain-Isolated `Result<T, Failure>` or `ResultFuture<T> = Future<Either<Failure, T>>`.
+- **Navigation & Routing**: **Centralized AppRouter** with 400ms fade transition.
+- **Persistence**: **FlutterSecureStorage** (hardware-encrypted) + **SharedPreferences**.
+- **Flavors**: Mandatory `DevConfig`, `StagingConfig` (dotenv), and `ProductionConfig` (`--dart-define`).
+- **Localization**: Context-Aware AR/EN with zero hardcoded user-facing UI strings.
+- **Theme**: Material 3 with strict `CardThemeData`.
+
+### ⚡ Profile 2: Riverpod Enterprise Architecture
+- **Style**: Feature-First Clean Architecture.
+- **State Management**: **Riverpod 2.x (`AsyncNotifier` / `Notifier`)**.
+- **Dependency Injection**: **Riverpod Providers**.
+- **Routing**: **GoRouter** (with deep linking, route guards, and web URL synchronization).
+- **Network**: **Dio** with interceptors.
+
+### 🔄 Profile 3: Offline-First Enterprise Architecture
+- **Style**: Clean Architecture with Local Database & Sync Engine.
+- **Local Store**: **Drift (SQLite ORM)** with SQLCipher support.
+- **Sync Engine**: Offline Sync Queue, Idempotent Retries (`X-Idempotency-Key`), and Timestamp Conflict Resolution.
+
+### 📦 Profile 4: Minimal Starter
+- **Style**: Simplified Feature Architecture with Manual Factory DI.
+
+---
+
+## 🛡️ Domain Error Isolation Principle
+
+> [!CRITICAL]
+> **Domain Layer MUST NOT depend on HTTP status codes, Dio, or ApiErrorModel!**
+> `ApiErrorModel` belongs exclusively to the **Data Layer** as a DTO.
+
+```
+DioException (HTTP / Network Error)
+          ↓
+ApiErrorModel (Data Layer DTO)
+          ↓
+Data Layer Repository maps to: ServerFailure / NetworkFailure / UnauthorizedFailure
+          ↓
+Domain Contract / UseCase returns:
+  typedef ResultFuture<T> = Future<Either<Failure, T>>;
+  (or Result<T, Failure>)
+          ↓
+Presentation Layer (Cubit maps Failure -> Localized string via context.l10n)
+```
+
+---
+
+## ⚡ Core Engineering, Concurrency & Performance Pillars
 
 ### 1. Separated Widgets & Meaningful Keys by Usage
 - **One Widget Per File**: Every UI component is built as a separate `StatelessWidget` or `StatefulWidget` class. **Zero function widgets** (`Widget myButton() => ...`).
@@ -189,9 +255,53 @@ Whenever scaffolding a project or adding a feature, the agent automatically crea
 
 ---
 
+## 🌍 Context-Aware Localization Standard
+
+To avoid excessive or nonsensical abstractions, the AI Agent MUST distinguish between user-facing text and developer/system text:
+
+### 1. User-Facing UI Strings (MUST Be Localized):
+- Any text displayed to end users in the UI **MUST NOT** be hardcoded. Always use `context.l10n.<key>`.
+- Examples: `Text(context.l10n.loginTitle)`, `context.l10n.invalidEmailError`, `context.l10n.retry`.
+
+### 2. Infrastructure & Developer Strings (DO NOT Localize):
+- **Internal Logs & Diagnostics**: `debugPrint('Auth token refreshed')`, `logger.d('...')`.
+- **Telemetry & Analytics Events**: `analytics.logEvent(name: 'user_signed_up')`.
+- **Developer Asserts & System Errors**: `assert(id.isNotEmpty)`, `ArgumentError('...')`.
+- **Data Layer Exception Codes**: `ServerException(code: 'HTTP_504_TIMEOUT')`.
+
+---
+
+## ⚡ Feature Generator Engine (`add feature <name>`)
+
+When user asks to add or generate a feature:
+1. **Intake Flow**: Prompts for requirements, data contract, and UI mockup.
+2. **Scaffold 3 Layers**:
+   - `domain/`: Pure Entities (`Equatable`), abstract Repositories (`ResultFuture<T>`), discrete UseCases.
+   - `data/`: DataSources, `@JsonSerializable` Models + `copyWith` + `toEntity()`, Repository Implementations.
+   - `presentation/`: Cubit/Notifier, Screen (`ResponsiveLayout`), cohesive sub-widgets.
+3. **Generate Tests**: Unit tests (Domain & Cubits) + Widget tests (Components & Screen).
+
+---
+
+## 🔒 Hardware-Level Security & Privacy Protection
+
+1. **Hardware-Encrypted Secure Storage**:
+   ```dart
+   final storage = const FlutterSecureStorage(
+     aOptions: AndroidOptions(encryptedSharedPreferences: true),
+     iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
+   );
+   ```
+2. **App Switcher Privacy Overlay**: Obscures sensitive screens when the app enters `AppLifecycleState.inactive` or `paused`.
+3. **Inactivity Auto-Logout**: Detects touch inactivity and logs out users after configurable timeouts.
+
+---
+
 ## 🤖 Universal Installation Matrix
 
 ### 1️⃣ Google Antigravity / Gemini CLI
+
+#### 🔹 Using Windows PowerShell
 ```powershell
 if (!(Test-Path "$env:USERPROFILE\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max")) { 
     New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max" | Out-Null 
@@ -199,11 +309,27 @@ if (!(Test-Path "$env:USERPROFILE\.gemini\config\plugins\flutter\skills\flutter-
 Copy-Item "SKILL.md" "$env:USERPROFILE\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max\SKILL.md" -Force
 ```
 
+#### 🔹 Using Windows Command Prompt (CMD)
+```cmd
+if not exist "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max" mkdir "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max"
+copy "SKILL.md" "%USERPROFILE%\.gemini\config\plugins\flutter\skills\flutter-enterprise-pro-max\SKILL.md"
+```
+
+#### 🔹 Using macOS / Linux
+```bash
+mkdir -p ~/.gemini/config/plugins/flutter/skills/flutter-enterprise-pro-max
+cp SKILL.md ~/.gemini/config/plugins/flutter/skills/flutter-enterprise-pro-max/SKILL.md
+```
+
+---
+
 ### 2️⃣ Cursor IDE
 Copy `rules/.cursorrules` to your project root:
 ```powershell
 Copy-Item "rules\.cursorrules" ".cursorrules" -Force
 ```
+
+---
 
 ### 3️⃣ Claude Code
 Copy `rules/CLAUDE.md` to your workspace root:
@@ -211,11 +337,15 @@ Copy `rules/CLAUDE.md` to your workspace root:
 Copy-Item "rules\CLAUDE.md" "CLAUDE.md" -Force
 ```
 
+---
+
 ### 4️⃣ Windsurf / Cascade
 Copy `rules/.windsurfrules` into your workspace root:
 ```powershell
 Copy-Item "rules\.windsurfrules" ".windsurfrules" -Force
 ```
+
+---
 
 ### 5️⃣ GitHub Copilot
 Copy `rules/copilot-instructions.md` into your `.github/` folder:
@@ -223,6 +353,8 @@ Copy `rules/copilot-instructions.md` into your `.github/` folder:
 if (!(Test-Path ".github")) { New-Item -ItemType Directory -Force -Path ".github" | Out-Null }
 Copy-Item "rules\copilot-instructions.md" ".github\copilot-instructions.md" -Force
 ```
+
+---
 
 ### 6️⃣ Standalone Terminal CLI (No AI Required)
 ```bash
@@ -247,6 +379,11 @@ powershell -ExecutionPolicy Bypass -File .\bin\init.ps1
 | 🏋️ **Fitness & Wellness** | High-Energy Dark / Neon | Pitch Dark (`#0A0A0A`) + Lime (`#84CC16`) | Plus Jakarta Sans | Progress Rings, Bold Stats Cards |
 | 🎓 **EdTech & Learning** | Gamified & Friendly | Soft Indigo (`#4F46E5`) + Gold (`#FBBF24`) | Nunito | Lesson Progress, Gamification Badges |
 
+> [!IMPORTANT]
+> **Strict Material 3 ThemeData Rule**:
+> In `ThemeData`, **ALWAYS USE `CardThemeData`** for `cardTheme`:
+> `cardTheme: const CardThemeData(color: AppColors.lightSurface, elevation: 0, ...)`
+
 ---
 
 ## 📱 Platform-Adaptive & Responsive Architecture
@@ -256,7 +393,7 @@ powershell -ExecutionPolicy Bypass -File .\bin\init.ps1
 
 ---
 
-## 📁 Project Directory Layout
+## 📁 Project Directory Tree Layout
 
 ```
 lib/
@@ -295,6 +432,20 @@ lib/
 ├── main_staging.dart                    # Staging Flavor Entrypoint
 └── main_prod.dart                       # Production Flavor Entrypoint
 ```
+
+---
+
+## ❓ Troubleshooting & FAQ
+
+#### Q1: Error `'Copy-Item' is not recognized as an internal or external command`?
+* **Cause**: You ran a PowerShell command inside Windows **Command Prompt (CMD)**.
+* **Fix**: Use the CMD copy syntax or switch to PowerShell.
+
+#### Q2: Error `File init.ps1 cannot be loaded because running scripts is disabled`?
+* **Fix**: Run PowerShell with execution policy bypass:
+  ```powershell
+  powershell -ExecutionPolicy Bypass -File .\bin\init.ps1
+  ```
 
 ---
 

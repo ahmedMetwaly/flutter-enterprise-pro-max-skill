@@ -1,0 +1,49 @@
+# Profile 2: Riverpod Enterprise Architecture
+project:
+  name: my_riverpod_app
+  organization: com.example
+  platforms:
+    - android
+    - ios
+    - web
+    - windows
+  device_targets:
+    - phone
+    - tablet
+    - desktop
+  ui_category: saas_dashboard
+
+architecture:
+  style: feature_first_clean
+
+state_management:
+  solution: riverpod
+
+dependency_injection:
+  solution: riverpod
+
+networking:
+  solution: dio
+
+result_handling:
+  solution: sealed_result
+
+routing:
+  solution: go_router
+
+persistence:
+  solution: secure_storage_and_prefs
+
+offline:
+  enabled: true
+  strategy: cache_first
+
+localization:
+  enabled: true
+  locales:
+    - ar
+    - en
+
+observability:
+  enabled: true
+  solution: app_observer

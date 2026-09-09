@@ -1,7 +1,7 @@
 ﻿Write-Host "============================================================" -ForegroundColor Cyan
 Write-Host "🚀 Flutter Enterprise Pro Max - Project Initializer (PowerShell)" -ForegroundColor Green
-Write-Host "Clean Architecture + TDD + UI/UX Pro Max + Platform Adaptive" -ForegroundColor Yellow
-Write-Host "Zero Memory Leaks + Smart Isolates + RepaintBoundary Optimized" -ForegroundColor Magenta
+Write-Host "Clean Architecture + TDD + UI/UX Pro Max + Quality Gate CI" -ForegroundColor Yellow
+Write-Host "Zero Memory Leaks + Smart Isolates + Lefthook Git Hooks" -ForegroundColor Magenta
 Write-Host "============================================================`n" -ForegroundColor Cyan
 
 $projectName = Read-Host "📝 Enter Project Name (e.g. smart_pay) [default: my_flutter_app]"
@@ -51,12 +51,20 @@ Write-Host "✅ Separated Widgets: 1 class per file with meaningful Keys (ValueK
 Write-Host "✅ Memory Discipline: Zero Memory Leaks (all controllers/nodes/streams disposed)" -ForegroundColor Green
 Write-Host "✅ Smart Concurrency: Background Isolates (IsolateUtils.run) for 60/120 FPS" -ForegroundColor Green
 Write-Host "✅ Smart Rendering: RepaintBoundary on animations, tickers, and spinners" -ForegroundColor Green
+Write-Host "✅ GitHub Workflows: auto_pr_to_dev.yml & enterprise_quality_gate_&_ci.yml generated" -ForegroundColor Green
+Write-Host "✅ Code Coverage Script: scripts/check_coverage.dart (targetCoverage = 80.0%)" -ForegroundColor Green
+Write-Host "   ℹ️ Note: You can customize targetCoverage in scripts/check_coverage.dart." -ForegroundColor Cyan
+Write-Host "✅ Git Quality Gate: lefthook.yml generated for automated pre-commit and pre-push hooks" -ForegroundColor Green
+Write-Host "✅ .gitignore: Configured for /coverage/ and /scripts/ (keeping check_coverage.dart)" -ForegroundColor Green
+Write-Host "✅ Tests: Complete Unit & Widget Test Suite generated for all files" -ForegroundColor Green
 Write-Host "✅ Responsiveness: Mobile (<600), Tablet (600-1024 with Rail), Desktop (>1024 with Sidebar)" -ForegroundColor Green
 Write-Host "✅ UI/UX: Design Tokens + 8-point grid + Bento Grid & Micro-interactions" -ForegroundColor Green
 Write-Host "✅ Flavors: dev, staging, prod + FVM (.fvmrc)" -ForegroundColor Green
 Write-Host "✅ State Management: Cubit + Freezed + JsonSerializable" -ForegroundColor Green
-Write-Host "✅ Testing: Full TDD Test Suite with Mocktail & BlocTest" -ForegroundColor Green
 if ($enableFirebase -match "^[Yy]") { Write-Host "✅ Firebase: Initialized with Crashlytics BlocObserver" -ForegroundColor Green }
 if ($enableFastlane -match "^[Yy]") { Write-Host "✅ DevOps: Fastfile & GitHub Actions deployment pipelines ready" -ForegroundColor Green }
 
 Write-Host "`n🎉 Project created successfully!" -ForegroundColor Cyan
+Write-Host "To install Lefthook Git Hooks on your machine, run:" -ForegroundColor Yellow
+Write-Host "  npm install -g @evilmartians/lefthook" -ForegroundColor White
+Write-Host "  lefthook install`n" -ForegroundColor White

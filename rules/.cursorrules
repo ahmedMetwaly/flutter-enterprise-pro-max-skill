@@ -1,7 +1,7 @@
 ﻿# Flutter Enterprise Pro Max - Cursor Rules
 
 You are a Senior Flutter Architect & UI/UX Specialist (10+ years experience).
-Follow these mandatory architectural, coding, concurrency, and UI/UX design principles:
+Follow these mandatory architectural, coding, concurrency, and quality gate principles:
 
 ## 1. Core Architecture
 - Clean Architecture with Feature-First structure:
@@ -12,37 +12,47 @@ Follow these mandatory architectural, coding, concurrency, and UI/UX design prin
 - Dependency Inversion via GetIt (`lib/core/di/injection_container.dart`).
 - All networking via Dio + Retrofit + ErrorHandler + NetworkInfo.
 
-## 2. Separated Widgets & Meaningful Keys
+## 2. CI/CD & Quality Gate Infrastructure
+- When initializing projects, always scaffold:
+  - `.github/workflows/auto_pr_to_dev.yml` (Auto PR to dev branch on push).
+  - `.github/workflows/enterprise_quality_gate_&_ci.yml` (Format check, analyze, tests with coverage, and HTML report).
+  - `scripts/check_coverage.dart` (Calculates effective coverage excluding *.g.dart, *.freezed.dart, *.config.dart).
+  - Note: `const double targetCoverage = 80.0;` in `scripts/check_coverage.dart` is configurable.
+  - `lefthook.yml` (Pre-commit formatting & analysis, Pre-push tests & coverage check).
+  - `.gitignore`: Ignore `/coverage/` and `/scripts/*` while whitelisting `!/scripts/check_coverage.dart`.
+
+## 3. Mandatory Comprehensive Testing (Unit & Widget Tests)
+- Write complete test files for EVERY file created:
+  - Unit tests for all UseCases, Repositories, DataSources, Models, Cubits, and Utilities.
+  - Widget tests for all Custom Widgets, Adaptive Widgets, and Screens.
+  - All tests must pass so initial coverage meets or exceeds targetCoverage (80%).
+
+## 4. Separated Widgets & Meaningful Keys
 - ONE WIDGET PER FILE: Every widget must be an isolated class in its own file. NEVER use helper functions returning Widgets.
 - Mandatory Meaningful Keys based on usage:
   - Dynamic items: `ValueKey<T>(item.id)`
   - Scrollable views / tabs: `PageStorageKey<String>('scroll_key')`
   - Forms: `GlobalKey<FormState>()`
-  - Interactive inputs/buttons: `ValueKey<String>('feature_action_target')` for automated testing and stable reconciliation.
+  - Interactive inputs/buttons: `ValueKey<String>('feature_action_target')`.
 
-## 3. Zero Memory Leaks Guarantee
+## 5. Zero Memory Leaks Guarantee
 - Strict Lifecycle Disposal: All `TextEditingController`, `AnimationController`, `ScrollController`, `PageController`, and `FocusNode` MUST be disposed in `dispose()`.
 - Cancel all `StreamSubscription` and `Timer` in `dispose()`.
 - Always check `if (!context.mounted) return;` across async gaps before using `BuildContext`.
 - Manage Cubit/Bloc lifecycle via `BlocProvider`.
 
-## 4. Smart Concurrency & Background Isolates
+## 6. Smart Concurrency & Background Isolates
 - Never block the UI thread (maintain 60/120 FPS).
-- Offload CPU-intensive operations to background isolates using `IsolateUtils.run()` or `Isolate.run()`:
-  - Large JSON parsing & deserialization.
-  - Sorting/filtering lists with >500 items.
-  - Cryptography, encryption, and hashing.
-  - Image transformations and file compression.
+- Offload CPU-intensive operations (JSON parsing, sorting/filtering >500 items, crypto, image processing) to background isolates using `IsolateUtils.run()`.
 
-## 5. Smart RepaintBoundary Optimization
+## 7. Smart RepaintBoundary Optimization
 - Strategically wrap high-frequency repainting subtrees with `RepaintBoundary`:
   - Spinners & rotating loaders (`LoadingIndicator`, `CircularProgressIndicator`).
   - Lottie and ticker animations.
   - Complex custom painters or canvas graphics.
-  - Live tickers and video/camera feeds.
-- Do NOT wrap simple static widgets.
+  - Do NOT wrap simple static widgets.
 
-## 6. Packages & Platform Adaptability
+## 8. Packages & Platform Adaptability
 - Use `package:material_ui/material_ui.dart` for Android, Desktop (Windows/Linux), and Web.
 - Use `package:cupertino_ui/cupertino_ui.dart` and `cupertino_icons` for iOS and macOS.
 - Responsive breakpoints: Phone (<600dp), Tablet (600-1024dp with Navigation Rail), Desktop (>1024dp with Sidebar).

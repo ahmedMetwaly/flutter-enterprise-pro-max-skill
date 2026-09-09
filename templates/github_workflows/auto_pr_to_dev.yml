@@ -1,0 +1,52 @@
+﻿name: Auto Create Pull Request to Dev
+
+on:
+  push:
+    branches-ignore:
+      - "dev"
+      - "main"
+      - "master"
+
+concurrency:
+  group: auto-pr-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request to dev
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          echo "Processing push on branch: $BRANCH_NAME"
+
+          # التأكد من وجود PR مفتوح مسبقاً لنفس البرانش مستهدفاً dev لتجنب التكرار
+          EXISTING_PR=$(gh pr list --head "$BRANCH_NAME" --base "dev" --state open --json number -q '.[0].number')
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "Pull request already exists: #$EXISTING_PR"
+          else
+            echo "Creating Pull Request from $BRANCH_NAME to dev..."
+            
+            # جلب رسالة آخر كوميت لاستخدامها كعنوان للـ PR
+            COMMIT_MSG=$(git log -1 --pretty=%s)
+
+            gh pr create \
+              --base "dev" \
+              --head "$BRANCH_NAME" \
+              --title "$COMMIT_MSG" \
+              --body "### 🚀 Automated Pull Request
+              - **Source Branch:** \`$BRANCH_NAME\`
+              - **Target Branch:** \`dev\`
+              - **Triggered by:** @${{ github.actor }}
+              - **Latest Commit:** $COMMIT_MSG"
+          fi

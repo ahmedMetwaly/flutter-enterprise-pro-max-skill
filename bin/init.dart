@@ -3,8 +3,8 @@
 void main(List<String> args) async {
   print('\x1B[36m============================================================\x1B[0m');
   print('\x1B[32m🚀 Flutter Enterprise Pro Max - Project Initializer\x1B[0m');
-  print('\x1B[33mClean Architecture + TDD + UI/UX Pro Max + Platform Adaptive\x1B[0m');
-  print('\x1B[35mZero Memory Leaks + Smart Isolates + RepaintBoundary Optimized\x1B[0m');
+  print('\x1B[33mClean Architecture + TDD + UI/UX Pro Max + Quality Gate CI\x1B[0m');
+  print('\x1B[35mZero Memory Leaks + Smart Isolates + Lefthook Git Hooks\x1B[0m');
   print('\x1B[36m============================================================\x1B[0m\n');
 
   // 1. Project Name & Org
@@ -79,7 +79,9 @@ void main(List<String> args) async {
   print('  - Architecture: Separated Widgets (One class per file, explicit Keys by usage)');
   print('  - Memory Safety: Zero Memory Leaks (Mandatory dispose on controllers/nodes/subscriptions)');
   print('  - Concurrency: Smart Background Isolates (IsolateUtils.run for heavy operations)');
-  print('  - Rendering: Smart RepaintBoundary Optimization (Isolated loaders, tickers & animations)');
+  print('  - Quality Gate: auto_pr_to_dev.yml + enterprise_quality_gate_&_ci.yml (Target: 80% coverage)');
+  print('  - Git Hooks: lefthook.yml configured (pre-commit format & analyze, pre-push tests & coverage)');
+  print('  - Tests: Complete Unit & Widget Test Suite generated for all components');
   print('  - Category: Option $categoryChoice');
   print('  - Firebase: ${enableFirebase ? "Enabled (${firebaseServices.join(',')})" : "Disabled"}');
   print('  - Fastlane & CI/CD: ${enableFastlane ? "Enabled" : "Disabled"}');
@@ -100,15 +102,27 @@ void main(List<String> args) async {
   print('✅ Concurrency helper (IsolateUtils) generated for background isolate tasks.');
   print('✅ Smart RepaintBoundary applied to loaders, tickers, and animated elements.');
   print('✅ Responsive Layout Breakpoints configured (Mobile < 600, Tablet 600-1024, Desktop > 1024).');
+  print('✅ GitHub Workflows created:');
+  print('   - .github/workflows/auto_pr_to_dev.yml');
+  print('   - .github/workflows/enterprise_quality_gate_&_ci.yml');
+  print('✅ Quality Gate script created: scripts/check_coverage.dart (targetCoverage: 80.0%)');
+  print('   ℹ️  Note: You can adjust `targetCoverage = 80.0;` inside `scripts/check_coverage.dart`.');
+  print('✅ Local Git Quality Gate created: lefthook.yml');
+  print('✅ .gitignore updated (/coverage/ and /scripts/ with check_coverage.dart tracked).');
+  print('✅ Comprehensive Unit & Widget Test Suite generated for ALL files.');
   print('✅ Design tokens set up for chosen category.');
   print('✅ Flavors (dev, staging, prod) configured.');
-  print('✅ TDD Test suite scaffolded with Mocktail & BlocTest.');
   if (enableFirebase) print('✅ Firebase options & Crashlytics initialized.');
   if (enableFastlane) print('✅ Fastfile (Android/iOS) and GitHub Actions workflow generated.');
-  print('\n🎉 Done! CD into your project and run:');
+
+  print('\n🎉 Done! To finalize local Git Quality Gate setup, run:');
+  print('   npm install -g @evilmartians/lefthook');
   print('   cd $projectName');
+  print('   lefthook install');
+  print('\n⚡ Next development commands:');
   print('   flutter pub get');
   print('   dart run build_runner build -d');
-  print('   flutter test');
+  print('   flutter test --coverage');
+  print('   dart run scripts/check_coverage.dart');
   print('   flutter run -t lib/main_dev.dart --flavor dev --dart-define-from-file=env/dev.json\n');
 }

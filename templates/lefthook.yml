@@ -1,0 +1,26 @@
+﻿# Lefthook Configuration (Unified Local Quality Gate)
+# Refer to: https://github.com/evilmartians/lefthook
+# install lefthook on your machine
+#  if you don't have npm install nodejs first
+# npm install -g @evilmartians/lefthook
+# after install lefthook restart IDE then run this command in your terminal: lefthook install
+# Note that it's run only once after the first install
+
+pre-commit:
+  parallel: false
+  commands:
+    1_formatting:
+      glob: "*.dart"
+      run: dart format {staged_files}
+      stage_fixed: true
+
+    2_analyzer:
+      run: flutter analyze
+      fail_text: "❌ Static analysis failed! Fix all warnings and errors before committing."
+
+pre-push:
+  parallel: false
+  commands:
+    tests_and_coverage:
+      run: flutter test --coverage && dart run scripts/check_coverage.dart
+      fail_text: "❌ Tests failed or Code Coverage check did not pass!"

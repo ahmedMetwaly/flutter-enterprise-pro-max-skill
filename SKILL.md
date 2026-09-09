@@ -1,11 +1,11 @@
 ﻿---
 name: flutter-enterprise-pro-max
-description: Universal enterprise Flutter architect and UI/UX design intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up Clean Architecture with TDD, Flavors, FVM, Firebase, Fastlane, Multi-Platform targeting (Mobile, Web, Desktop), Device responsiveness (Phones, Tablets, Desktops), zero memory leaks, smart background isolates (compute/Isolate.run), smart RepaintBoundary optimization, and material_ui / cupertino_ui packages.
+description: Universal enterprise Flutter architect and UI/UX design intelligence skill. Use when creating new Flutter projects ("init project", "create flutter app", "scaffold clean architecture"), creating features ("add feature <name>"), setting up Clean Architecture with TDD, Flavors, FVM, Firebase, Fastlane, Multi-Platform targeting (Mobile, Web, Desktop), Device responsiveness (Phones, Tablets, Desktops), zero memory leaks, smart background isolates (compute/Isolate.run), smart RepaintBoundary optimization, material_ui / cupertino_ui packages, GitHub Workflows (auto_pr_to_dev.yml, enterprise_quality_gate_&_ci.yml), Lefthook git hooks, coverage scripts (check_coverage.dart), and comprehensive unit/widget tests for all files.
 ---
 
 # 🚀 Flutter Enterprise Pro Max - AI Agent Skill
 
-This skill turns any AI Agent into a **Senior Flutter Architect & UI/UX Design Specialist (10+ years experience)** capable of scaffolding production-grade Flutter applications adhering to **Clean Architecture**, **SOLID Principles**, **Test-Driven Development (TDD)**, **Platform-Adaptive UI** (`material_ui` on Android/Desktop/Web, `cupertino_ui` on iOS/macOS), **Multi-Device Responsiveness** (Phones, Tablets, Desktops), **Zero Memory Leaks**, **Smart Background Isolates**, and **Smart RepaintBoundary Optimization**.
+This skill turns any AI Agent into a **Senior Flutter Architect & UI/UX Design Specialist (10+ years experience)** capable of scaffolding production-grade Flutter applications adhering to **Clean Architecture**, **SOLID Principles**, **Test-Driven Development (TDD)**, **Platform-Adaptive UI** (`material_ui` on Android/Desktop/Web, `cupertino_ui` on iOS/macOS), **Multi-Device Responsiveness** (Phones, Tablets, Desktops), **Zero Memory Leaks**, **Smart Background Isolates**, **Smart RepaintBoundary Optimization**, **Automated CI/CD Quality Gates & PR Automation**, and **Lefthook Local Git Hooks**.
 
 ---
 
@@ -14,8 +14,8 @@ This skill turns any AI Agent into a **Senior Flutter Architect & UI/UX Design S
   - `"init project"`, `"create flutter app"`, `"scaffold new project"`
   - `"add feature <name>"`, `"generate clean architecture feature"`
   - `"setup flavors"`, `"configure firebase"`, `"setup fastlane"`
-  - `"design responsive screen"`, `"make layout adaptive for tablet/desktop"`
-  - `"prevent memory leaks"`, `"run heavy task in isolate"`, `"optimize repaints"`
+  - `"setup ci/cd"`, `"setup quality gate"`, `"configure lefthook"`, `"check coverage"`
+  - `"write unit and widget tests for all files"`
 
 ---
 
@@ -38,6 +38,78 @@ feature_name/
     ├── screens/           # Screen Widget Classes
     └── widgets/           # Sub-widget Classes (Separated, 1 widget per file)
 ```
+
+---
+
+## 🛡️ DevOps, CI/CD & Quality Gate Infrastructure
+
+When scaffolding a project (`init project`), the agent MUST automatically generate:
+
+### 1. Workflows in `.github/workflows/`
+1. **`auto_pr_to_dev.yml`**:
+   - Automatically opens a Pull Request to `dev` upon any push to feature/bugfix branches (ignoring `dev`, `main`, `master`).
+   - Checks if a PR already exists to avoid duplication.
+   - Sets title to the latest commit message and generates markdown summary body.
+2. **`enterprise_quality_gate_&_ci.yml`**:
+   - Triggers on push and pull requests targeting `dev` and `main`.
+   - Runs `dart format` check.
+   - Runs `flutter analyze` static analysis.
+   - Runs `flutter test --coverage`.
+   - Strips generated files (`*.g.dart`, `*.freezed.dart`, `*.config.dart`) from coverage using `lcov`.
+   - Generates visual HTML report (`genhtml`).
+   - Runs `dart run scripts/check_coverage.dart` to evaluate Quality Gate.
+   - Publishes interactive summary directly into GitHub Actions step summary.
+   - Uploads HTML report as artifact with 7-day retention.
+
+### 2. Coverage Quality Gate Script: `scripts/check_coverage.dart`
+- Located in `scripts/check_coverage.dart` at the root of the project.
+- Parses `coverage/lcov.info` and excludes generated files.
+- Calculates effective test coverage.
+- **Coverage Target Note**:
+  > ℹ️ Default target is: `const double targetCoverage = 80.0;`
+  > Users can customize this value directly in `scripts/check_coverage.dart` (e.g., 70.0, 85.0, 90.0).
+- Exits with code `1` if format, analysis, or tests fail.
+
+### 3. Local Git Hooks: `lefthook.yml`
+- Located at project root.
+- **pre-commit**:
+  - Runs `dart format {staged_files}` on staged `.dart` files.
+  - Runs `flutter analyze` to prevent bad code commits.
+- **pre-push**:
+  - Runs `flutter test --coverage && dart run scripts/check_coverage.dart` to prevent pushing code that breaks tests or drops coverage below the target.
+- **Setup Commands**:
+  ```bash
+  npm install -g @evilmartians/lefthook
+  lefthook install
+  ```
+
+### 4. Git Ignore Configuration: `.gitignore`
+Must include:
+```gitignore
+# Coverage reports
+/coverage/
+
+# Scripts folder ignore while keeping check_coverage.dart tracked
+/scripts/*
+!/scripts/check_coverage.dart
+```
+
+---
+
+## 🧪 Mandatory Comprehensive Test Suite (Unit & Widget Tests)
+
+Whenever scaffolding a project or feature, the agent MUST generate test files for **EVERY file created**:
+1. **Unit Tests** (`test/.../unit/`):
+   - Data sources (mocking HTTP/Dio).
+   - Models (testing `fromJson`, `toJson`, `copyWith`, and extensions).
+   - Repositories (testing online success and offline `NetworkFailure`).
+   - Use cases (testing business logic with `mocktail`).
+   - Cubits (testing state emission flows with `bloc_test`).
+   - Utilities (`isolate_utils_test.dart`, `network_info_test.dart`).
+2. **Widget Tests** (`test/.../widget/`):
+   - Component-level widget tests for buttons, input fields, loaders, empty states, and dialogs.
+   - Screen-level widget tests verifying UI rendering, form submission, and error feedback.
+- **Result**: Running `flutter test --coverage` passes 100% and satisfies the Quality Gate threshold from day one!
 
 ---
 
@@ -121,4 +193,11 @@ When requested to initialize a project:
 4. **Select App Category** [1-8] for UI/UX Pro Max tokens.
 5. **Ask for Firebase Services** (Auth, Firestore, Storage, Messaging, Crashlytics, Remote Config).
 6. **Ask for Fastlane & CI/CD** (Android / iOS Fastfile, GitHub Actions).
-7. **Scaffold the project with zero memory leaks, smart isolates, and RepaintBoundary optimization.**
+7. **Scaffold Project Infrastructure**:
+   - Generate Clean Architecture folders (`core/`, `features/`).
+   - Generate `.github/workflows/auto_pr_to_dev.yml` & `.github/workflows/enterprise_quality_gate_&_ci.yml`.
+   - Generate `scripts/check_coverage.dart` with configurable `targetCoverage = 80.0`.
+   - Generate `lefthook.yml`.
+   - Configure `.gitignore` (`/coverage/`, `/scripts/*`, `!/scripts/check_coverage.dart`).
+   - Generate **complete Unit & Widget test suite** for all created files.
+   - Output `lefthook install` instructions.

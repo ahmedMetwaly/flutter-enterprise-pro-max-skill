@@ -1,0 +1,61 @@
+﻿# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code related
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Web related
+lib/generated_plugin_registrant.dart
+
+# Symbol processing related
+undecorated_symbol_map
+
+# Obsolete build artifacts
+bin/cache/
+/ios/Flutter/Generated.xcconfig
+/ios/Flutter/flutter_export_environment.sh
+
+# Quality & Coverage Reports
+/coverage/
+
+# Scripts folder ignore with check_coverage.dart tracked
+/scripts/*
+!/scripts/check_coverage.dart
+
+# Local environment files (containing secrets)
+.env
+.env.*
+!.env.example
+play_store_credentials.json
+AuthKey_*.p8
+*.keystore
+*.jks
